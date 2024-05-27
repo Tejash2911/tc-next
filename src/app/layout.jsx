@@ -1,6 +1,7 @@
 import "./globals.css";
 import StoreProvider from "@/app/storeProvider";
 import Announcement from "@/components/Announcement";
+import BackToTopBTN from "@/components/BackToTopBTN";
 import Footer from "@/components/Footer";
 import Message from "@/components/Message";
 import Navbar from "@/components/Navbar";
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
           {children}
           <NewsLetter />
           <Footer />
+          <BackToTopBTN />
           <Message />
         </StoreProvider>
       </body>
