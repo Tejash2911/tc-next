@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
@@ -10,204 +9,25 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Badge } from "@mui/material";
-import { publicRequest, userRequest } from "@/axiosRequestMethods";
+import { publicRequest, userRequest } from "@/utils/axiosRequestMethods";
 import { logoutUser } from "@/lib/features/user/userSlilce";
 import { setProduct } from "@/lib/features/cart/cartSlice";
-import { mobile } from "@/responsive";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
-const link = {
-  color: "black",
-  textDecoration: "none",
-};
-
-const Container = styled.div`
-  max-height: 60px;
-  box-shadow: 0 3px 2px -1px rgba(0, 0, 0, 0.1);
-
-  //sticky navbar
-  position: sticky;
-  top: 0;
-  z-index: 9999;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(16px);
-`;
-const Wrapper = styled.div`
-  padding: 10px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const Left = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  ${mobile({
-    display: "none",
-  })}
-`;
-
-const SearchContainer = styled.div`
-  border: 0.5px solid gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  border-radius: 0.5vmin;
-  height: 25px;
-  position: relative;
-  ${mobile({
-    marginLeft: "0px",
-  })}
-`;
-
-const Input = styled.input`
-  outline: none;
-  border: none;
-  background-color: transparent !important;
-  width: 100%;
-`;
-
-const Ul = styled.ul`
-  position: absolute;
-  width: 100%;
-  top: 105%;
-  background-color: white;
-  border-radius: 0 0 1vmax 1vmax;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-  padding: 0 0;
-  transition: all 0.00001ms ease-in-out;
-  overflow: hidden;
-  display: ${(props) => props.display};
-  // transition-delay: 0.5s; // this is using beacause i am doind "display: none" to ul if title target is false so wen we click on searched products li the target is getting false and the js is not running for that in my case i a redirecting  to that specific product
-`;
-
-const Li = styled.li`
-  //margin: 5px 0px;
-  list-style: none;
-  text-align: start;
-  padding: 5px 5px;
-  width: 100%;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #ededeb;
-  }
-  &:last-child {
-    border-radius: 0 0 1vmax 1vmax;
-  }
-`;
-
-const Center = styled.div`
-  flex: 1;
-  ${mobile({
-    flex: 2,
-  })}
-`;
-const Logo = styled.h1`
-  font-weight: 600;
-  text-align: center;
-  letter-spacing: -1px;
-
-  ${mobile({
-    textAlign: "start",
-    fontSize: "1.5rem",
-  })}
-`;
-
-const Right = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-`;
-
-const DropdownList = styled.div`
-  display: ${(props) => (props.open ? "block" : "none")};
-`;
-const DropdownContainer = styled.div`
-  background-color: #f5f5f5;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  // border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 110%;
-  transform: translate(-35%);
-  width: 150px;
-
-  ::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: -6px;
-    width: 10px;
-    height: 10px;
-    background-color: #f5f5f5;
-    transform: rotate(45deg);
-  }
-`;
-const Dropdown = styled.span`
-  z-index: 2;
-  padding: 10px 20px;
-  background-color: inherit;
-  color: black;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 5px;
-
-  &:hover {
-    color: black;
-    font-weight: 600;
-  }
-`;
-const AccountContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  height: 100%;
-  user-select: none;
-  /* &:hover ${DropdownList}{
-        display: block;
-    } */
-`;
-const Hello = styled.span`
-  font-size: 15px;
-  font-weight: 400;
-`;
-const Account = styled.span`
-  font-weight: 600;
-  position: relative;
-  display: flex;
-  align-items: center;
-`;
-
-const MenueItem = styled.div`
-  cursor: pointer;
-  margin-left: 20px;
-  padding: 10px 0;
-  ${mobile({
-    marginLeft: "0.6rem",
-  })}
-`;
-
-const Navbar = () => {
+export default function Navbar() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const [optionIsOpen, setOptionIsOpen] = useState(false);
-  const [isInputFocus, setIsInputFocus] = useState(false);
-  const [searchProducts, setSearchProducts] = useState();
+  const user = useAppSelector((state) => state?.user?.currentUser);
+  const cartSize = useAppSelector((state) => state?.cart?.quantity);
 
-  const user = useAppSelector((state) => state.user.currentUser);
-  const cartSize = useAppSelector((state) => state.cart.quantity);
+  const [optionIsOpen, setOptionIsOpen] = useState(false);
+  const [searchProducts, setSearchProducts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState();
 
   const handleSearch = async (e) => {
     if (!e.target.value) {
-      return setSearchProducts(null);
+      return setSearchProducts([]);
     }
     try {
       const { data } = await publicRequest.get(`/api/products/search/${e.target.value}`);
@@ -215,30 +35,22 @@ const Navbar = () => {
     } catch (error) {
       const errorMessage = error.response?.status === 404 ? "No Products Found" : "Unable To Find Products";
       setSearchProducts([{ title: errorMessage }]);
-      // if (error.response.status === 404) {
-      //   return setSearchProducts([{ title: "No Products Found" }]);
-      // } else {
-      //   return setSearchProducts([{ title: "Unable To Find Products" }]);
-      // }
     }
   };
 
-  const handleFocus = () => {
-    setIsInputFocus(true);
-  };
-  const handleBlur = () => {
-    setIsInputFocus(false);
-  };
   const handleClick = (id) => {
     router.push(`/product/${id}`);
   };
+
   const handleLogout = () => {
     dispatch(logoutUser());
+    setIsAuthenticated(false);
   };
 
   useEffect(() => {
     if (!user) return;
-    const fetchh = async () => {
+    setIsAuthenticated(true);
+    const fetchCartSize = async () => {
       try {
         const { data } = await userRequest.get("api/cart/size");
         dispatch(setProduct(data.size));
@@ -246,82 +58,70 @@ const Navbar = () => {
         console.error("Error fetching cart size:", error);
       }
     };
-    fetchh();
-  }, [dispatch, user]);
+    fetchCartSize();
+  }, [dispatch, user, isAuthenticated]);
 
   return (
-    <Container>
-      <Wrapper>
-        <Left>
-          <Logo>
-            <Link style={link} href="/">
-              Title.
-            </Link>
-          </Logo>
-        </Left>
-        <Center>
-          <SearchContainer>
-            <Input onFocus={handleFocus} onBlur={() => handleBlur()} onChange={handleSearch} placeholder="Search" name="searchField"></Input>
-            <SearchIcon style={{ colour: "grey", fontSize: 16, cursor: "pointer" }} />
-            <Ul display={isInputFocus === true ? "block" : "none"}>
+    <div className="shadow-md sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-md font-Urbanist">
+      <div className="px-4 py-2 flex justify-between items-center">
+        <div className="flex-1 hidden md:flex items-center">
+          <h1 className="font-semibold text-center md:text-left text-3xl tracking-tight">
+            <Link href="/">Title.</Link>
+          </h1>
+        </div>
+        <div className="flex-1">
+          <div className="border border-gray-500 flex items-center justify-center rounded-lg p-[5px] relative">
+            <input type="text" name="search" className="w-full outline-none bg-transparent" placeholder="Search" onChange={handleSearch}></input>
+            <SearchIcon className="text-gray-500 text-lg cursor-pointer" />
+            <ul className="absolute w-full top-10 bg-white rounded-b-[1vmax] backdrop:blur-lg shadow-md overflow-hidden">
               {searchProducts?.map((p) => {
                 return (
-                  <Li key={p._id} onMouseDown={() => handleClick(p._id)}>
+                  <li key={p._id} className="list-none text-left p-1 w-full cursor-pointer hover:bg-[#ededeb]" onClick={() => handleClick(p._id)}>
                     {p.title}
-                  </Li>
-                ); //used onMouseDown because onClick was not working over there the Input > onFocus event was overriding this event
+                  </li>
+                );
               })}
-            </Ul>
-          </SearchContainer>
-        </Center>
-        <Right>
-          {!user ? (
+            </ul>
+          </div>
+        </div>
+        <div className="flex-1 flex items-center justify-end">
+          {!isAuthenticated ? (
             <>
-              <MenueItem>
-                <Link style={link} href="/signup">
-                  Sign Up
-                </Link>
-              </MenueItem>
-              <MenueItem>
-                <Link style={link} href="/login">
-                  Log In
-                </Link>
-              </MenueItem>
+              <div className="cursor-pointer ml-5 md:ml-1 px-2">
+                <Link href="/register">Sign Up</Link>
+              </div>
+              <div className="cursor-pointer ml-5 md:ml-1 px-2">
+                <Link href="/login">Log In</Link>
+              </div>
             </>
           ) : (
             <>
-              <AccountContainer onClick={() => setOptionIsOpen(!optionIsOpen)}>
-                <Hello>hello, {user.firstName}</Hello>
-                <Account>Account{optionIsOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}</Account>
-                <DropdownList open={optionIsOpen}>
-                  <DropdownContainer onClick={(e) => e.stopPropagation()}>
-                    <Dropdown onClick={() => navigate("/setting")}>
+              <div className="flex flex-col cursor-pointer select-none" onClick={() => setOptionIsOpen(!optionIsOpen)}>
+                <span className="text-base font-normal">hello, {user?.firstName} </span>
+                <span className="font-bold relative flex items-center">Account{optionIsOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}</span>
+                <div className={`${optionIsOpen ? "block" : "hidden"}`}>
+                  <div className="bg-gray-100 top-16 shadow-lg border border-gray-200 flex flex-col absolute transform -translate-x-1/3 w-40">
+                    <div className="absolute left-1/2 top-1 w-2.5 h-2.5 bg-gray-100 transform -translate-x-1/2 -translate-y-full rotate-45"></div>
+                    <span className="z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold" onClick={() => router.push("/setting")}>
                       <SettingsIcon /> Setting
-                    </Dropdown>
-                    <Dropdown onClick={() => navigate("/orders")}>
+                    </span>
+                    <span className="z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold" onClick={() => router.push("/orders")}>
                       <LocalMallIcon /> Orders
-                    </Dropdown>
-                    <Dropdown onClick={handleLogout}>
+                    </span>
+                    <span className="z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold" onClick={handleLogout}>
                       <LogoutIcon /> Logout
-                    </Dropdown>
-                  </DropdownContainer>
-                </DropdownList>
-              </AccountContainer>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </>
           )}
-          <MenueItem title="Cart">
-            {user && (
-              <Badge overlap="rectangular" badgeContent={cartSize} color="primary">
-                <Link style={link} href="/cart">
-                  <ShoppingCartOutlinedIcon />
-                </Link>
-              </Badge>
-            )}
-          </MenueItem>
-        </Right>
-      </Wrapper>
-    </Container>
+          <div className="ml-5 cursor-pointer relative">
+            <ShoppingCartOutlinedIcon onClick={() => router.push("/cart")} />
+            <span className="absolute top-0 right-0 bg-black transform translate-x-1/2 -translate-y-1/2 text-white rounded-full w-5 h-5 grid place-content-center">{cartSize}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-};
-
-export default Navbar;
+}
