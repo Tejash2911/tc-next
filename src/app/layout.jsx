@@ -1,5 +1,10 @@
 import "./globals.css";
 import StoreProvider from "@/app/storeProvider";
+import Announcement from "@/components/Announcement";
+import Footer from "@/components/Footer";
+import Message from "@/components/Message";
+import Navbar from "@/components/Navbar";
+import NewsLetter from "@/components/NewsLetter";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,7 +15,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <Announcement />
+          <Navbar />
+          {children}
+          <NewsLetter />
+          <Footer />
+          <Message />
+        </StoreProvider>
       </body>
     </html>
   );
