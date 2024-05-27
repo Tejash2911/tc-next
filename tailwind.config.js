@@ -10,7 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      Urbanist: ['"Urbanist"', "sans-serif"],
+      AlfaSlabOne: ['"Alfa Slab One"', "cursive"],
+    },
   },
   plugins: [],
-}
-
+};
