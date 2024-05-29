@@ -10,8 +10,8 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <div className="bg-[#f7e9d7] font-Urbanist">
-      <div className="container flex justify-between gap-10 py-[1rem] flex-wrap">
-        <div className="flex-1 flex flex-col gap-5">
+      <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-[1rem]">
+        <div className="flex flex-col gap-5">
           <h1 className="text-3xl font-semibold">Name.</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod possimus, dolor placeat voluptate ipsam delectus repellendus, laborum sunt ratione id obcaecati repudiandae, adipisci nihil
@@ -32,7 +32,7 @@ export default function Footer() {
             </span>
           </div>
         </div>
-        <div className="flex-1 flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           <h1 className="text-xl font-semibold">Useful Links</h1>
           <ul className="grid grid-cols-2 gap-4">
             <li>Product 1</li>
@@ -47,7 +47,7 @@ export default function Footer() {
             <li>My Account</li>
           </ul>
         </div>
-        <div className="flex-1 flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           <h1 className=" text-xl font-semibold">Contact Us</h1>
           <p className="flex gap-4">
             <MapIcon /> Street: Shop No 01, Darji Street, Damka, Hazira Road

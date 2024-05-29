@@ -212,7 +212,7 @@ export default function ProductPage({ params }) {
             </div>
             <div className="flex items-center">
               <div className="text-xl font-extralight mr-2">Size</div>
-              <select name="size" aria-label="size" className="border-2 border-black" onChange={(e) => setsize(e.target.value)}>
+              <select name="size" aria-label="size" className="border border-black" onChange={(e) => setsize(e.target.value)}>
                 {(product?.size || []).map((e) => (
                   <option key={e}>{e}</option>
                 ))}
@@ -224,7 +224,7 @@ export default function ProductPage({ params }) {
               <div className="cursor-pointer mx-2 flex items-center justify-between active:scale-110">
                 <RemoveIcon onClick={() => HandlClick("dec")} />
               </div>
-              <span className="h-10 w-10 border-2 border-teal-600 p-2 rounded-md grid place-content-center">{ProductQuentity}</span>
+              <span className="h-10 w-10 border border-teal-600 p-2 rounded-md grid place-content-center">{ProductQuentity}</span>
               <div className="cursor-pointer mx-2 flex items-center justify-between active:scale-110">
                 <AddIcon onClick={() => HandlClick("inc")} />
               </div>
