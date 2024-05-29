@@ -17,7 +17,7 @@ export default function Review({ productID, productName, ratingCount, rating, se
     if (!productID) return;
     (async () => {
       try {
-        const { data } = await publicRequest.get(`/api/review/${productID}`);
+        const { data } = await publicRequest.get(`/api/review/${productID}`, { cache: "no-store" });
         setReviews(data);
       } catch (error) {
         console.log(error);
