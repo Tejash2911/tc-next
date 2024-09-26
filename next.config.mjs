@@ -3,19 +3,19 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "images.pexels.com",
-        port: "",
-        pathname: "/photos/**",
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+        pathname: '/photos/**'
       },
       {
-        protocol: "https",
-        hostname: "m.media-amazon.com",
-        port: "",
-        pathname: "/images/I/**",
-      },
-    ],
-  },
-};
+        protocol: 'https',
+        hostname: 'm.media-amazon.com',
+        port: '',
+        pathname: '/images/I/**'
+      }
+    ]
+  }
+}
 
-export default nextConfig;
+export default nextConfig

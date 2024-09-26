@@ -1,0 +1,56 @@
+name: CI/CD for Next.js
+
+on:
+  push:
+    branches:
+      - develop # Trigger the workflow on push to the main branch
+  pull_request:
+    branches:
+      - develop # Trigger the workflow on pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0' # Ensure you're using a compatible Node.js version for Next.js
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test # Modify this if you have a different test command
+
+  deploy:
+    needs: build # Ensures that 'build' job passes before running
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js project
+        run: npm run build
+
+      - name: Deploy to Vercel
+        run: vercel --prod # Assumes you have Vercel CLI configured with a token
+
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Add this token in your GitHub Secrets

@@ -1,8 +1,8 @@
 export default function timeSince(timestamp) {
-  let time = Date.parse(timestamp);
-  let now = Date.now();
-  let secondsPast = (now - time) / 1000;
-  let suffix = "ago";
+  let time = Date.parse(timestamp)
+  let now = Date.now()
+  let secondsPast = (now - time) / 1000
+  let suffix = 'ago'
 
   let intervals = {
     year: 31536000,
@@ -11,14 +11,14 @@ export default function timeSince(timestamp) {
     day: 86400,
     hour: 3600,
     minute: 60,
-    second: 1,
-  };
+    second: 1
+  }
 
   for (let i in intervals) {
-    let interval = intervals[i];
+    let interval = intervals[i]
     if (secondsPast >= interval) {
-      let count = Math.floor(secondsPast / interval);
-      return `${count} ${i}${count > 1 ? "'s" : ""} ${suffix}`;
+      let count = Math.floor(secondsPast / interval)
+      return `${count} ${i}${count > 1 ? "'s" : ''} ${suffix}`
     }
   }
 }

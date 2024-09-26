@@ -1,25 +1,25 @@
-import { publicRequest } from "@/utils/axiosRequestMethods";
+import { axiosInstance } from '@/lib/axios'
 
 async function getAnnouncement() {
   try {
-    const res = await publicRequest.get("/api/announcment", { cache: "no-store" });
-    return res.data;
+    const res = await axiosInstance.get('/announcement', { cache: 'no-store' })
+    return res.data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 export default async function Announcement() {
-  const announcment = await getAnnouncement();
+  const announcement = await getAnnouncement()
   return (
     <>
-      {announcment && (
-        <div className="min-h-10 bg-teal-700 text-white font-Urbanist flex justify-center items-center relative overflow-hidden tracking-widest">
-          <marquee direction="left" scrollamount="15">
-            {announcment.title}
+      {announcement && (
+        <div className='min-h-10 bg-teal-700 text-white font-Urbanist flex justify-center items-center relative overflow-hidden tracking-widest'>
+          <marquee direction='left' scrollamount='15'>
+            {announcement.title}
           </marquee>
         </div>
       )}
     </>
-  );
+  )
 }

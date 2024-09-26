@@ -1,5 +1,5 @@
-import EmptyCart from "@/components/EmptyCart";
+import CartPage from '@/views/app/cartPage'
 
 export default function Cart() {
-  return <EmptyCart />;
+  return <CartPage />
 }
