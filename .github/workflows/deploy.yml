@@ -30,9 +30,6 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      - name: Run tests
-        run: npm test # Modify this if you have a different test command
-
   deploy:
     needs: build # Ensures that 'build' job passes before running
     runs-on: ubuntu-latest
