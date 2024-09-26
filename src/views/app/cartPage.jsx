@@ -58,7 +58,6 @@ const CartPage = () => {
     try {
       const res = await userRequest.put(`/cart/update-quantity/${productID}/${quantity}`)
       const productIndex = cartProductRes.products.findIndex(p => p.productID === productID)
-      console.log({ productIndex })
       const newProduct = (cartProductRes.products[productIndex].quantity = quantity)
       setCartProductRes(p => ({ ...p, newProduct }))
       dispatch(setError(res.data.message))
@@ -91,12 +90,10 @@ const CartPage = () => {
     }
 
     // if there is address then continue or set get address popup
-    console.log({ userAddress })
     if (!userAddress) {
       //if address is not stored in users local storage then get from db
       try {
         const { data } = await userRequest.get('/user/address')
-        console.log(data)
         if (!data.ok) {
           return setAddModalIsOpen(true)
         }

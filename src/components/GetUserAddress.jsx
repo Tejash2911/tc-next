@@ -30,7 +30,6 @@ export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
       try {
         const q = prevAdd ? 'update=true' : ''
         const { data } = await userRequest.post(`/user/address?${q}`, address)
-        console.log(data)
         if (data.ok) {
           dispatch(setReduxAddress(address))
           dispatch(setError('Address successfully updated'))
@@ -39,7 +38,6 @@ export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
         dispatch(setError(error?.response?.data?.message))
       }
       setModal(false)
-      console.log(address)
     }
   }
 
