@@ -27,9 +27,6 @@ jobs:
       - name: Build Next.js project
         run: npm run build
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-
   deploy:
     needs: build # Ensures that 'build' job passes before running
     runs-on: ubuntu-latest
