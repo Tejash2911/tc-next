@@ -10,22 +10,25 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import { logoutUser } from '@/redux/slices/userSlice'
-import { setProduct } from '@/redux/slices/cartSlice'
+import { getCartSize } from '@/redux/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { axiosInstance, userRequest } from '@/lib/axios'
+import { axiosInstance } from '@/lib/axios'
 
 export default function Navbar() {
   const router = useRouter()
   const dispatch = useAppDispatch()
 
-  const user = useAppSelector(state => state?.user?.currentUser)
-  const cartSize = useAppSelector(state => state?.cart?.quantity)
+  const { currentUser } = useAppSelector(({ user }) => user)
+  const { quantity } = useAppSelector(({ cart }) => cart)
 
   const [optionIsOpen, setOptionIsOpen] = useState(false)
   const [searchProducts, setSearchProducts] = useState([])
   const [isAuthenticated, setIsAuthenticated] = useState()
 
   const handle = {
+    getCartSize: () => {
+      dispatch(getCartSize())
+    },
     onSearch: async e => {
       if (!e.target.value) {
         return setSearchProducts([])
@@ -48,18 +51,9 @@ export default function Navbar() {
   }
 
   useEffect(() => {
-    if (!user) return
-    setIsAuthenticated(true)
-    const fetchCartSize = async () => {
-      try {
-        const { data } = await userRequest.get('/cart/size')
-        dispatch(setProduct(data.size))
-      } catch (error) {
-        console.error('Error fetching cart size:', error)
-      }
-    }
-    fetchCartSize()
-  }, [dispatch, user, isAuthenticated])
+    setIsAuthenticated(currentUser ? true : false)
+    handle.getCartSize()
+  }, [])
 
   return (
     <div className='shadow-md sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-md font-Urbanist'>
@@ -107,7 +101,7 @@ export default function Navbar() {
           ) : (
             <>
               <div className='flex flex-col cursor-pointer select-none' onClick={() => setOptionIsOpen(!optionIsOpen)}>
-                <span className='text-base font-normal'>hello, {user?.firstName} </span>
+                <span className='text-base font-normal'>hello, {currentUser?.firstName} </span>
                 <span className='font-bold relative flex items-center'>
                   Account{optionIsOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                 </span>
@@ -138,7 +132,7 @@ export default function Navbar() {
               <div className='ml-5 cursor-pointer relative'>
                 <ShoppingCartOutlinedIcon onClick={() => router.push('/cart')} />
                 <span className='absolute top-0 right-0 bg-black transform translate-x-1/2 -translate-y-1/2 text-white rounded-full w-5 h-5 grid place-content-center'>
-                  {cartSize ?? 0}
+                  {quantity ?? 0}
                 </span>
               </div>
             </>
