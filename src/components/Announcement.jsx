@@ -1,8 +1,8 @@
-import { axiosInstance } from '@/lib/axios'
+import announcementService from '@/service/announcement-service'
 
 async function getAnnouncement() {
   try {
-    const res = await axiosInstance.get('/announcement', { cache: 'no-store' })
+    const res = await announcementService.get()
     return res.data
   } catch (error) {
     console.log(error)
