@@ -1,16 +1,18 @@
-import announcementService from '@/service/announcement-service'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { getAnnouncement } from '@/redux/slices/announcementSlice'
+import { useEffect } from 'react'
 
-async function getAnnouncement() {
-  try {
-    const res = await announcementService.get()
-    return res.data
-  } catch (error) {
-    console.log(error)
+export default function Announcement() {
+  const dispatch = useAppDispatch()
+  const { announcement } = useAppSelector(({ announcement }) => announcement)
+  useEffect(() => {
+    handle.getData()
+  }, [])
+  const handle = {
+    getData: () => {
+      dispatch(getAnnouncement())
+    }
   }
-}
-
-export default async function Announcement() {
-  const announcement = await getAnnouncement()
   return (
     <>
       {announcement && (
