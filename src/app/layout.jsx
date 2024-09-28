@@ -1,10 +1,5 @@
+import LayoutWrapper from '@/@layouts/LayoutWrapper'
 import './globals.css'
-import Announcement from '@/components/Announcement'
-import BackToTopBTN from '@/components/BackToTopBTN'
-import Footer from '@/components/Footer'
-import Message from '@/components/Message'
-import Navbar from '@/components/Navbar'
-import NewsLetter from '@/components/NewsLetter'
 import StoreProvider from '@/redux/storeProvider'
 
 export const metadata = {
@@ -17,13 +12,7 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body>
         <StoreProvider>
-          <Announcement />
-          <Navbar />
-          {children}
-          <NewsLetter />
-          <Footer />
-          <BackToTopBTN />
-          <Message />
+          <LayoutWrapper>{children}</LayoutWrapper>
         </StoreProvider>
       </body>
     </html>
