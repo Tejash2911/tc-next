@@ -10,7 +10,17 @@ const getSearchProducts = payload => {
   })
 }
 
+const getById = id => {
+  return new Promise((resolve, reject) => {
+    axiosInstance
+      .get(`/product/info/${id}`)
+      .then(res => resolve(handleApiRes(res)))
+      .catch(err => reject(handleApiErr(err)))
+  })
+}
+
 const productService = {
+  getById,
   getSearchProducts
 }
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { createAppSlice } from '../createAppSlice'
-import productService from '@/service/productService'
+import productService from '@/service/product-service'
 
 export const getSearchProducts = createAsyncThunk('product/getSearchProducts', async (payload, { rejectWithValue }) => {
   try {
@@ -12,9 +12,20 @@ export const getSearchProducts = createAsyncThunk('product/getSearchProducts', a
   }
 })
 
+export const getProductById = createAsyncThunk('product/getProductById', async (id, { rejectWithValue }) => {
+  try {
+    const { data } = await productService.getById(id)
+
+    return data ?? {}
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
 const initialState = {
   loading: false,
-  searchProducts: []
+  searchProducts: [],
+  product: {}
 }
 
 const productSlice = createAppSlice({
@@ -26,9 +37,13 @@ const productSlice = createAppSlice({
     },
     resetState: () => {
       return { ...initialState }
+    },
+    resetProduct: state => {
+      state.product = {}
     }
   },
   extraReducers: builder => {
+    // get search products
     builder.addCase(getSearchProducts.pending, state => {
       state.loading = true
     })
@@ -40,13 +55,25 @@ const productSlice = createAppSlice({
       state.loading = false
       state.searchProducts = []
     })
+    // get product by id
+    builder.addCase(getProductById.pending, state => {
+      state.loading = true
+    })
+    builder.addCase(getProductById.fulfilled, (state, { payload }) => {
+      state.product = payload
+      state.loading = false
+    })
+    builder.addCase(getProductById.rejected, state => {
+      state.loading = false
+    })
   }
 })
 
-export const { setLoading, resetState } = productSlice.actions
+export const { setLoading, resetState, resetProduct } = productSlice.actions
 
 export const productActions = {
   setLoading,
-  resetState
+  resetState,
+  resetProduct
 }
 export default productSlice.reducer

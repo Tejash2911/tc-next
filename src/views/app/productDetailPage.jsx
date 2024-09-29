@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
@@ -12,18 +12,18 @@ import Review from '@/components/Review'
 import { addProduct } from '@/redux/slices/cartSlice'
 import { setAddress } from '@/redux/slices/userSlice'
 import GetUserAddress from '@/components/GetUserAddress'
-import { axiosInstance, userRequest } from '@/lib/axios'
+import { userRequest } from '@/lib/axios'
 import Loading from '@/components/loading'
+import { getProductById, productActions } from '@/redux/slices/productSlice'
 
 const WriteReviewNoSSR = dynamic(() => import('@/components/WriteReview'), { ssr: false })
 
 const ProductDetailPage = ({ id }) => {
-  const user = useAppSelector(state => state.user.currentUser)
-  const userAddress = useAppSelector(state => state.user.address)
   const dispatch = useAppDispatch()
+  const { currentUser, address } = useAppSelector(({ user }) => user)
+  const { product } = useAppSelector(({ product }) => product)
   const router = useRouter()
   const imgRef = useRef(null)
-  const [product, setProduct] = useState(null)
   const [productQuantity, setProductQuantity] = useState(1)
 
   //setting default size and color for product
@@ -36,25 +36,13 @@ const ProductDetailPage = ({ id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false)
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await axiosInstance.get(`/product/info/${id}`)
-
-        setProduct(res?.data)
-      } catch (error) {
-        if (error.response?.status === 404) {
-          dispatch(setError(error.response.data.message))
-        }
-      }
-    }
-
-    getData()
+    handle.getData()
 
     return () => {
-      setProduct({})
+      dispatch(productActions.resetProduct())
       setProductQuantity(1)
     }
-  }, [id, dispatch])
+  }, [id])
 
   const handleClick = type => {
     if (type === 'dec') setProductQuantity(prev => (productQuantity > 1 ? prev - 1 : prev))
@@ -62,7 +50,7 @@ const ProductDetailPage = ({ id }) => {
   }
 
   const handleSubClick = async () => {
-    if (!user) router.push('/login')
+    if (!currentUser) router.push('/login')
 
     try {
       const res = await userRequest.post(`/cart`, {
@@ -87,7 +75,7 @@ const ProductDetailPage = ({ id }) => {
     if (!user) router.push('/login')
 
     // if there is address then continue or set get address popup
-    if (!userAddress) {
+    if (!address) {
       //if address is not stored in users local storage then get from db
       try {
         const { data } = await userRequest.get('/user/address')
@@ -121,7 +109,7 @@ const ProductDetailPage = ({ id }) => {
         },
         type: 'product',
         userInfo: {
-          address: userAddress,
+          address: address,
           name: `${user.firstName} ${user.lastName}`,
           email: user.email,
           number: user.number
@@ -177,6 +165,12 @@ const ProductDetailPage = ({ id }) => {
   const handleImgMouseLeave = () => {
     // imgRef.current.style.transformOrigin = `center`;
     imgRef.current.style.transform = 'scale(1)'
+  }
+
+  const handle = {
+    getData: () => {
+      dispatch(getProductById(id))
+    }
   }
 
   if (!product) return <Loading />
