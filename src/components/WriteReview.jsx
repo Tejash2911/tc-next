@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Modal from './Modal'
 import { setError } from '@/redux/slices/errorSlice'
 import CustomRating from './CustomRating'
-import { userRequest } from '@/lib/axios'
+import { addReview } from '@/redux/slices/reviewSlice'
 
 export default function WriteReview({ product, isOpen, setModal }) {
   const user = useAppSelector(state => state.user.currentUser)
@@ -12,16 +12,27 @@ export default function WriteReview({ product, isOpen, setModal }) {
   const [review, setReview] = useState('')
   const [rating, setRating] = useState(0)
 
-  const handleSubmit = async () => {
-    try {
-      const { data } = await userRequest.post(`/review/${product._id}`, { rating, review })
+  const handle = {
+    onSubmit: () => {
+      const nPayload = {
+        id: product._id,
+        payload: {
+          rating,
+          review
+        }
+      }
 
-      dispatch(setError(data.message))
-      setModal(false)
-    } catch (error) {
-      dispatch(setError(error.response.data.message))
-      setRating(0)
-      setReview('')
+      dispatch(addReview(nPayload))
+        .unwrap()
+        .then(res => {
+          dispatch(setError(res.data.message))
+          setModal(false)
+          setRating(0)
+          setReview('')
+        })
+        .catch(error => {
+          dispatch(setError(error.data.message))
+        })
     }
   }
 
@@ -34,7 +45,7 @@ export default function WriteReview({ product, isOpen, setModal }) {
           <span className='text-xl'>{user?.firstName + ' ' + user?.lastName}</span>
         </div>
         <div className='flex flex-col items-center gap-6 max-h-72'>
-          <CustomRating />
+          <CustomRating setProductRating={setRating} />
           <textarea
             name='review'
             id='review'
@@ -54,7 +65,7 @@ export default function WriteReview({ product, isOpen, setModal }) {
           <button
             className='m-2 py-2 px-5 rounded-full border border-teal-600 bg-teal-600 font-semibold text-white disabled:bg-[#c0f3f3] disabled:border-[#c0f3f3] disabled:cursor-not-allowed disabled:text-black'
             disabled={!review && !rating ? true : false}
-            onClick={handleSubmit}
+            onClick={handle.onSubmit}
           >
             Submit
           </button>

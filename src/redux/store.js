@@ -4,13 +4,15 @@ import cartReducer from './slices/cartSlice'
 import errorReducer from './slices/errorSlice'
 import announcementReducer from './slices/announcementSlice'
 import productReducer from './slices/productSlice'
+import reviewReducer from './slices/reviewSlice'
 
 const rootReducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   error: errorReducer,
   announcement: announcementReducer,
-  product: productReducer
+  product: productReducer,
+  review: reviewReducer
 })
 
 export const makeStore = () => {

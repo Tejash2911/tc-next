@@ -1,35 +1,32 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import Rating from './Rating'
 import SingleReview from './SingleReview'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { setError } from '@/redux/slices/errorSlice'
-import { axiosInstance } from '@/lib/axios'
+import { getAllReviewByProductId } from '@/redux/slices/reviewSlice'
 
 export default function Review({ productID, productName, ratingCount, rating, setModal }) {
-  const user = useAppSelector(state => state.user.currentUser)
   const dispatch = useAppDispatch()
+  const { currentUser } = useAppSelector(({ user }) => user)
+  const { reviews } = useAppSelector(({ review }) => review)
+
   const router = useRouter()
-  const [reviews, setReviews] = useState()
 
   useEffect(() => {
-    if (!productID)
-      return (async () => {
-        try {
-          const { data } = await axiosInstance.get(`/review/${productID}`, { cache: 'no-store' })
-
-          setReviews(data)
-        } catch (error) {
-          console.log(error)
-          dispatch(setError(error.response.data.message))
-        }
-      })()
-  }, [productID, dispatch])
+    if (!productID) return
+    handle.getData()
+  }, [productID])
 
   const handleWriteReview = () => {
-    if (!user) router.push('/login')
+    if (!currentUser) router.push('/login')
     setModal(true)
+  }
+
+  const handle = {
+    getData: () => {
+      dispatch(getAllReviewByProductId(productID))
+    }
   }
 
   return (
@@ -52,9 +49,10 @@ export default function Review({ productID, productName, ratingCount, rating, se
       </div>
       <hr />
       <div className='flex flex-col gap-5 mt-2'>
-        {reviews?.map(r => {
-          return <SingleReview review={r} key={r._id}></SingleReview>
-        })}
+        {Array.isArray(reviews) &&
+          reviews.map(r => {
+            return <SingleReview review={r} key={r._id}></SingleReview>
+          })}
       </div>
     </div>
   )

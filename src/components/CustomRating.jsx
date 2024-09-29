@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Star, StarBorder } from '@mui/icons-material'
 
-export default function CustomRating() {
+export default function CustomRating({ setProductRating }) {
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(null)
 
@@ -17,7 +17,10 @@ export default function CustomRating() {
                 type='radio'
                 name='rating'
                 value={ratingValue}
-                onClick={() => setRating(ratingValue)}
+                onClick={() => {
+                  setRating(ratingValue)
+                  setProductRating(ratingValue)
+                }}
                 className='hidden'
               />
               <span onMouseEnter={() => setHover(ratingValue)} onMouseLeave={() => setHover(null)}>
