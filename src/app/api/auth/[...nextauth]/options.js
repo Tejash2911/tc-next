@@ -17,7 +17,7 @@ export const authOptions = {
         username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const user = users.find(u => u.email === credentials.username && u.password === credentials.password)
 
         if (user) {

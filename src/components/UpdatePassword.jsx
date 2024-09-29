@@ -28,6 +28,8 @@ export default function UpdatePassword({ isOpen, setModal }) {
         dispatch(setReduxAddress(formData))
         const { data } = await userRequest.put(`/users/${user._id}`, formData)
 
+        console.log(data)
+
         dispatch(setError('Password updated Successfully!!'))
       } catch (error) {
         dispatch(setError(error.response.data.error))
