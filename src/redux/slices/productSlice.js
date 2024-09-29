@@ -12,12 +12,14 @@ export const getSearchProducts = createAsyncThunk('product/getSearchProducts', a
   }
 })
 
+const initialState = {
+  loading: false,
+  searchProducts: []
+}
+
 const productSlice = createAppSlice({
   name: 'product',
-  initialState: {
-    loading: false,
-    searchProducts: []
-  },
+  initialState,
   reducers: {
     setLoading: (state, { payload }) => {
       state.loading = payload

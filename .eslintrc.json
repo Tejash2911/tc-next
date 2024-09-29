@@ -8,6 +8,7 @@
     "jsx-a11y/alt-text": "off",
     "react/display-name": "off",
     "react/no-children-prop": "off",
+    "no-unused-vars": "error",
     "@next/next/no-img-element": "off",
     "@next/next/no-page-custom-font": "off",
     "react-hooks/exhaustive-deps": "off",

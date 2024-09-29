@@ -12,12 +12,14 @@ export const getCartSize = createAsyncThunk('cart/getCartSize', async (_, { reje
   }
 })
 
+const initialState = {
+  loading: false,
+  quantity: 0
+}
+
 const cartSlice = createAppSlice({
   name: 'cart',
-  initialState: {
-    loading: false,
-    quantity: 0
-  },
+  initialState,
   reducers: {
     addProduct: state => {
       state.quantity += 1
