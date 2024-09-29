@@ -1,11 +1,11 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import GetUserAddress from '@/components/GetUserAddress'
 import UpdatePassword from '@/components/UpdatePassword'
 import { setError } from '@/redux/slices/errorSlice'
 import { setAddress, updateUser } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useEffect, useState } from 'react'
 import { userRequest } from '@/lib/axios'
 
 const navMap = {
@@ -30,9 +30,10 @@ const UserSettingPage = () => {
 
   useEffect(() => {
     if (!userAddress) {
-      ;(async () => {
+      (async () => {
         try {
           const { data } = await userRequest.get('/user/address')
+
           dispatch(setAddress(data.address))
         } catch (error) {
           dispatch(setError('Failed to fetch Address!!'))
@@ -44,12 +45,15 @@ const UserSettingPage = () => {
   const handle = {
     onChange: e => {
       const { name, value } = e.target
+
       setUserDataForm(prev => ({ ...prev, [name]: value }))
     },
     updateProfile: async e => {
       e.preventDefault()
+
       try {
         const { data } = await userRequest.put(`/user/${user?._id}`, userDataForm)
+
         dispatch(setError('Profile updated Successfully!!'))
         dispatch(updateUser(data))
       } catch (error) {

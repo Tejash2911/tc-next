@@ -5,6 +5,7 @@ import ReviewIcon from '@mui/icons-material/RateReview'
 
 export default function ProductItem(props) {
   const { img, title, _id, desc, price, ratingsAverage, ratingsQuantity } = props.data
+
   return (
     <Link href={`/product/${_id}`}>
       <div className='w-52 md:w-56 h-fit overflow-hidden transition-all duration-300 shadow-md bg-opacity-30 bg-gray-100 rounded-md p-1 hover:shadow-xl'>

@@ -10,11 +10,13 @@ const initialState = {
 
 if (typeof window !== 'undefined') {
   const storedUser = localStorage.getItem('user')
+
   initialState.currentUser = storedUser ? JSON.parse(storedUser) : null
 }
 
 if (typeof window !== 'undefined') {
   const storedUserAddress = localStorage.getItem('address')
+
   initialState.address = storedUserAddress ? JSON.parse(storedUserAddress) : null
 }
 

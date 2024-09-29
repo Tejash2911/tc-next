@@ -1,8 +1,8 @@
+import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Modal from './Modal'
 import { setAddress as setReduxAddress } from '@/redux/slices/userSlice'
 import { setError } from '@/redux/slices/errorSlice'
-import { useState } from 'react'
 import { userRequest } from '@/lib/axios'
 
 export default function UpdatePassword({ isOpen, setModal }) {
@@ -27,13 +27,16 @@ export default function UpdatePassword({ isOpen, setModal }) {
       try {
         dispatch(setReduxAddress(formData))
         const { data } = await userRequest.put(`/users/${user._id}`, formData)
+
         dispatch(setError('Password updated Successfully!!'))
       } catch (error) {
         dispatch(setError(error.response.data.error))
       }
+
       setModal(false)
     }
   }
+
   return (
     <Modal isOpen={isOpen}>
       <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 max-w-[600px] font-Urbanist'>

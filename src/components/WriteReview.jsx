@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Modal from './Modal'
-import Image from 'next/image'
 import { setError } from '@/redux/slices/errorSlice'
 import CustomRating from './CustomRating'
 import { userRequest } from '@/lib/axios'
@@ -15,6 +15,7 @@ export default function WriteReview({ product, isOpen, setModal }) {
   const handleSubmit = async () => {
     try {
       const { data } = await userRequest.post(`/review/${product._id}`, { rating, review })
+
       dispatch(setError(data.message))
       setModal(false)
     } catch (error) {

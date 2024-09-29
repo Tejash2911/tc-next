@@ -1,7 +1,7 @@
 import Image from 'next/image'
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
 import Rating from './Rating'
 import timeSince from '@/utils/timeSince'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
 import { useAppDispatch } from '@/redux/hooks'
 import { setError } from '@/redux/slices/errorSlice'
 import { userRequest } from '@/lib/axios'
@@ -12,6 +12,7 @@ export default function SingleReview({ review }) {
   const handleUpVote = async () => {
     try {
       const { data } = await userRequest.put(`/review/upvote/${review._id}`)
+
       dispatch(setError(data.message))
     } catch (error) {
       console.log(error)
@@ -22,6 +23,7 @@ export default function SingleReview({ review }) {
   const handleReport = async () => {
     try {
       const { data } = await userRequest.put(`/review/abuse/${review._id}`)
+
       dispatch(setError(data.message))
     } catch (error) {
       console.log(error)

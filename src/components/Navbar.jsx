@@ -12,7 +12,8 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import { logoutUser } from '@/redux/slices/userSlice'
 import { getCartSize } from '@/redux/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { axiosInstance } from '@/lib/axios'
+import { getSearchProducts } from '@/redux/slices/productSlice'
+import { useDebounce } from '@/hooks/use-debounce'
 
 export default function Navbar() {
   const router = useRouter()
@@ -20,28 +21,17 @@ export default function Navbar() {
 
   const { currentUser } = useAppSelector(({ user }) => user)
   const { quantity } = useAppSelector(({ cart }) => cart)
+  const { searchProducts } = useAppSelector(({ product }) => product)
 
   const [optionIsOpen, setOptionIsOpen] = useState(false)
-  const [searchProducts, setSearchProducts] = useState([])
-  const [isAuthenticated, setIsAuthenticated] = useState()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+
+  const debouncedSearchValue = useDebounce(searchValue, 500)
 
   const handle = {
-    getCartSize: () => {
-      dispatch(getCartSize())
-    },
-    onSearch: async e => {
-      if (!e.target.value) {
-        return setSearchProducts([])
-      }
-      try {
-        const { data } = await axiosInstance.get(`/product/search/${e.target.value}`)
-        setSearchProducts(data)
-      } catch (error) {
-        const errorMessage = error.response?.status === 404 ? 'No Products Found' : 'Unable To Find Products'
-        setSearchProducts([{ title: errorMessage }])
-      }
-    },
     onClick: id => {
+      setSearchValue('')
       router.push(`/product/${id}`)
     },
     onLogout: () => {
@@ -51,8 +41,15 @@ export default function Navbar() {
   }
 
   useEffect(() => {
+    if (debouncedSearchValue) {
+      dispatch(getSearchProducts(debouncedSearchValue))
+    }
+  }, [debouncedSearchValue])
+
+  useEffect(() => {
     setIsAuthenticated(currentUser ? true : false)
-    handle.getCartSize()
+    if (!currentUser) return
+    dispatch(getCartSize())
   }, [])
 
   return (
@@ -70,21 +67,23 @@ export default function Navbar() {
               name='search'
               className='w-full outline-none bg-transparent'
               placeholder='Search'
-              onChange={handle.onSearch}
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
             ></input>
             <SearchIcon className='text-gray-500 text-lg cursor-pointer' />
-            <ul className='absolute w-full top-10 bg-white rounded-b-[1vmax] backdrop:blur-lg shadow-md overflow-hidden'>
-              {searchProducts?.map(p => {
-                return (
-                  <li
-                    key={p._id}
-                    className='list-none text-left p-1 w-full cursor-pointer hover:bg-[#ededeb]'
-                    onClick={() => handle.onClick(p._id)}
-                  >
-                    {p.title}
-                  </li>
-                )
-              })}
+            <ul className='absolute w-full top-10 bg-white rounded-b-[12px] backdrop:blur-lg shadow-md overflow-hidden'>
+              {searchValue &&
+                searchProducts?.map(p => {
+                  return (
+                    <li
+                      key={p._id}
+                      className='list-none text-left p-1 w-full cursor-pointer hover:bg-[#ededeb]'
+                      onClick={() => handle.onClick(p._id)}
+                    >
+                      {p.title}
+                    </li>
+                  )
+                })}
             </ul>
           </div>
         </div>

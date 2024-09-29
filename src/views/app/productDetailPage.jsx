@@ -1,23 +1,23 @@
 'use client'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { useParams, useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
+import RemoveIcon from '@mui/icons-material/Remove'
+import AddIcon from '@mui/icons-material/Add'
 import { setError } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
-import { useEffect, useRef, useState } from 'react'
-import RemoveIcon from '@mui/icons-material/Remove'
-import AddIcon from '@mui/icons-material/Add'
 import Review from '@/components/Review'
-import { useParams, useRouter } from 'next/navigation'
 import { addProduct } from '@/redux/slices/cartSlice'
 import { setAddress } from '@/redux/slices/userSlice'
 import GetUserAddress from '@/components/GetUserAddress'
-import dynamic from 'next/dynamic'
 import { axiosInstance, userRequest } from '@/lib/axios'
+import Loading from '@/components/loading'
 
 const WriteReviewNoSSR = dynamic(() => import('@/components/WriteReview'), { ssr: false })
 
-const ProductDetailPage = () => {
-  const params = useParams()
+const ProductDetailPage = ({ id }) => {
   const user = useAppSelector(state => state.user.currentUser)
   const userAddress = useAppSelector(state => state.user.address)
   const dispatch = useAppDispatch()
@@ -38,7 +38,8 @@ const ProductDetailPage = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await axiosInstance.get(`/product/info/${params.id}`)
+        const res = await axiosInstance.get(`/product/info/${id}`)
+
         setProduct(res?.data)
       } catch (error) {
         if (error.response?.status === 404) {
@@ -46,13 +47,14 @@ const ProductDetailPage = () => {
         }
       }
     }
+
     getData()
 
     return () => {
       setProduct({})
       setProductQuantity(1)
     }
-  }, [params.id, dispatch])
+  }, [id, dispatch])
 
   const handleClick = type => {
     if (type === 'dec') setProductQuantity(prev => (productQuantity > 1 ? prev - 1 : prev))
@@ -61,6 +63,7 @@ const ProductDetailPage = () => {
 
   const handleSubClick = async () => {
     if (!user) router.push('/login')
+
     try {
       const res = await userRequest.post(`/cart`, {
         products: [
@@ -72,6 +75,7 @@ const ProductDetailPage = () => {
           }
         ]
       })
+
       !res.data.productExisted && dispatch(addProduct())
       dispatch(setError(res?.data?.message))
     } catch (error) {
@@ -87,9 +91,11 @@ const ProductDetailPage = () => {
       //if address is not stored in users local storage then get from db
       try {
         const { data } = await userRequest.get('/user/address')
+
         if (!data.ok) {
           return setAddModalIsOpen(true)
         }
+
         dispatch(setAddress(data.address)) //setting address wh to redux
       } catch (error) {
         return setAddModalIsOpen(true)
@@ -101,6 +107,7 @@ const ProductDetailPage = () => {
     }
 
     let Dborder, Dbkey
+
     try {
       const {
         data: { order }
@@ -120,11 +127,13 @@ const ProductDetailPage = () => {
           number: user.number
         }
       })
+
       Dborder = order
 
       const {
         data: { key }
       } = await userRequest.get('/buy/getkey')
+
       Dbkey = key
     } catch (error) {
       dispatch(setError(error?.response?.data?.message || 'error occurred while creating order'))
@@ -151,13 +160,16 @@ const ProductDetailPage = () => {
         color: '#40a0a0'
       }
     }
+
     const rzp1 = new window.Razorpay(options)
+
     rzp1.open()
   }
 
   const handleImgMouseEnter = e => {
     const x = e.clientX - e.target.offsetLeft
     const y = e.clientY - e.target.offsetTop
+
     imgRef.current.style.transformOrigin = `${x}px ${y}px`
     imgRef.current.style.transform = 'scale(2)'
   }
@@ -166,6 +178,8 @@ const ProductDetailPage = () => {
     // imgRef.current.style.transformOrigin = `center`;
     imgRef.current.style.transform = 'scale(1)'
   }
+
+  if (!product) return <Loading />
 
   return (
     <div className='container'>
@@ -192,11 +206,7 @@ const ProductDetailPage = () => {
             <h1 className='text-2xl font-light'>{product?.title}</h1>
             <h1 className='font-extralight'>Design No - {product?.productNo}</h1>
           </div>
-          <p className=''>
-            {!product?.desc
-              ? `Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora sint accusamus explicabo in natus dolor maiores voluptate labore adipisci!lorem20Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro dicta, commodi pariatur nisi fugiat hic quia voluptas! Quidem, earum voluptas.`
-              : product?.desc}
-          </p>
+          <p className=''>{product?.desc}</p>
           <p className='text-3xl'>₹{product?.price}</p>
           <span className={`text-2xl ${product?.quantity >= 1 ? 'text-green-600' : 'text-red-600'}`}>
             {product?.quantity >= 1 ? `Only ${product?.quantity} left in stock` : 'Currently unavailable'}

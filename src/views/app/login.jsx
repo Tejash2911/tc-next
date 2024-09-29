@@ -1,10 +1,10 @@
 'use client'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { setError } from '@/redux/slices/errorSlice'
 import { loginSuccess } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import { axiosInstance } from '@/lib/axios'
 
 const LoginV2 = () => {
@@ -20,8 +20,10 @@ const LoginV2 = () => {
 
   async function submit(e) {
     e.preventDefault()
+
     try {
       const res = await axiosInstance.post('/auth/login', { email, password })
+
       dispatch(loginSuccess(res.data))
     } catch (error) {
       dispatch(setError(error.response.data.message))

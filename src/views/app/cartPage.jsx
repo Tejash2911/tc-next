@@ -1,13 +1,13 @@
 'use client'
-import EmptyCart from '@/components/EmptyCart'
-import { setError } from '@/redux/slices/errorSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import ClearIcon from '@mui/icons-material/Clear'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
-import Image from 'next/image'
+import EmptyCart from '@/components/EmptyCart'
+import { setError } from '@/redux/slices/errorSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import GetUserAddress from '@/components/GetUserAddress'
 import { deleteProduct } from '@/redux/slices/cartSlice'
 import { setAddress } from '@/redux/slices/userSlice'
@@ -31,6 +31,7 @@ const CartPage = () => {
       if (user) {
         try {
           const res = await userRequest.get(`/cart/info/${user._id}`)
+
           setCartProductRes(res.data)
         } catch (error) {
           console.log('error', error)
@@ -40,25 +41,30 @@ const CartPage = () => {
         setCartProductRes(null)
       }
     }
+
     fetchCartData()
   }, [dispatch, user])
 
   //count cart total price
   const productQty = cartProductRes?.products?.map(p => p.quantity)
+
   useEffect(() => {
     const total = cartProductRes?.products.reduce((total, item) => {
       return total + item.price * item.quantity
     }, 0)
+
     setTotalCartPrice(total)
   }, [cartProductRes?.products, productQty])
 
   //handle dec inc in product Quantity
   const handleProductQuantityChange = async (productID, quantity) => {
     if (quantity === 0) return handleDeleteProduct(productID)
+
     try {
       const res = await userRequest.put(`/cart/update-quantity/${productID}/${quantity}`)
       const productIndex = cartProductRes.products.findIndex(p => p.productID === productID)
       const newProduct = (cartProductRes.products[productIndex].quantity = quantity)
+
       setCartProductRes(p => ({ ...p, newProduct }))
       dispatch(setError(res.data.message))
     } catch (error) {
@@ -73,9 +79,11 @@ const CartPage = () => {
       const filteredProducts = cartProductRes?.products?.filter(p => {
         return id !== p.productID
       })
+
       setCartProductRes(e => ({ ...e, products: filteredProducts }))
       dispatch(deleteProduct())
       const res = await userRequest.delete(`/cart/${id}`)
+
       dispatch(setError(res.data.message))
     } catch (error) {
       console.log('error', error)
@@ -94,9 +102,11 @@ const CartPage = () => {
       //if address is not stored in users local storage then get from db
       try {
         const { data } = await userRequest.get('/user/address')
+
         if (!data.ok) {
           return setAddModalIsOpen(true)
         }
+
         dispatch(setAddress(data.address)) //setting address wh to redux
       } catch (error) {
         return setAddModalIsOpen(true)
@@ -104,6 +114,7 @@ const CartPage = () => {
     }
 
     setIsCheckoutLoading(true)
+
     if (!window.Razorpay) {
       await addDynamicScript('https://checkout.razorpay.com/v1/checkout.js') //script is not loading at first time dk why so i added this XD
     }
@@ -123,6 +134,7 @@ const CartPage = () => {
     const {
       data: { key }
     } = await userRequest.get('/buy/getkey')
+
     setIsCheckoutLoading(false)
 
     if (!order || !key) {
@@ -151,7 +163,9 @@ const CartPage = () => {
         color: '#40a0a0'
       }
     }
+
     const rzp1 = new window.Razorpay(options)
+
     rzp1.open()
     setCartProductRes(null)
   }

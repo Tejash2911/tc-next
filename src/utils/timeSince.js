@@ -16,8 +16,10 @@ export default function timeSince(timestamp) {
 
   for (let i in intervals) {
     let interval = intervals[i]
+
     if (secondsPast >= interval) {
       let count = Math.floor(secondsPast / interval)
+
       return `${count} ${i}${count > 1 ? "'s" : ''} ${suffix}`
     }
   }

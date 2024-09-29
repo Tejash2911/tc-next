@@ -1,9 +1,9 @@
 'use client'
+import { useEffect, useState } from 'react'
 import ProductNotFound from '@/components/ProductNotFound'
 import SingleOrder from '@/components/SingleOrder'
 import { userRequest } from '@/lib/axios'
 import { useAppSelector } from '@/redux/hooks'
-import { useEffect, useState } from 'react'
 
 const OrdersPage = () => {
   const user = useAppSelector(state => state.user?.currentUser)
@@ -13,13 +13,16 @@ const OrdersPage = () => {
     const fetchOrders = async () => {
       try {
         const { data } = await userRequest.get(`/orders/find/${user._id}`)
+
         setOrders(data)
       } catch (error) {
         setOrders([])
       }
     }
+
     fetchOrders()
   }, [user])
+
   return (
     <div className={`w-full font-Urbanist py-5 ${orders.length !== 0 ? 'bg-[#e0dede]' : 'bg-white'}`}>
       <div className='container'>

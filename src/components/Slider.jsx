@@ -1,6 +1,6 @@
-import { hero } from '@/utils/dummyData'
 import Image from 'next/image'
 import Link from 'next/link'
+import { hero } from '@/utils/dummyData'
 
 export default function Slider() {
   const index = Math.floor(Math.random() * 8) + 1

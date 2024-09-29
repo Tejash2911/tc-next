@@ -1,18 +1,21 @@
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getAnnouncement } from '@/redux/slices/announcementSlice'
-import { useEffect } from 'react'
 
 export default function Announcement() {
   const dispatch = useAppDispatch()
   const { announcement } = useAppSelector(({ announcement }) => announcement)
+
   useEffect(() => {
     handle.getData()
   }, [])
+
   const handle = {
     getData: () => {
       dispatch(getAnnouncement())
     }
   }
+
   return (
     <>
       {announcement && (

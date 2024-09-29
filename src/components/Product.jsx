@@ -1,9 +1,9 @@
 'use client'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ProductNotFound from './ProductNotFound'
 import ProductItem from './ProductItem'
 import { useAppDispatch } from '@/redux/hooks'
-import { useEffect, useState } from 'react'
 import { setError } from '@/redux/slices/errorSlice'
 import { axiosInstance } from '@/lib/axios'
 
@@ -30,6 +30,7 @@ export default function Product(props) {
     //axios req used to cancel prev request
     const axiosCancelToken = axios.CancelToken.source()
     let url = `/product/all?page=${page}`
+
     if (cat) url += `&category=${cat}`
     if (color) url += `&color=${color}`
     if (size) url += `&size=${size}`
@@ -39,6 +40,7 @@ export default function Product(props) {
       try {
         const res = await axiosInstance.get(url, { cancelToken: axiosCancelToken.token })
         const filtersChanged = JSON.stringify(prevFilters) !== JSON.stringify({ sort, color, size }) //checking if a filtering is changed
+
         if (filtersChanged) {
           //if changed then set new product
           setProducts(res.data.data)
@@ -58,6 +60,7 @@ export default function Product(props) {
         dispatch(setError(error?.response?.data?.message))
       }
     }
+
     getProducts()
 
     return () => {

@@ -1,10 +1,10 @@
 'use client'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { setError } from '@/redux/slices/errorSlice'
 import { signUpSuccess, signUpFailed } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import { axiosInstance } from '@/lib/axios'
 
 const RegisterV2 = () => {
@@ -17,6 +17,7 @@ const RegisterV2 = () => {
     confirmPassword: '',
     userIP: ''
   }
+
   const [formValues, setFormValues] = useState(initialValue)
   const [formErrors, setFormErrors] = useState({})
   const [isSubmit, setIsSubmit] = useState(false)
@@ -30,6 +31,7 @@ const RegisterV2 = () => {
 
   const handleOnChange = e => {
     const { name, value } = e.target
+
     setFormValues({ ...formValues, [name]: value })
   }
 
@@ -37,9 +39,11 @@ const RegisterV2 = () => {
     e.preventDefault()
     setFormErrors(handleValidate(formValues))
     setIsSubmit(true)
+
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       try {
         const res = await axiosInstance.post('/auth/register', formValues)
+
         dispatch(signUpSuccess(res.data))
         router.push('/')
       } catch (error) {
@@ -51,14 +55,17 @@ const RegisterV2 = () => {
 
   const handleValidate = values => {
     const error = {}
+
     if (!values.firstName) error.firstName = 'firstName is requires'
     if (!values.lastName) error.lastName = 'lastName is requires'
     if (!values.number) error.number = 'number is requires'
     if (!values.email) error.email = 'email is requires'
     if (!values.password) error.password = 'password is requires'
     if (!values.confirmPassword) error.confirmPassword = 'confirm password is requires'
+
     return error
   }
+
   return (
     <div className='min-h-screen flex justify-center items-center bg-gradient-to-b from-gray-100 to-white bg-cover'>
       <div className='max-w-lg w-full p-8 bg-white rounded-lg shadow-md'>

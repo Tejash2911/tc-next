@@ -1,5 +1,5 @@
-import { createAppSlice } from '../createAppSlice'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createAppSlice } from '../createAppSlice'
 import announcementService from '@/service/announcement-service'
 
 export const getAnnouncement = createAsyncThunk('announcement/getAnnouncement', async (_, { rejectWithValue }) => {
@@ -12,12 +12,14 @@ export const getAnnouncement = createAsyncThunk('announcement/getAnnouncement', 
   }
 })
 
+const initialState = {
+  loading: false,
+  announcement: ''
+}
+
 const announcementSlice = createAppSlice({
   name: 'announcement',
-  initialState: {
-    loading: false,
-    announcement: ''
-  },
+  initialState,
   reducers: {
     setLoading: (state, { payload }) => {
       state.loading = payload

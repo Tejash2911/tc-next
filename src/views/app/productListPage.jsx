@@ -1,23 +1,28 @@
 'use client'
-import Product from '@/components/Product'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { useParams } from 'next/navigation'
+import Product from '@/components/Product'
 
 const ProductListPage = () => {
   const params = useParams()
   let { category } = params
+
   if (category === 'all') category = null
   //filters logic
   const [filter, setFilter] = useState({})
+
   const handleFilters = e => {
     const value = e.target.value
+
     setFilter({
       ...filter,
       [e.target.name]: value
     })
   }
+
   //Sorting
   const [sort, setSort] = useState('newest')
+
   return (
     <div className='container font-Urbanist'>
       <h1 className='m-5 font-semibold text-3xl'>{category || 'All Products'}</h1>

@@ -1,6 +1,6 @@
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import cartService from '@/service/cart-service'
 import { createAppSlice } from '../createAppSlice'
-import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getCartSize = createAsyncThunk('cart/getCartSize', async (_, { rejectWithValue }) => {
   try {

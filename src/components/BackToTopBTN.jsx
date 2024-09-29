@@ -21,6 +21,7 @@ export default function BackToTopBTN() {
       behavior: 'smooth'
     })
   }
+
   return (
     <div className={`fixed bottom-10 right-10 z-50 ${isShow && 'hidden'}`}>
       <div className='flex items-center justify-center bg-white border-2 border-black scale-150 cursor-pointer rounded-full transition-all ease-in-out hover:bg-black hover:text-white'>

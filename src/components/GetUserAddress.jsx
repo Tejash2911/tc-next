@@ -1,6 +1,6 @@
+import { useState } from 'react'
 import Modal from './Modal'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useState } from 'react'
 import { setError } from '@/redux/slices/errorSlice'
 import { setAddress as setReduxAddress } from '@/redux/slices/userSlice'
 import { countries } from '@/utils/dummyData'
@@ -27,9 +27,11 @@ export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
     },
     onSubmit: async e => {
       e.preventDefault()
+
       try {
         const q = prevAdd ? 'update=true' : ''
         const { data } = await userRequest.post(`/user/address?${q}`, address)
+
         if (data.ok) {
           dispatch(setReduxAddress(address))
           dispatch(setError('Address successfully updated'))
@@ -37,6 +39,7 @@ export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
       } catch (error) {
         dispatch(setError(error?.response?.data?.message))
       }
+
       setModal(false)
     }
   }

@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import Rating from './Rating'
 import SingleReview from './SingleReview'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useEffect, useState } from 'react'
 import { setError } from '@/redux/slices/errorSlice'
-import { useRouter } from 'next/navigation'
 import { axiosInstance } from '@/lib/axios'
 
 export default function Review({ productID, productName, ratingCount, rating, setModal }) {
@@ -14,16 +14,17 @@ export default function Review({ productID, productName, ratingCount, rating, se
   const [reviews, setReviews] = useState()
 
   useEffect(() => {
-    if (!productID) return
-    ;(async () => {
-      try {
-        const { data } = await axiosInstance.get(`/review/${productID}`, { cache: 'no-store' })
-        setReviews(data)
-      } catch (error) {
-        console.log(error)
-        dispatch(setError(error.response.data.message))
-      }
-    })()
+    if (!productID)
+      return (async () => {
+        try {
+          const { data } = await axiosInstance.get(`/review/${productID}`, { cache: 'no-store' })
+
+          setReviews(data)
+        } catch (error) {
+          console.log(error)
+          dispatch(setError(error.response.data.message))
+        }
+      })()
   }, [productID, dispatch])
 
   const handleWriteReview = () => {

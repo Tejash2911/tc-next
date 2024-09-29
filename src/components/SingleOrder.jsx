@@ -1,5 +1,5 @@
-import Image from 'next/image'
 import React from 'react'
+import Image from 'next/image'
 
 const statusColors = {
   pending: { background: 'bg-[#FDF6B2]', color: 'text-[#C6783B]' },
@@ -9,6 +9,7 @@ const statusColors = {
 
 export default function SingleOrder({ order }) {
   const { background, color } = statusColors[order.orderStatus] || {}
+
   return (
     <div className='bg-white w-full p-5 pt-2 shadow-md rounded-lg'>
       <div className='flex items-center justify-between my-2 flex-wrap'>
