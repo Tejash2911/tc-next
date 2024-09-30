@@ -48,6 +48,7 @@
     "Tejash",
     "reduxjs",
     "tailwindcss",
-    "scrollamount"
+    "scrollamount",
+    "stylelint"
   ]
 }
