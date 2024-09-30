@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react'
 import GetUserAddress from '@/components/GetUserAddress'
 import UpdatePassword from '@/components/UpdatePassword'
 import { setError } from '@/redux/slices/errorSlice'
-import { setAddress, updateUser } from '@/redux/slices/userSlice'
+import { getUserAddress, updateUser } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { userRequest } from '@/lib/axios'
 
 const navMap = {
   1: 'Account Details',
@@ -15,32 +14,21 @@ const navMap = {
 
 const UserSettingPage = () => {
   const dispatch = useAppDispatch()
-  const userAddress = useAppSelector(state => state.user.address)
-  const user = useAppSelector(state => state.user.currentUser)
+  const { currentUser, address, loading } = useAppSelector(({ user }) => user)
   const [isActivated, setIsActivated] = useState(1)
   const [isAddressOpen, setAddressOpen] = useState(false)
   const [isEditPassOpen, setIsEditPassOpen] = useState(false)
 
   const [userDataForm, setUserDataForm] = useState({
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
-    email: user?.email || '',
-    number: user?.number || ''
+    firstName: currentUser?.firstName || '',
+    lastName: currentUser?.lastName || '',
+    email: currentUser?.email || '',
+    number: currentUser?.number || ''
   })
 
   useEffect(() => {
-    if (!userAddress) {
-      (async () => {
-        try {
-          const { data } = await userRequest.get('/user/address')
-
-          dispatch(setAddress(data.address))
-        } catch (error) {
-          dispatch(setError('Failed to fetch Address!!'))
-        }
-      })()
-    }
-  }, [dispatch, userAddress])
+    dispatch(getUserAddress())
+  }, [address])
 
   const handle = {
     onChange: e => {
@@ -51,15 +39,12 @@ const UserSettingPage = () => {
     updateProfile: async e => {
       e.preventDefault()
 
-      try {
-        const { data } = await userRequest.put(`/user/${user?._id}`, userDataForm)
-
-        dispatch(setError('Profile updated Successfully!!'))
-        dispatch(updateUser(data))
-      } catch (error) {
-        console.error(error)
-        dispatch(setError('Failed to update Profile!!'))
-      }
+      dispatch(updateUser({ id: currentUser._id, payload: userDataForm }))
+        .unwrap()
+        .then()
+        .catch(error => {
+          dispatch(setError(error.data.message))
+        })
     }
   }
 
@@ -127,22 +112,25 @@ const UserSettingPage = () => {
                   </div>
                   <button
                     type='submit'
-                    className='bg-black text-white text-sm py-2 px-5 border-none rounded-md hover:bg-[#777]'
+                    className='bg-black text-white text-sm py-2 px-5 border-none rounded-md hover:bg-[#777] disabled:bg-gray-500'
+                    disabled={loading}
                   >
-                    Save Changes
+                    {loading ? 'Saving...' : 'Save Changes'}
                   </button>
                 </form>
               )}
               {isActivated === 2 && (
                 <div className='flex justify-between'>
-                  <div>
-                    <p>Default Delivery Address</p>
-                    <p>{`${user?.firstName} ${user?.lastName}`}</p>
-                    <p>{`${userAddress?.street}, ${userAddress?.city}, ${userAddress?.state}, ${userAddress?.country}`}</p>
-                    <p>{`${userAddress?.city}, ${userAddress?.zip}`}</p>
-                  </div>
+                  {address && (
+                    <div>
+                      <p>Default Delivery Address</p>
+                      <p>{`${currentUser?.firstName} ${currentUser?.lastName}`}</p>
+                      <p>{`${address?.street}, ${address?.city}, ${address?.state}, ${address?.country}`}</p>
+                      <p>{`${address?.city}, ${address?.zip}`}</p>
+                    </div>
+                  )}
                   <p className='underline cursor-pointer' onClick={() => setAddressOpen(true)}>
-                    Edit
+                    {address ? 'Edit' : 'Add'}
                   </p>
                 </div>
               )}
@@ -150,7 +138,7 @@ const UserSettingPage = () => {
           </div>
         </div>
       </div>
-      <GetUserAddress isOpen={isAddressOpen} setModal={setAddressOpen} prevAdd={userAddress} />
+      <GetUserAddress isOpen={isAddressOpen} setModal={setAddressOpen} prevAdd={address} />
       <UpdatePassword isOpen={isEditPassOpen} setModal={setIsEditPassOpen} />
     </div>
   )

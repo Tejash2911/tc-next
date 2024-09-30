@@ -29,6 +29,12 @@ const cartSlice = createAppSlice({
     },
     setProduct: (state, action) => {
       state.quantity = action.payload
+    },
+    setLoading: (state, { payload }) => {
+      state.loading = payload
+    },
+    resetState: () => {
+      return { ...initialState }
     }
   },
   extraReducers: builder => {
@@ -45,5 +51,12 @@ const cartSlice = createAppSlice({
   }
 })
 
-export const { addProduct, deleteProduct, setProduct } = cartSlice.actions
+export const { addProduct, deleteProduct, setProduct, setLoading, resetState } = cartSlice.actions
+export const cartActions = {
+  addProduct,
+  deleteProduct,
+  setProduct,
+  setLoading,
+  resetState
+}
 export default cartSlice.reducer

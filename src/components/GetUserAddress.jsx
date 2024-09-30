@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Modal from './Modal'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setError } from '@/redux/slices/errorSlice'
-import { setAddress as setReduxAddress } from '@/redux/slices/userSlice'
 import { countries } from '@/utils/dummyData'
 import { userRequest } from '@/lib/axios'
 
@@ -32,10 +31,7 @@ export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
         const q = prevAdd ? 'update=true' : ''
         const { data } = await userRequest.post(`/user/address?${q}`, address)
 
-        if (data.ok) {
-          dispatch(setReduxAddress(address))
-          dispatch(setError('Address successfully updated'))
-        }
+        console.log(data)
       } catch (error) {
         dispatch(setError(error?.response?.data?.message))
       }

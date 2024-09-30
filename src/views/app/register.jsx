@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { setError } from '@/redux/slices/errorSlice'
-import { signUpSuccess, signUpFailed } from '@/redux/slices/userSlice'
+import { register } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { axiosInstance } from '@/lib/axios'
 
 const RegisterV2 = () => {
   const initialValue = {
@@ -20,8 +19,7 @@ const RegisterV2 = () => {
 
   const [formValues, setFormValues] = useState(initialValue)
   const [formErrors, setFormErrors] = useState({})
-  const [isSubmit, setIsSubmit] = useState(false)
-  const { currentUser, isFetching, error } = useAppSelector(state => state.user)
+  const { currentUser, loading } = useAppSelector(({ user }) => user)
   const dispatch = useAppDispatch()
   const router = useRouter()
 
@@ -29,55 +27,49 @@ const RegisterV2 = () => {
     if (currentUser) router.push('/')
   }, [currentUser, router])
 
-  const handleOnChange = e => {
-    const { name, value } = e.target
+  const handle = {
+    onSubmit: async e => {
+      e.preventDefault()
+      setFormErrors(handle.handleValidate(formValues))
 
-    setFormValues({ ...formValues, [name]: value })
-  }
-
-  const handleSubmit = async e => {
-    e.preventDefault()
-    setFormErrors(handleValidate(formValues))
-    setIsSubmit(true)
-
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      try {
-        const res = await axiosInstance.post('/auth/register', formValues)
-
-        dispatch(signUpSuccess(res.data))
-        router.push('/')
-      } catch (error) {
-        dispatch(signUpFailed(error.response.data.message))
-        dispatch(setError(error.response.data.message))
+      if (Object.keys(formErrors).length === 0) {
+        dispatch(register(formValues))
+          .unwrap()
+          .then()
+          .catch(error => dispatch(setError(error.data.message)))
       }
+    },
+    handleOnChange: e => {
+      const { name, value } = e.target
+
+      setFormValues({ ...formValues, [name]: value })
+    },
+    handleValidate: values => {
+      const error = {}
+
+      if (!values.firstName) error.firstName = 'firstName is requires'
+      if (!values.lastName) error.lastName = 'lastName is requires'
+      if (!values.number) error.number = 'number is requires'
+      if (!values.email) error.email = 'email is requires'
+      if (!values.password) error.password = 'password is requires'
+      if (!values.confirmPassword) error.confirmPassword = 'confirm password is requires'
+
+      return error
     }
-  }
-
-  const handleValidate = values => {
-    const error = {}
-
-    if (!values.firstName) error.firstName = 'firstName is requires'
-    if (!values.lastName) error.lastName = 'lastName is requires'
-    if (!values.number) error.number = 'number is requires'
-    if (!values.email) error.email = 'email is requires'
-    if (!values.password) error.password = 'password is requires'
-    if (!values.confirmPassword) error.confirmPassword = 'confirm password is requires'
-
-    return error
   }
 
   return (
     <div className='min-h-screen flex justify-center items-center bg-gradient-to-b from-gray-100 to-white bg-cover'>
       <div className='max-w-lg w-full p-8 bg-white rounded-lg shadow-md'>
         <h1 className='text-2xl font-semibold text-gray-800 mb-6'>Sign Up</h1>
-        <form className='space-y-4' onSubmit={handleSubmit} autoComplete='on'>
+        <form className='space-y-4' onSubmit={handle.onSubmit} autoComplete='on'>
           <div>
             <input
               type='text'
               name='firstName'
               placeholder='first name'
               className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handleOnChange}
+              onChange={handle.handleOnChange}
             />
             <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.firstName}</span>
           </div>
@@ -87,7 +79,7 @@ const RegisterV2 = () => {
               name='lastName'
               placeholder='last name'
               className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handleOnChange}
+              onChange={handle.handleOnChange}
             />
             <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.lastName}</span>
           </div>
@@ -97,7 +89,7 @@ const RegisterV2 = () => {
               name='number'
               placeholder='phone number'
               className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handleOnChange}
+              onChange={handle.handleOnChange}
             />
             <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.number}</span>
           </div>
@@ -107,7 +99,7 @@ const RegisterV2 = () => {
               name='email'
               placeholder='email'
               className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handleOnChange}
+              onChange={handle.handleOnChange}
             />
             <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.email}</span>
           </div>
@@ -117,7 +109,7 @@ const RegisterV2 = () => {
               name='password'
               placeholder='password'
               className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handleOnChange}
+              onChange={handle.handleOnChange}
             />
             <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.password}</span>
           </div>
@@ -127,15 +119,15 @@ const RegisterV2 = () => {
               name='confirmPassword'
               placeholder='confirm password'
               className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handleOnChange}
+              onChange={handle.handleOnChange}
             />
             <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.confirmPassword}</span>
           </div>
           <button
-            className='bg-black text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline'
-            disabled={isFetching}
+            className='bg-black text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500'
+            disabled={loading}
           >
-            {isFetching ? 'signing up...' : 'Sign Up'}
+            {loading ? 'signing up...' : 'Sign Up'}
           </button>
           <div className='text-sm font-medium text-primary-600 hover:underline'>
             <Link href='/login' className='text-gray-500 hover:underline'>
@@ -143,7 +135,6 @@ const RegisterV2 = () => {
             </Link>
           </div>
         </form>
-        {error && <span className='w-100 text-sm text-red-600 mb-[1px]'>{error.error}</span>}
       </div>
     </div>
   )
