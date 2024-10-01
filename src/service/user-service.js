@@ -30,20 +30,10 @@ const update = ORpayload => {
   })
 }
 
-const getUserAddress = () => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .get('/user/address')
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
-}
-
 const userService = {
   login,
   register,
-  update,
-  getUserAddress
+  update
 }
 
 export default userService

@@ -32,16 +32,6 @@ export const updateUser = createAsyncThunk('user/updateUser', async (payload, { 
   }
 })
 
-export const getUserAddress = createAsyncThunk('user/getUserAddress', async (_, { rejectWithValue }) => {
-  try {
-    const { data } = await userService.getUserAddress()
-
-    return data
-  } catch (error) {
-    return rejectWithValue(error)
-  }
-})
-
 const initialState = {
   currentUser: null,
   address: null,
@@ -54,12 +44,6 @@ if (typeof window !== 'undefined') {
   initialState.currentUser = storedUser ? JSON.parse(storedUser) : null
 }
 
-if (typeof window !== 'undefined') {
-  const storedUserAddress = localStorage.getItem('address')
-
-  initialState.address = storedUserAddress ? JSON.parse(storedUserAddress) : null
-}
-
 const userSlice = createAppSlice({
   name: 'user',
   initialState,
@@ -68,10 +52,6 @@ const userSlice = createAppSlice({
       state.currentUser = null
       localStorage.removeItem('user')
       state.address = null
-    },
-    setAddress: (state, action) => {
-      state.address = action.payload
-      localStorage.setItem('address', JSON.stringify(action.payload))
     },
     setLoading: (state, { payload }) => {
       state.loading = payload
@@ -115,24 +95,12 @@ const userSlice = createAppSlice({
     builder.addCase(updateUser.rejected, state => {
       state.loading = false
     })
-    // get user address
-    builder.addCase(getUserAddress.pending, state => {
-      state.loading = true
-    })
-    builder.addCase(getUserAddress.fulfilled, (state, { payload }) => {
-      state.loading = false
-      state.address = payload.data.address
-    })
-    builder.addCase(getUserAddress.rejected, state => {
-      state.loading = false
-    })
   }
 })
 
-export const { logoutUser, setAddress, setLoading, resetState } = userSlice.actions
+export const { logoutUser, setLoading, resetState } = userSlice.actions
 export const userActions = {
   logoutUser,
-  setAddress,
   setLoading,
   resetState
 }
