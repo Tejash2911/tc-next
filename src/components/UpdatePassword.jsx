@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Modal from './Modal'
-import { setAddress as setReduxAddress } from '@/redux/slices/userSlice'
 import { setError } from '@/redux/slices/errorSlice'
 import { userRequest } from '@/lib/axios'
 
 export default function UpdatePassword({ isOpen, setModal }) {
-  const user = useAppSelector(state => state.user.currentUser)
   const dispatch = useAppDispatch()
+  const { currentUser } = useAppSelector(({ user }) => user)
 
   const [formData, setFormData] = useState({
     currentPass: '',
@@ -25,8 +24,7 @@ export default function UpdatePassword({ isOpen, setModal }) {
         return dispatch(setError("Password and Confirm Password Does'nt matched!!"))
 
       try {
-        dispatch(setReduxAddress(formData))
-        const { data } = await userRequest.put(`/users/${user._id}`, formData)
+        const { data } = await userRequest.put(`/users/${currentUser._id}`, formData)
 
         console.log(data)
 

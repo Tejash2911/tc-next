@@ -7,7 +7,7 @@ import CustomRating from './CustomRating'
 import { addReview } from '@/redux/slices/reviewSlice'
 
 export default function WriteReview({ product, isOpen, setModal }) {
-  const user = useAppSelector(state => state.user.currentUser)
+  const { currentUser } = useAppSelector(({ user }) => user)
   const dispatch = useAppDispatch()
   const [review, setReview] = useState('')
   const [rating, setRating] = useState(0)
@@ -42,7 +42,7 @@ export default function WriteReview({ product, isOpen, setModal }) {
         <h1>{product?.title}</h1>
         <div className='flex justify-start items-center gap-2 w-full'>
           <Image src='/user.png' alt='user-image' width={50} height={50} />
-          <span className='text-xl'>{user?.firstName + ' ' + user?.lastName}</span>
+          <span className='text-xl'>{currentUser?.firstName + ' ' + currentUser?.lastName}</span>
         </div>
         <div className='flex flex-col items-center gap-6 max-h-72'>
           <CustomRating setProductRating={setRating} />

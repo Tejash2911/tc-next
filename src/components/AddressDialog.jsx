@@ -5,20 +5,18 @@ import { setError } from '@/redux/slices/errorSlice'
 import { countries } from '@/utils/dummyData'
 import { userRequest } from '@/lib/axios'
 
-export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
-  const user = useAppSelector(state => state.user.currentUser)
+export default function AddressDialog({ isOpen, setModal }) {
+  const { currentUser } = useAppSelector(({ user }) => user)
   const dispatch = useAppDispatch()
 
-  const [address, setAddress] = useState(
-    prevAdd || {
-      street: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
-      mobile: user?.number || ''
-    }
-  )
+  const [address, setAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
+    mobile: currentUser?.number || ''
+  })
 
   const handle = {
     onChange: e => {
@@ -28,8 +26,7 @@ export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
       e.preventDefault()
 
       try {
-        const q = prevAdd ? 'update=true' : ''
-        const { data } = await userRequest.post(`/user/address?${q}`, address)
+        const { data } = await userRequest.post(`/address?${q}`, address)
 
         console.log(data)
       } catch (error) {
@@ -132,7 +129,7 @@ export default function GetUserAddress({ isOpen, setModal, prevAdd }) {
         />
         <div className='flex gap-3'>
           <button type='submit' className='bg-black text-white py-2 px-5 border-none rounded-md hover:bg-[#777]'>
-            {prevAdd ? 'Update' : 'Submit'}
+            Submit
           </button>
           <button
             type='reset'

@@ -5,9 +5,11 @@ import errorReducer from './slices/errorSlice'
 import announcementReducer from './slices/announcementSlice'
 import productReducer from './slices/productSlice'
 import reviewReducer from './slices/reviewSlice'
+import addressReducer from './slices/addressSlice'
 
 const rootReducer = combineReducers({
   user: userReducer,
+  address: addressReducer,
   cart: cartReducer,
   error: errorReducer,
   announcement: announcementReducer,

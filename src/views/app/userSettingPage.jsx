@@ -1,11 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import GetUserAddress from '@/components/GetUserAddress'
+import { useRouter } from 'next/navigation'
 import UpdatePassword from '@/components/UpdatePassword'
 import { setError } from '@/redux/slices/errorSlice'
-import { getUserAddress, updateUser } from '@/redux/slices/userSlice'
+import { updateUser } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
+import AddressDialog from '@/components/AddressDialog'
 
 const navMap = {
   1: 'Account Details',
@@ -14,7 +16,9 @@ const navMap = {
 
 const UserSettingPage = () => {
   const dispatch = useAppDispatch()
-  const { currentUser, address, loading } = useAppSelector(({ user }) => user)
+  const router = useRouter()
+  const { currentUser, loading } = useAppSelector(({ user }) => user)
+  const { address } = useAppSelector(({ address }) => address)
   const [isActivated, setIsActivated] = useState(1)
   const [isAddressOpen, setAddressOpen] = useState(false)
   const [isEditPassOpen, setIsEditPassOpen] = useState(false)
@@ -27,8 +31,16 @@ const UserSettingPage = () => {
   })
 
   useEffect(() => {
-    dispatch(getUserAddress())
-  }, [address])
+    if (!currentUser) {
+      router.push('/login')
+    } else {
+      dispatch(getUserAddress())
+    }
+
+    return () => {
+      dispatch(addressActions.resetState())
+    }
+  }, [currentUser])
 
   const handle = {
     onChange: e => {
@@ -138,7 +150,7 @@ const UserSettingPage = () => {
           </div>
         </div>
       </div>
-      <GetUserAddress isOpen={isAddressOpen} setModal={setAddressOpen} prevAdd={address} />
+      <AddressDialog isOpen={isAddressOpen} setModal={setAddressOpen} />
       <UpdatePassword isOpen={isEditPassOpen} setModal={setIsEditPassOpen} />
     </div>
   )

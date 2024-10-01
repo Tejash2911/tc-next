@@ -10,11 +10,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import Review from '@/components/Review'
 import { addProduct } from '@/redux/slices/cartSlice'
-import { setAddress } from '@/redux/slices/userSlice'
-import GetUserAddress from '@/components/GetUserAddress'
 import { userRequest } from '@/lib/axios'
 import Loading from '@/components/loading'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
+import AddressDialog from '@/components/AddressDialog'
 
 const WriteReviewNoSSR = dynamic(() => import('@/components/WriteReview'), { ssr: false })
 
@@ -78,13 +77,11 @@ const ProductDetailPage = ({ id }) => {
     if (!address) {
       //if address is not stored in users local storage then get from db
       try {
-        const { data } = await userRequest.get('/user/address')
+        const { data } = await userRequest.get('/address')
 
         if (!data.ok) {
           return setAddModalIsOpen(true)
         }
-
-        dispatch(setAddress(data.address)) //setting address wh to redux
       } catch (error) {
         return setAddModalIsOpen(true)
       }
@@ -270,7 +267,7 @@ const ProductDetailPage = ({ id }) => {
         setModal={setModalIsOpen}
       />
       <WriteReviewNoSSR product={product} setModal={setModalIsOpen} isOpen={modalIsOpen} />
-      <GetUserAddress setModal={setAddModalIsOpen} isOpen={addModalIsOpen} prevAdd={''} />
+      <AddressDialog setModal={setAddModalIsOpen} isOpen={addModalIsOpen} />
     </div>
   )
 }

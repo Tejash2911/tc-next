@@ -8,17 +8,16 @@ import AddIcon from '@mui/icons-material/Add'
 import EmptyCart from '@/components/EmptyCart'
 import { setError } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import GetUserAddress from '@/components/GetUserAddress'
 import { deleteProduct } from '@/redux/slices/cartSlice'
-import { setAddress } from '@/redux/slices/userSlice'
 import addDynamicScript from '@/utils/addDynamicScript'
 import { userRequest } from '@/lib/axios'
+import AddressDialog from '@/components/AddressDialog'
 
 const CartPage = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const user = useAppSelector(state => state?.user?.currentUser)
-  const userAddress = useAppSelector(state => state?.user?.address)
+  const { address } = useAppSelector(({ address }) => address)
 
   const [cartProductRes, setCartProductRes] = useState()
   const [totalCartPrice, setTotalCartPrice] = useState(0)
@@ -98,19 +97,10 @@ const CartPage = () => {
     }
 
     // if there is address then continue or set get address popup
-    if (!userAddress) {
-      //if address is not stored in users local storage then get from db
-      try {
-        const { data } = await userRequest.get('/user/address')
+    if (!address) {
+      setAddModalIsOpen(true)
 
-        if (!data.ok) {
-          return setAddModalIsOpen(true)
-        }
-
-        dispatch(setAddress(data.address)) //setting address wh to redux
-      } catch (error) {
-        return setAddModalIsOpen(true)
-      }
+      return
     }
 
     setIsCheckoutLoading(true)
@@ -125,7 +115,7 @@ const CartPage = () => {
       user: user._id,
       type: 'cart',
       userInfo: {
-        address: userAddress,
+        address: address,
         name: `${user.firstName} ${user.lastName}`,
         email: user.email
       }
@@ -276,7 +266,7 @@ const CartPage = () => {
         ) : (
           <EmptyCart />
         )}
-        <GetUserAddress setModal={setAddModalIsOpen} open={addModalIsOpen} />
+        <AddressDialog setModal={setAddModalIsOpen} open={addModalIsOpen} />
       </div>
     </div>
   )
