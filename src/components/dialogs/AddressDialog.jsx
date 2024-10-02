@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import Modal from './Modal'
+import Modal from '../Modal'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setError } from '@/redux/slices/errorSlice'
 import { countries } from '@/utils/dummyData'
 import { userRequest } from '@/lib/axios'
 
-export default function AddressDialog({ isOpen, setModal }) {
+export default function AddressDialog({ open, setOpen }) {
   const { currentUser } = useAppSelector(({ user }) => user)
   const dispatch = useAppDispatch()
 
@@ -34,11 +34,14 @@ export default function AddressDialog({ isOpen, setModal }) {
       }
 
       setModal(false)
+    },
+    handleClose: () => {
+      setOpen(false)
     }
   }
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal open={open}>
       <form onSubmit={handle.onSubmit} className='font-Urbanist flex flex-col gap-2'>
         <label htmlFor='street' className='text-xl font-semibold block'>
           Street
@@ -133,7 +136,7 @@ export default function AddressDialog({ isOpen, setModal }) {
           </button>
           <button
             type='reset'
-            onClick={() => setModal(false)}
+            onClick={handle.handleClose}
             className='bg-black text-white py-2 px-5 border-none rounded-md hover:bg-[#777]'
           >
             Cancel

@@ -11,25 +11,27 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { deleteProduct } from '@/redux/slices/cartSlice'
 import addDynamicScript from '@/utils/addDynamicScript'
 import { userRequest } from '@/lib/axios'
-import AddressDialog from '@/components/AddressDialog'
+import AddressDialog from '@/components/dialogs/AddressDialog'
+import useModal from '@/hooks/use-modal'
 
 const CartPage = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const user = useAppSelector(state => state?.user?.currentUser)
+  const { currentUser } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
 
   const [cartProductRes, setCartProductRes] = useState()
   const [totalCartPrice, setTotalCartPrice] = useState(0)
-  const [addModalIsOpen, setAddModalIsOpen] = useState(false)
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false)
+
+  const addressDialog = useModal()
 
   //get User Cart
   useEffect(() => {
     const fetchCartData = async () => {
-      if (user) {
+      if (currentUser) {
         try {
-          const res = await userRequest.get(`/cart/info/${user._id}`)
+          const res = await userRequest.get(`/cart/info/${currentUser._id}`)
 
           setCartProductRes(res.data)
         } catch (error) {
@@ -42,7 +44,7 @@ const CartPage = () => {
     }
 
     fetchCartData()
-  }, [dispatch, user])
+  }, [currentUser])
 
   //count cart total price
   const productQty = cartProductRes?.products?.map(p => p.quantity)
@@ -92,13 +94,13 @@ const CartPage = () => {
 
   //handle checkout
   const handleCheckout = async () => {
-    if (!user) {
+    if (!currentUser) {
       return router.push('/login')
     }
 
     // if there is address then continue or set get address popup
     if (!address) {
-      setAddModalIsOpen(true)
+      addressDialog.onOpen({})
 
       return
     }
@@ -112,12 +114,12 @@ const CartPage = () => {
     const {
       data: { order }
     } = await userRequest.post('/buy/checkout', {
-      user: user._id,
+      user: currentUser._id,
       type: 'cart',
       userInfo: {
         address: address,
-        name: `${user.firstName} ${user.lastName}`,
-        email: user.email
+        name: `${currentUser.firstName} ${currentUser.lastName}`,
+        email: currentUser.email
       }
     })
 
@@ -135,16 +137,16 @@ const CartPage = () => {
       key: key, //reciving key from backend for security purpose
       amount: order.ammount,
       currency: 'INR',
-      name: `${user.firstName} ${user.lastName}'s Cart`,
-      description: `${user.firstName} ${user.lastName}'s Cart includes total ${cartProductRes?.products?.length}`,
+      name: `${currentUser.firstName} ${currentUser.lastName}'s Cart`,
+      description: `${currentUser.firstName} ${currentUser.lastName}'s Cart includes total ${cartProductRes?.products?.length}`,
       image:
         'https://toppng.com/uploads/preview/astronaut-art-png-jpg-royalty-free-stock-astronauta-dibujo-11562856188offwkk8qo8.png',
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       callback_url: 'http://localhost:4000/api/v1/buy/paymentVerify',
       prefill: {
-        name: `${user.firstName} ${user.lastName}`,
-        email: user.email,
-        contact: user.number
+        name: `${currentUser.firstName} ${currentUser.lastName}`,
+        email: currentUser.email,
+        contact: currentUser.number
       },
       notes: {
         address: 'Razorpay Corporate Office'
@@ -266,7 +268,7 @@ const CartPage = () => {
         ) : (
           <EmptyCart />
         )}
-        <AddressDialog setModal={setAddModalIsOpen} open={addModalIsOpen} />
+        {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
       </div>
     </div>
   )

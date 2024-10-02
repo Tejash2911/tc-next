@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import UpdatePassword from '@/components/UpdatePassword'
 import { setError } from '@/redux/slices/errorSlice'
 import { updateUser } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
-import AddressDialog from '@/components/AddressDialog'
+import AddressDialog from '@/components/dialogs/AddressDialog'
+import UpdatePasswordDialog from '@/components/dialogs/UpdatePasswordDialog'
+import useModal from '@/hooks/use-modal'
 
 const navMap = {
   1: 'Account Details',
@@ -20,8 +21,9 @@ const UserSettingPage = () => {
   const { currentUser, loading } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
   const [isActivated, setIsActivated] = useState(1)
-  const [isAddressOpen, setAddressOpen] = useState(false)
-  const [isEditPassOpen, setIsEditPassOpen] = useState(false)
+
+  const addressDialog = useModal()
+  const passwordDialog = useModal()
 
   const [userDataForm, setUserDataForm] = useState({
     firstName: currentUser?.firstName || '',
@@ -118,7 +120,7 @@ const UserSettingPage = () => {
                   <p>Password</p>
                   <div className='flex justify-between w-full border border-[#ccc] rounded-md p-2 mb-2'>
                     *************
-                    <p className='underline cursor-pointer' onClick={() => setIsEditPassOpen(true)}>
+                    <p className='underline cursor-pointer' onClick={() => passwordDialog.onOpen({})}>
                       Edit
                     </p>
                   </div>
@@ -141,7 +143,7 @@ const UserSettingPage = () => {
                       <p>{`${address?.city}, ${address?.zip}`}</p>
                     </div>
                   )}
-                  <p className='underline cursor-pointer' onClick={() => setAddressOpen(true)}>
+                  <p className='underline cursor-pointer' onClick={() => addressDialog.onOpen({})}>
                     {address ? 'Edit' : 'Add'}
                   </p>
                 </div>
@@ -150,8 +152,8 @@ const UserSettingPage = () => {
           </div>
         </div>
       </div>
-      <AddressDialog isOpen={isAddressOpen} setModal={setAddressOpen} />
-      <UpdatePassword isOpen={isEditPassOpen} setModal={setIsEditPassOpen} />
+      {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
+      {passwordDialog.isOpen && <UpdatePasswordDialog open={passwordDialog.isOpen} setOpen={passwordDialog.onClose} />}
     </div>
   )
 }

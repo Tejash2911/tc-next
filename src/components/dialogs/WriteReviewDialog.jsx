@@ -1,21 +1,21 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import Modal from './Modal'
+import Modal from '../Modal'
 import { setError } from '@/redux/slices/errorSlice'
-import CustomRating from './CustomRating'
+import CustomRating from '../CustomRating'
 import { addReview } from '@/redux/slices/reviewSlice'
 
-export default function WriteReview({ product, isOpen, setModal }) {
-  const { currentUser } = useAppSelector(({ user }) => user)
+export default function WriteReviewDialog({ open, setOpen, data }) {
   const dispatch = useAppDispatch()
+  const { currentUser } = useAppSelector(({ user }) => user)
   const [review, setReview] = useState('')
   const [rating, setRating] = useState(0)
 
   const handle = {
     onSubmit: () => {
       const nPayload = {
-        id: product._id,
+        id: data.product._id,
         payload: {
           rating,
           review
@@ -26,20 +26,23 @@ export default function WriteReview({ product, isOpen, setModal }) {
         .unwrap()
         .then(res => {
           dispatch(setError(res.data.message))
-          setModal(false)
+          handle.handleClose()
           setRating(0)
           setReview('')
         })
         .catch(error => {
           dispatch(setError(error.data.message))
         })
+    },
+    handleClose: () => {
+      setOpen(false)
     }
   }
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal open={open}>
       <div className='flex flex-col items-center gap-5 font-Urbanist'>
-        <h1>{product?.title}</h1>
+        <h1>{data.product?.title}</h1>
         <div className='flex justify-start items-center gap-2 w-full'>
           <Image src='/user.png' alt='user-image' width={50} height={50} />
           <span className='text-xl'>{currentUser?.firstName + ' ' + currentUser?.lastName}</span>
@@ -58,7 +61,7 @@ export default function WriteReview({ product, isOpen, setModal }) {
         <div className='flex justify-end items-end w-full'>
           <button
             className='m-2 py-2 px-5 rounded-full border border-teal-600 bg-white font-semibold text-teal-600 disabled:bg-[#c0f3f3] disabled:border-[#c0f3f3] disabled:cursor-not-allowed disabled:text-black'
-            onClick={() => setModal(false)}
+            onClick={handle.handleClose}
           >
             Cancel
           </button>

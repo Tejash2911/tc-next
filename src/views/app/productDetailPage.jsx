@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import dynamic from 'next/dynamic'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import { setError } from '@/redux/slices/errorSlice'
@@ -13,26 +12,23 @@ import { addProduct } from '@/redux/slices/cartSlice'
 import { userRequest } from '@/lib/axios'
 import Loading from '@/components/loading'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
-import AddressDialog from '@/components/AddressDialog'
-
-const WriteReviewNoSSR = dynamic(() => import('@/components/WriteReview'), { ssr: false })
+import AddressDialog from '@/components/dialogs/AddressDialog'
+import useModal from '@/hooks/use-modal'
 
 const ProductDetailPage = ({ id }) => {
   const dispatch = useAppDispatch()
-  const { currentUser, address } = useAppSelector(({ user }) => user)
+  const { currentUser } = useAppSelector(({ user }) => user)
+  const { address } = useAppSelector(({ address }) => address)
   const { product } = useAppSelector(({ product }) => product)
   const router = useRouter()
   const imgRef = useRef(null)
   const [productQuantity, setProductQuantity] = useState(1)
 
+  const addressDialog = useModal()
+
   //setting default size and color for product
   const [Color, setColor] = useState(product?.color?.length >= 0 && `#${product.color[0]}`)
   const [size, setSize] = useState(product?.size?.length >= 0 && product.size[0])
-
-  // Review Modal
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  // get address modal
-  const [addModalIsOpen, setAddModalIsOpen] = useState(false)
 
   useEffect(() => {
     handle.getData()
@@ -71,20 +67,11 @@ const ProductDetailPage = ({ id }) => {
   }
 
   const handleBuyNow = async () => {
-    if (!user) router.push('/login')
+    if (!currentUser) router.push('/login')
 
     // if there is address then continue or set get address popup
     if (!address) {
-      //if address is not stored in users local storage then get from db
-      try {
-        const { data } = await userRequest.get('/address')
-
-        if (!data.ok) {
-          return setAddModalIsOpen(true)
-        }
-      } catch (error) {
-        return setAddModalIsOpen(true)
-      }
+      return addressDialog.onOpen({})
     }
 
     if (!window.Razorpay) {
@@ -97,7 +84,7 @@ const ProductDetailPage = ({ id }) => {
       const {
         data: { order }
       } = await userRequest.post('/buy/checkout', {
-        user: user._id,
+        user: currentUser._id,
         product: {
           productID: product._id,
           quantity: productQuantity,
@@ -107,9 +94,9 @@ const ProductDetailPage = ({ id }) => {
         type: 'product',
         userInfo: {
           address: address,
-          name: `${user.firstName} ${user.lastName}`,
-          email: user.email,
-          number: user.number
+          name: `${currentUser.firstName} ${currentUser.lastName}`,
+          email: currentUser.email,
+          number: currentUser.number
         }
       })
 
@@ -134,9 +121,9 @@ const ProductDetailPage = ({ id }) => {
       order_id: Dborder.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       callback_url: 'http://localhost:4000/api/v1/buy/paymentVerify',
       prefill: {
-        name: `${user.firstName} ${user.lastName}`,
-        email: user.email,
-        contact: user.number
+        name: `${currentUser.firstName} ${currentUser.lastName}`,
+        email: currentUser.email,
+        contact: currentUser.number
       },
       notes: {
         address: 'Dummy Office address'
@@ -259,15 +246,8 @@ const ProductDetailPage = ({ id }) => {
           </div>
         </div>
       </div>
-      <Review
-        productID={product?._id}
-        productName={product?.title}
-        rating={product?.ratingsAverage}
-        ratingCount={product?.ratingsQuantity}
-        setModal={setModalIsOpen}
-      />
-      <WriteReviewNoSSR product={product} setModal={setModalIsOpen} isOpen={modalIsOpen} />
-      <AddressDialog setModal={setAddModalIsOpen} isOpen={addModalIsOpen} />
+      <Review product={product} />
+      {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
     </div>
   )
 }

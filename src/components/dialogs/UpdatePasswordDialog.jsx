@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import Modal from './Modal'
+import Modal from '../Modal'
 import { setError } from '@/redux/slices/errorSlice'
 import { userRequest } from '@/lib/axios'
 
-export default function UpdatePassword({ isOpen, setModal }) {
+export default function UpdatePasswordDialog({ open, setOpen }) {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
 
@@ -33,12 +33,15 @@ export default function UpdatePassword({ isOpen, setModal }) {
         dispatch(setError(error.response.data.error))
       }
 
-      setModal(false)
+      handle.handleClose()
+    },
+    handleClose: () => {
+      setOpen(false)
     }
   }
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal open={open}>
       <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 max-w-[600px] font-Urbanist'>
         <label htmlFor='currentPass' className='text-xl font-semibold block'>
           Current Password:
@@ -85,7 +88,7 @@ export default function UpdatePassword({ isOpen, setModal }) {
           </button>
           <button
             type='reset'
-            onClick={() => setModal(false)}
+            onClick={handle.handleClose}
             className='bg-black text-white py-2 px-5 border-none rounded-md hover:bg-[#777]'
           >
             Cancel
