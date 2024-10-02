@@ -107,18 +107,16 @@ export default function Navbar() {
                 <div className={`${optionIsOpen ? 'block' : 'hidden'}`}>
                   <div className='bg-gray-100 top-16 shadow-lg border border-gray-200 flex flex-col absolute transform -translate-x-1/3 w-40'>
                     <div className='absolute left-1/2 top-1 w-2.5 h-2.5 bg-gray-100 transform -translate-x-1/2 -translate-y-full rotate-45'></div>
-                    <span
-                      className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'
-                      onClick={() => router.push('/user-settings')}
-                    >
-                      <SettingsIcon /> Setting
-                    </span>
-                    <span
-                      className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'
-                      onClick={() => router.push('/orders')}
-                    >
-                      <LocalMallIcon /> Orders
-                    </span>
+                    <Link href='/user-settings'>
+                      <span className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
+                        <SettingsIcon /> Setting
+                      </span>
+                    </Link>
+                    <Link href='/orders'>
+                      <span className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
+                        <LocalMallIcon /> Orders
+                      </span>
+                    </Link>
                     <span
                       className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'
                       onClick={handle.onLogout}
@@ -129,7 +127,9 @@ export default function Navbar() {
                 </div>
               </div>
               <div className='ml-5 cursor-pointer relative'>
-                <ShoppingCartOutlinedIcon onClick={() => router.push('/cart')} />
+                <Link href='/cart'>
+                  <ShoppingCartOutlinedIcon />
+                </Link>
                 <span className='absolute top-0 right-0 bg-black transform translate-x-1/2 -translate-y-1/2 text-white rounded-full w-5 h-5 grid place-content-center'>
                   {quantity ?? 0}
                 </span>
