@@ -67,10 +67,5 @@ const reviewSlice = createAppSlice({
   }
 })
 
-export const { setLoading, resetState } = reviewSlice.actions
-
-export const reviewActions = {
-  setLoading,
-  resetState
-}
+export const reviewActions = reviewSlice.actions
 export default reviewSlice.reducer

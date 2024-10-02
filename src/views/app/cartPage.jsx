@@ -8,11 +8,11 @@ import AddIcon from '@mui/icons-material/Add'
 import EmptyCart from '@/components/EmptyCart'
 import { setError } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { deleteProduct } from '@/redux/slices/cartSlice'
 import addDynamicScript from '@/utils/addDynamicScript'
 import { userRequest } from '@/lib/axios'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
+import { cartActions } from '@/redux/slices/cartSlice'
 
 const CartPage = () => {
   const router = useRouter()
@@ -82,7 +82,7 @@ const CartPage = () => {
       })
 
       setCartProductRes(e => ({ ...e, products: filteredProducts }))
-      dispatch(deleteProduct())
+      dispatch(cartActions.deleteProduct())
       const res = await userRequest.delete(`/cart/${id}`)
 
       dispatch(setError(res.data.message))

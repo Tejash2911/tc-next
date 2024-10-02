@@ -98,10 +98,5 @@ const userSlice = createAppSlice({
   }
 })
 
-export const { logoutUser, setLoading, resetState } = userSlice.actions
-export const userActions = {
-  logoutUser,
-  setLoading,
-  resetState
-}
+export const userActions = userSlice.actions
 export default userSlice.reducer

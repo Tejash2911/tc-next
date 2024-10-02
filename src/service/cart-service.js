@@ -10,8 +10,18 @@ const getCartSize = () => {
   })
 }
 
+const getCartInfoByUserId = id => {
+  return new Promise((resolve, reject) => {
+    userRequest
+      .get(`/cart/info/${id}`)
+      .then(res => resolve(handleApiRes(res)))
+      .catch(err => reject(handleApiErr(err)))
+  })
+}
+
 const cartService = {
-  getCartSize
+  getCartSize,
+  getCartInfoByUserId
 }
 
 export default cartService

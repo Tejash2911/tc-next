@@ -12,9 +12,20 @@ export const getCartSize = createAsyncThunk('cart/getCartSize', async (_, { reje
   }
 })
 
+export const getCartInfoByUserId = createAsyncThunk('cart/getCartInfoByUserId', async (id, { rejectWithValue }) => {
+  try {
+    const { data } = await cartService.getCartInfoByUserId(id)
+
+    return data
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
 const initialState = {
   loading: false,
-  quantity: 0
+  quantity: 0,
+  cart: {}
 }
 
 const cartSlice = createAppSlice({
@@ -30,6 +41,9 @@ const cartSlice = createAppSlice({
     setProduct: (state, action) => {
       state.quantity = action.payload
     },
+    setCart: (state, { payload }) => {
+      state.cart = { ...cart, payload }
+    },
     setLoading: (state, { payload }) => {
       state.loading = payload
     },
@@ -38,6 +52,7 @@ const cartSlice = createAppSlice({
     }
   },
   extraReducers: builder => {
+    // get user cart size
     builder.addCase(getCartSize.pending, state => {
       state.loading = true
     })
@@ -48,15 +63,19 @@ const cartSlice = createAppSlice({
     builder.addCase(getCartSize.rejected, state => {
       state.loading = false
     })
+    // get user cart info
+    builder.addCase(getCartInfoByUserId.pending, state => {
+      state.loading = true
+    })
+    builder.addCase(getCartInfoByUserId.fulfilled, (state, { payload }) => {
+      state.cart = payload
+      state.loading = false
+    })
+    builder.addCase(getCartInfoByUserId.rejected, state => {
+      state.loading = false
+    })
   }
 })
 
-export const { addProduct, deleteProduct, setProduct, setLoading, resetState } = cartSlice.actions
-export const cartActions = {
-  addProduct,
-  deleteProduct,
-  setProduct,
-  setLoading,
-  resetState
-}
+export const cartActions = cartSlice.actions
 export default cartSlice.reducer

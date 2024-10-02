@@ -43,9 +43,5 @@ const addressSlice = createAppSlice({
   }
 })
 
-export const { setLoading, resetState } = addressSlice.actions
-export const addressActions = {
-  setLoading,
-  resetState
-}
+export const addressActions = addressSlice.actions
 export default addressSlice.reducer

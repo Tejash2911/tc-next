@@ -69,11 +69,5 @@ const productSlice = createAppSlice({
   }
 })
 
-export const { setLoading, resetState, resetProduct } = productSlice.actions
-
-export const productActions = {
-  setLoading,
-  resetState,
-  resetProduct
-}
+export const productActions = productSlice.actions
 export default productSlice.reducer

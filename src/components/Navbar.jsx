@@ -9,11 +9,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
-import { logoutUser } from '@/redux/slices/userSlice'
 import { getCartSize } from '@/redux/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getSearchProducts } from '@/redux/slices/productSlice'
 import { useDebounce } from '@/hooks/use-debounce'
+import { userActions } from '@/redux/slices/userSlice'
 
 export default function Navbar() {
   const router = useRouter()
@@ -35,7 +35,7 @@ export default function Navbar() {
       router.push(`/product/${id}`)
     },
     onLogout: () => {
-      dispatch(logoutUser())
+      dispatch(userActions.logoutUser())
       setIsAuthenticated(false)
     }
   }

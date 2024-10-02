@@ -8,7 +8,7 @@ import { setError } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import Review from '@/components/Review'
-import { addProduct } from '@/redux/slices/cartSlice'
+import { cartActions } from '@/redux/slices/cartSlice'
 import { userRequest } from '@/lib/axios'
 import Loading from '@/components/loading'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
@@ -59,7 +59,7 @@ const ProductDetailPage = ({ id }) => {
         ]
       })
 
-      !res.data.productExisted && dispatch(addProduct())
+      !res.data.productExisted && dispatch(cartActions.addProduct())
       dispatch(setError(res?.data?.message))
     } catch (error) {
       dispatch(setError(error?.response?.data?.message))

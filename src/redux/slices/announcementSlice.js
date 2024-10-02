@@ -42,10 +42,5 @@ const announcementSlice = createAppSlice({
   }
 })
 
-export const { setLoading, resetState } = announcementSlice.actions
-
-export const announcementActions = {
-  setLoading,
-  resetState
-}
+export const announcementActions = announcementSlice.actions
 export default announcementSlice.reducer
