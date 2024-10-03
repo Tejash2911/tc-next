@@ -14,6 +14,7 @@ import Loading from '@/components/loading'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
+import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
 
 const ProductDetailPage = ({ id }) => {
   const dispatch = useAppDispatch()
@@ -35,6 +36,7 @@ const ProductDetailPage = ({ id }) => {
 
     return () => {
       dispatch(productActions.resetProduct())
+      dispatch(addressActions.resetState())
       setProductQuantity(1)
     }
   }, [id])
@@ -78,7 +80,7 @@ const ProductDetailPage = ({ id }) => {
       await addDynamicScript('https://checkout.razorpay.com/v1/checkout.js') //script is not loading at first time dk why so i added this XD
     }
 
-    let Dborder, Dbkey
+    let DbOrder, DbKey
 
     try {
       const {
@@ -100,26 +102,26 @@ const ProductDetailPage = ({ id }) => {
         }
       })
 
-      Dborder = order
+      DbOrder = order
 
       const {
         data: { key }
-      } = await userRequest.get('/buy/getkey')
+      } = await userRequest.get('/buy/getKey')
 
-      Dbkey = key
+      DbKey = key
     } catch (error) {
       dispatch(setError(error?.response?.data?.message || 'error occurred while creating order'))
     }
 
     const options = {
-      key: Dbkey, //reciving key from backend sue to security
-      amount: Dborder.amount,
+      key: DbKey, //receiving key from backend due to security
+      amount: DbOrder.amount,
       currency: 'INR',
       name: product.title,
       description: `${product.desc.slice(0, 252)}...` || 'random description', //slicing it because razor pay does'nt allow desc length more then 255
       image: product.img,
-      order_id: Dborder.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      callback_url: 'http://localhost:4000/api/v1/buy/paymentVerify',
+      order_id: DbOrder.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      callback_url: `${process.env.NEXT_PUBLIC_API_URL}/buy/paymentVerify`,
       prefill: {
         name: `${currentUser.firstName} ${currentUser.lastName}`,
         email: currentUser.email,
@@ -154,6 +156,7 @@ const ProductDetailPage = ({ id }) => {
   const handle = {
     getData: () => {
       dispatch(getProductById(id))
+      dispatch(getUserAddress())
     }
   }
 
@@ -182,7 +185,7 @@ const ProductDetailPage = ({ id }) => {
         <div className='grid gap-7'>
           <div className='flex items-center justify-between'>
             <h1 className='text-2xl font-light'>{product?.title}</h1>
-            <h1 className='font-extralight'>Design No - {product?.productNo}</h1>
+            <h1 className='font-light'>Design No - {product?.productNo}</h1>
           </div>
           <p className=''>{product?.desc}</p>
           <p className='text-3xl'>₹{product?.price}</p>
@@ -191,7 +194,7 @@ const ProductDetailPage = ({ id }) => {
           </span>
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center'>
-              <div className='text-xl font-extralight mr-2'>Color</div>
+              <div className='text-xl font-light mr-2'>Color</div>
               {(product?.color || []).map(e => (
                 <div
                   key={e}
@@ -202,7 +205,7 @@ const ProductDetailPage = ({ id }) => {
               ))}
             </div>
             <div className='flex items-center'>
-              <div className='text-xl font-extralight mr-2'>Size</div>
+              <div className='text-xl font-light mr-2'>Size</div>
               <select
                 name='size'
                 aria-label='size'

@@ -13,6 +13,7 @@ import { userRequest } from '@/lib/axios'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
 import { cartActions } from '@/redux/slices/cartSlice'
+import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
 
 const CartPage = () => {
   const router = useRouter()
@@ -25,6 +26,18 @@ const CartPage = () => {
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false)
 
   const addressDialog = useModal()
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push('/login')
+    } else {
+      dispatch(getUserAddress())
+    }
+
+    return () => {
+      addressActions.resetState()
+    }
+  }, [currentUser])
 
   //get User Cart
   useEffect(() => {
@@ -123,9 +136,11 @@ const CartPage = () => {
       }
     })
 
+    console.log(order)
+
     const {
       data: { key }
-    } = await userRequest.get('/buy/getkey')
+    } = await userRequest.get('/buy/getKey')
 
     setIsCheckoutLoading(false)
 
@@ -134,8 +149,8 @@ const CartPage = () => {
     }
 
     const options = {
-      key: key, //reciving key from backend for security purpose
-      amount: order.ammount,
+      key: key, //receiving key from backend for security purpose
+      amount: order.amount,
       currency: 'INR',
       name: `${currentUser.firstName} ${currentUser.lastName}'s Cart`,
       description: `${currentUser.firstName} ${currentUser.lastName}'s Cart includes total ${cartProductRes?.products?.length}`,
@@ -241,7 +256,7 @@ const CartPage = () => {
                   </div>
                 ))}
               </div>
-              <div className='flex flex-col gap-2 border rounded-[2vmax] p-2 h-fit'>
+              <div className='flex flex-col gap-2 border rounded-3xl p-2 h-fit'>
                 <h1 className='text-3xl my-2 font-light'>Products</h1>
                 {cartProductRes?.products?.map(product => (
                   <div className='flex items-center justify-between my-1' key={product._id}>

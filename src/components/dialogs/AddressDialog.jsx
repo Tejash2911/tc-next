@@ -5,17 +5,17 @@ import { setError } from '@/redux/slices/errorSlice'
 import { countries } from '@/utils/dummyData'
 import { userRequest } from '@/lib/axios'
 
-export default function AddressDialog({ open, setOpen }) {
+export default function AddressDialog({ open, setOpen, data }) {
   const { currentUser } = useAppSelector(({ user }) => user)
   const dispatch = useAppDispatch()
 
   const [address, setAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    zip: '',
-    country: '',
-    mobile: currentUser?.number || ''
+    street: data?.street ?? '',
+    city: data?.city ?? '',
+    state: data?.state ?? '',
+    zip: data?.zip ?? '',
+    country: data?.country ?? '',
+    mobile: currentUser?.number ?? ''
   })
 
   const handle = {
@@ -33,7 +33,7 @@ export default function AddressDialog({ open, setOpen }) {
         dispatch(setError(error?.response?.data?.message))
       }
 
-      setModal(false)
+      handle.handleClose()
     },
     handleClose: () => {
       setOpen(false)

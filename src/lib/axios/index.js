@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://tc-api-4sbm.onrender.com/api/v1'
-// const BASE_URL = 'http://localhost:4000/api/v1'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 function getAccessToken() {
   try {
@@ -20,8 +19,7 @@ export const axiosInstance = axios.create({
 })
 
 export const userRequest = axios.create({
-  baseURL: BASE_URL,
-  headers: { Authorization: `Bearer ${getAccessToken()}` }
+  baseURL: BASE_URL
 })
 
 userRequest.interceptors.request.use(config => {
@@ -29,7 +27,7 @@ userRequest.interceptors.request.use(config => {
     const newToken = getAccessToken()
 
     if (newToken) {
-      config.headers.Authorization = `Bearer ${newToken}` // Update to Authorization header
+      config.headers.token = `${newToken}`
     }
   } catch (error) {
     console.error('Error updating request with new token:', error)

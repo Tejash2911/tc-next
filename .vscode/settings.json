@@ -49,6 +49,7 @@
     "reduxjs",
     "tailwindcss",
     "scrollamount",
-    "stylelint"
+    "stylelint",
+    "Razorpay"
   ]
 }

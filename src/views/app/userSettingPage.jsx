@@ -143,7 +143,7 @@ const UserSettingPage = () => {
                       <p>{`${address?.city}, ${address?.zip}`}</p>
                     </div>
                   )}
-                  <p className='underline cursor-pointer' onClick={() => addressDialog.onOpen({})}>
+                  <p className='underline cursor-pointer' onClick={() => addressDialog.onOpen({ ...address })}>
                     {address ? 'Edit' : 'Add'}
                   </p>
                 </div>
@@ -152,7 +152,9 @@ const UserSettingPage = () => {
           </div>
         </div>
       </div>
-      {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
+      {addressDialog.isOpen && (
+        <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} data={addressDialog.selectedRow} />
+      )}
       {passwordDialog.isOpen && <UpdatePasswordDialog open={passwordDialog.isOpen} setOpen={passwordDialog.onClose} />}
     </div>
   )

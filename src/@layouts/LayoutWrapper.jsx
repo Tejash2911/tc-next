@@ -11,7 +11,7 @@ import Message from '@/components/Message'
 
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname()
-  const isAuthPage = pathname === '/login' || pathname === '/register'
+  const isAuthPage = pathname === '/login' || pathname === '/register' || pathname.startsWith('/paymentSuccess')
 
   return (
     <>
