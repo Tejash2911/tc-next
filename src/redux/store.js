@@ -6,6 +6,7 @@ import announcementReducer from './slices/announcementSlice'
 import productReducer from './slices/productSlice'
 import reviewReducer from './slices/reviewSlice'
 import addressReducer from './slices/addressSlice'
+import orderReducer from './slices/orderSlice'
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   error: errorReducer,
   announcement: announcementReducer,
   product: productReducer,
-  review: reviewReducer
+  review: reviewReducer,
+  order: orderReducer
 })
 
 export const makeStore = () => {

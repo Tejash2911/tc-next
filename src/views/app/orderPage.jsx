@@ -1,27 +1,25 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import ProductNotFound from '@/components/ProductNotFound'
 import SingleOrder from '@/components/SingleOrder'
-import { userRequest } from '@/lib/axios'
-import { useAppSelector } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { getOrdersByUserId } from '@/redux/slices/orderSlice'
 
 const OrdersPage = () => {
-  const user = useAppSelector(state => state.user?.currentUser)
-  const [orders, setOrders] = useState([])
+  const dispatch = useAppDispatch()
+  const { currentUser } = useAppSelector(({ user }) => user)
+  const { orders } = useAppSelector(({ order }) => order)
+
+  const router = useRouter()
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const { data } = await userRequest.get(`/orders/find/${user._id}`)
-
-        setOrders(data)
-      } catch (error) {
-        setOrders([])
-      }
+    if (!currentUser) {
+      router.push('/login')
+    } else {
+      dispatch(getOrdersByUserId(currentUser._id))
     }
-
-    fetchOrders()
-  }, [user])
+  }, [currentUser])
 
   return (
     <div className={`w-full font-Urbanist py-5 ${orders.length !== 0 ? 'bg-[#e0dede]' : 'bg-white'}`}>
