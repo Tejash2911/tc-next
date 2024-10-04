@@ -3,10 +3,10 @@ name: CI/CD for Next.js
 on:
   push:
     branches:
-      - develop # Trigger the workflow on push to the main branch
+      - master # Trigger the workflow on push to the main branch
   pull_request:
     branches:
-      - develop # Trigger the workflow on pull requests to the main branch
+      - master # Trigger the workflow on pull requests to the main branch
 
 jobs:
   build:
