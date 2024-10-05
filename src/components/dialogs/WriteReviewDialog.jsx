@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Modal from '../Modal'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import CustomRating from '../CustomRating'
 import { addReview } from '@/redux/slices/reviewSlice'
 
@@ -25,13 +25,13 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
       dispatch(addReview(nPayload))
         .unwrap()
         .then(res => {
-          dispatch(setError(res.data.message))
+          dispatch(errorActions.setErrorMessage(res.data.message))
           handle.handleClose()
           setRating(0)
           setReview('')
         })
         .catch(error => {
-          dispatch(setError(error.data.message))
+          dispatch(errorActions.setErrorMessage(error.data.message))
         })
     },
     handleClose: () => {

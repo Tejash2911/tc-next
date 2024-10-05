@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { updateUser } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
@@ -57,7 +57,7 @@ const UserSettingPage = () => {
         .unwrap()
         .then()
         .catch(error => {
-          dispatch(setError(error.data.message))
+          dispatch(errorActions.setErrorMessage(error.data.message))
         })
     }
   }

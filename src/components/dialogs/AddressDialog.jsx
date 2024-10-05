@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Modal from '../Modal'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { countries } from '@/utils/dummyData'
 import { userRequest } from '@/lib/axios'
 
@@ -30,7 +30,7 @@ export default function AddressDialog({ open, setOpen, data }) {
 
         console.log(data)
       } catch (error) {
-        dispatch(setError(error?.response?.data?.message))
+        dispatch(errorActions.setErrorMessage(error?.response?.data?.message))
       }
 
       handle.handleClose()

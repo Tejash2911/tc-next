@@ -30,7 +30,7 @@ export default function SingleOrder({ order }) {
                   <div className='flex flex-col gap-1'>
                     {/* <div className="h-5 w-5 border border-gray-600 rounded-full" style={{ background: pro.color }}></div> */}
                     {/* <div className="pr-1">Size: {pro.size}</div> */}
-                    <div className='pr-1'>Qty: {pro.quantity}</div>
+                    {/* <div className='pr-1'>Qty: {pro.quantity}</div> */}
                     <div className='text-xl font-semibold'>Rs: {pro.price}</div>
                   </div>
                 </div>

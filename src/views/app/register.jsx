@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { register } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 
@@ -36,7 +36,7 @@ const RegisterV2 = () => {
         dispatch(register(formValues))
           .unwrap()
           .then()
-          .catch(error => dispatch(setError(error.data.message)))
+          .catch(error => dispatch(errorActions.setErrorMessage(error.data.message)))
       }
     },
     handleOnChange: e => {

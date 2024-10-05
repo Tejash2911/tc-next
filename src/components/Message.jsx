@@ -1,13 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
 import CancelIcon from '@mui/icons-material/Cancel'
-import { clearError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 
 export default function Message() {
   const dispatch = useAppDispatch()
-  const id = useAppSelector(state => state.error.id)
-  const message = useAppSelector(state => state.error.error)
+  const { id, message } = useAppSelector(({ error }) => error)
   const [isShow, setIsShow] = useState(false)
 
   useEffect(() => {
@@ -15,13 +14,13 @@ export default function Message() {
       setIsShow(true)
 
       const timeout = setTimeout(() => {
-        dispatch(clearError())
+        dispatch(errorActions.clearError())
         setIsShow(false)
       }, 5000)
 
       return () => clearTimeout(timeout)
     }
-  }, [message, id, dispatch])
+  }, [message, id])
 
   return (
     <>

@@ -1,6 +1,15 @@
 import { handleApiErr, handleApiRes } from './handleApi'
 import { axiosInstance } from '@/lib/axios'
 
+const getAll = payload => {
+  return new Promise((resolve, reject) => {
+    axiosInstance
+      .get('/product/all', { params: payload })
+      .then(res => resolve(handleApiRes(res)))
+      .catch(err => reject(handleApiErr(err)))
+  })
+}
+
 const getSearchProducts = payload => {
   return new Promise((resolve, reject) => {
     axiosInstance
@@ -20,6 +29,7 @@ const getById = id => {
 }
 
 const productService = {
+  getAll,
   getById,
   getSearchProducts
 }

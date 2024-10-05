@@ -4,20 +4,20 @@ import { createAppSlice } from '../createAppSlice'
 const errorSlice = createAppSlice({
   name: 'error',
   initialState: {
-    error: null,
+    message: null,
     id: null
   },
   reducers: {
-    setError: (state, action) => {
-      state.error = action.payload
+    setErrorMessage: (state, action) => {
+      state.message = action.payload
       state.id = uuid()
     },
     clearError: state => {
-      state.error = null
+      state.message = null
       state.id = null
     }
   }
 })
 
-export const { setError, clearError } = errorSlice.actions
+export const errorActions = errorSlice.actions
 export default errorSlice.reducer

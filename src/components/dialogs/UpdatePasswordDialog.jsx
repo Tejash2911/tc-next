@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Modal from '../Modal'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { userRequest } from '@/lib/axios'
 
 export default function UpdatePasswordDialog({ open, setOpen }) {
@@ -21,16 +21,16 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
     onSubmit: async e => {
       e.preventDefault()
       if (formData.password !== formData.confPass)
-        return dispatch(setError("Password and Confirm Password Does'nt matched!!"))
+        return dispatch(errorActions.setErrorMessage("Password and Confirm Password Does'nt matched!!"))
 
       try {
         const { data } = await userRequest.put(`/users/${currentUser._id}`, formData)
 
         console.log(data)
 
-        dispatch(setError('Password updated Successfully!!'))
+        dispatch(errorActions.setErrorMessage('Password updated Successfully!!'))
       } catch (error) {
-        dispatch(setError(error.response.data.error))
+        dispatch(errorActions.setErrorMessage(error.response.data.error))
       }
 
       handle.handleClose()

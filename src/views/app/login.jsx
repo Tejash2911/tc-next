@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { login } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 
@@ -24,7 +24,7 @@ const LoginV2 = () => {
         .unwrap()
         .then()
         .catch(error => {
-          dispatch(setError(error.data.message))
+          dispatch(errorActions.setErrorMessage(error.data.message))
         })
     }
   }
