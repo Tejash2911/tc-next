@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - master # Trigger the workflow on push to the main branch
-  pull_request:
-    branches:
-      - master # Trigger the workflow on pull requests to the main branch
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,25 +17,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.10.0' # Ensure you're using a compatible Node.js version for Next.js
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Next.js project
-        run: npm run build
-
-  deploy:
-    needs: build # Ensures that 'build' job passes before running
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.10.0'
 
       - name: Install dependencies
         run: npm install
