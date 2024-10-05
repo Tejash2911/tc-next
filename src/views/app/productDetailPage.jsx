@@ -4,23 +4,23 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import Review from '@/components/Review'
 import { cartActions } from '@/redux/slices/cartSlice'
 import { userRequest } from '@/lib/axios'
-import Loading from '@/components/loading'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
 import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
+import ProductDetailsLoader from '@/components/loaders/ProductDetailsLoader'
 
 const ProductDetailPage = ({ id }) => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
-  const { product } = useAppSelector(({ product }) => product)
+  const { product, loading } = useAppSelector(({ product }) => product)
   const router = useRouter()
   const imgRef = useRef(null)
   const [productQuantity, setProductQuantity] = useState(1)
@@ -62,9 +62,9 @@ const ProductDetailPage = ({ id }) => {
       })
 
       !res.data.productExisted && dispatch(cartActions.addProduct())
-      dispatch(setError(res?.data?.message))
+      dispatch(errorActions.setErrorMessage(res?.data?.message))
     } catch (error) {
-      dispatch(setError(error?.response?.data?.message))
+      dispatch(errorActions.setErrorMessage(error?.response?.data?.message))
     }
   }
 
@@ -110,7 +110,7 @@ const ProductDetailPage = ({ id }) => {
 
       DbKey = key
     } catch (error) {
-      dispatch(setError(error?.response?.data?.message || 'error occurred while creating order'))
+      dispatch(errorActions.setErrorMessage(error?.response?.data?.message || 'error occurred while creating order'))
     }
 
     const options = {
@@ -160,27 +160,23 @@ const ProductDetailPage = ({ id }) => {
     }
   }
 
-  if (!product) return <Loading />
+  if (loading) return <ProductDetailsLoader />
 
   return (
     <div className='container'>
       <div className='grid lg:grid-cols-2 sm:grid-cols-1 gap-5 font-Urbanist p-10'>
-        <div className='flex items-center justify-center cursor-zoom-in border overflow-hidden'>
-          {product?.img ? (
-            <Image
-              src={product?.img}
-              alt='product-image'
-              width={400}
-              height={168}
-              priority
-              ref={imgRef}
-              onMouseMove={handleImgMouseEnter}
-              onMouseLeave={handleImgMouseLeave}
-              className='object-cover object-center transition-transform duration-500 ease-in-out'
-            />
-          ) : (
-            <span>Loading...</span>
-          )}
+        <div className='flex items-center justify-center cursor-zoom-in overflow-hidden'>
+          <Image
+            src={product?.img}
+            alt='product-image'
+            width={400}
+            height={168}
+            priority
+            ref={imgRef}
+            onMouseMove={handleImgMouseEnter}
+            onMouseLeave={handleImgMouseLeave}
+            className='object-cover object-center transition-transform duration-500 ease-in-out'
+          />
         </div>
         <div className='grid gap-7'>
           <div className='flex items-center justify-between'>
@@ -249,7 +245,7 @@ const ProductDetailPage = ({ id }) => {
           </div>
         </div>
       </div>
-      <Review product={product} />
+      {product && <Review product={product} />}
       {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
     </div>
   )

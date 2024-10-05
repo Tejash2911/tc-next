@@ -6,7 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import EmptyCart from '@/components/EmptyCart'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import { userRequest } from '@/lib/axios'
@@ -14,6 +14,7 @@ import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
 import { cartActions } from '@/redux/slices/cartSlice'
 import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
+import SkeletonCartPage from '@/components/loaders/CartPageSkeleton'
 
 const CartPage = () => {
   const router = useRouter()
@@ -24,6 +25,7 @@ const CartPage = () => {
   const [cartProductRes, setCartProductRes] = useState()
   const [totalCartPrice, setTotalCartPrice] = useState(0)
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const addressDialog = useModal()
 
@@ -49,10 +51,13 @@ const CartPage = () => {
           setCartProductRes(res.data)
         } catch (error) {
           console.log('error', error)
-          dispatch(setError(error.response.data.message))
+          dispatch(errorActions.setErrorMessage(error.response.data.message))
+        } finally {
+          setIsLoading(false)
         }
       } else {
         setCartProductRes(null)
+        setIsLoading(false)
       }
     }
 
@@ -80,10 +85,10 @@ const CartPage = () => {
       const newProduct = (cartProductRes.products[productIndex].quantity = quantity)
 
       setCartProductRes(p => ({ ...p, newProduct }))
-      dispatch(setError(res.data.message))
+      dispatch(errorActions.setErrorMessage(res.data.message))
     } catch (error) {
       console.log(error)
-      dispatch(setError(error.response.data.message))
+      dispatch(errorActions.setErrorMessage(error.response.data.message))
     }
   }
 
@@ -98,10 +103,10 @@ const CartPage = () => {
       dispatch(cartActions.deleteProduct())
       const res = await userRequest.delete(`/cart/${id}`)
 
-      dispatch(setError(res.data.message))
+      dispatch(errorActions.setErrorMessage(res.data.message))
     } catch (error) {
       console.log('error', error)
-      dispatch(setError(error.response.data.message))
+      dispatch(errorActions.setErrorMessage(error.response.data.message))
     }
   }
 
@@ -145,7 +150,7 @@ const CartPage = () => {
     setIsCheckoutLoading(false)
 
     if (!order || !key) {
-      return dispatch(setError('error occurred while creating order'))
+      return dispatch(errorActions.setErrorMessage('error occurred while creating order'))
     }
 
     const options = {
@@ -175,6 +180,10 @@ const CartPage = () => {
 
     rzp1.open()
     setCartProductRes(null)
+  }
+
+  if (isLoading) {
+    return <SkeletonCartPage />
   }
 
   return (

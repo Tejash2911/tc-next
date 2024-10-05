@@ -1,22 +1,15 @@
-import dynamic from 'next/dynamic'
 import Category from '@/components/Category'
-
-const DynamicSlider = dynamic(() => import('../components/Slider'), {
-  loading: () => <p>Slider Loading...</p>
-})
-
-const DynamicProduct = dynamic(() => import('../components/Product'), {
-  loading: () => <p>Product Loading...</p>
-})
+import Product from '../components/Product'
+import Slider from '../components/Slider'
 
 export default function Home() {
   return (
     <main>
-      <DynamicSlider />
+      <Slider />
       <div className='font-Urbanist text-4xl font-medium mb-4 text-center'>Categories</div>
       <Category />
       <div className='font-Urbanist text-4xl font-medium mb-4 text-center'>Top Products</div>
-      <DynamicProduct sort='top-purchased' cat='' filter='' />
+      <Product sort='top-purchased' cat='' filter='' />
     </main>
   )
 }

@@ -7,11 +7,12 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getAllReviewByProductId } from '@/redux/slices/reviewSlice'
 import useModal from '@/hooks/use-modal'
 import WriteReviewDialog from './dialogs/WriteReviewDialog'
+import SingleReviewSkeleton from './loaders/SingleReviewSkeleton'
 
 export default function Review({ product }) {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
-  const { reviews } = useAppSelector(({ review }) => review)
+  const { reviews, loading } = useAppSelector(({ review }) => review)
 
   const reviewDialog = useModal()
 
@@ -19,18 +20,12 @@ export default function Review({ product }) {
 
   useEffect(() => {
     if (!product._id) return
-    handle.getData()
-  }, [product?._id])
+    dispatch(getAllReviewByProductId(product._id))
+  }, [product._id])
 
   const handleWriteReview = () => {
     if (!currentUser) router.push('/login')
     reviewDialog.onOpen({ product })
-  }
-
-  const handle = {
-    getData: () => {
-      dispatch(getAllReviewByProductId(product?._id))
-    }
   }
 
   return (
@@ -54,10 +49,13 @@ export default function Review({ product }) {
         </div>
         <hr />
         <div className='flex flex-col gap-5 mt-2'>
-          {Array.isArray(reviews) &&
+          {Array.isArray(reviews) && !loading ? (
             reviews.map(r => {
               return <SingleReview review={r} key={r._id}></SingleReview>
-            })}
+            })
+          ) : (
+            <SingleReviewSkeleton />
+          )}
         </div>
       </div>
       {reviewDialog.isOpen && (

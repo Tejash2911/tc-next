@@ -3,7 +3,7 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
 import Rating from './Rating'
 import timeSince from '@/utils/timeSince'
 import { useAppDispatch } from '@/redux/hooks'
-import { setError } from '@/redux/slices/errorSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 import { userRequest } from '@/lib/axios'
 
 export default function SingleReview({ review }) {
@@ -13,10 +13,10 @@ export default function SingleReview({ review }) {
     try {
       const { data } = await userRequest.put(`/review/upvote/${review._id}`)
 
-      dispatch(setError(data.message))
+      dispatch(errorActions.setErrorMessage(data.message))
     } catch (error) {
       console.log(error)
-      dispatch(setError(error.response.data.message))
+      dispatch(errorActions.setErrorMessage(error.response.data.message))
     }
   }
 
@@ -24,10 +24,10 @@ export default function SingleReview({ review }) {
     try {
       const { data } = await userRequest.put(`/review/abuse/${review._id}`)
 
-      dispatch(setError(data.message))
+      dispatch(errorActions.setErrorMessage(data.message))
     } catch (error) {
       console.log(error)
-      dispatch(setError(error.response.data.message))
+      dispatch(errorActions.setErrorMessage(error.response.data.message))
     }
   }
 
