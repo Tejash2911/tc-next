@@ -6,7 +6,7 @@ export const getAllProducts = createAsyncThunk('product/getAllProducts', async (
   try {
     const { data } = await productService.getAll(payload)
 
-    return { products: Array.isArray(data.data) ? data.data : [] }
+    return { products: Array.isArray(data.data) ? data.data : [], rowCount: data.totalCount }
   } catch (error) {
     return rejectWithValue(error)
   }
@@ -36,7 +36,8 @@ const initialState = {
   loading: false,
   products: [],
   searchProducts: [],
-  product: {}
+  product: {},
+  rowCount: 0
 }
 
 const productSlice = createAppSlice({
@@ -51,9 +52,6 @@ const productSlice = createAppSlice({
     },
     resetProduct: state => {
       state.product = {}
-    },
-    resetProducts: state => {
-      state.products = []
     }
   },
   extraReducers: builder => {
@@ -61,8 +59,9 @@ const productSlice = createAppSlice({
     builder.addCase(getAllProducts.pending, state => {
       state.loading = true
     })
-    builder.addCase(getAllProducts.fulfilled, (state, { payload: { products } }) => {
-      state.products = products // Reset for new filter
+    builder.addCase(getAllProducts.fulfilled, (state, { payload: { products, rowCount } }) => {
+      state.products = products
+      state.rowCount = rowCount
       state.loading = false
     })
     builder.addCase(getAllProducts.rejected, state => {

@@ -14,7 +14,37 @@ export const getCartSize = createAsyncThunk('cart/getCartSize', async (_, { reje
 
 export const getCartInfoByUserId = createAsyncThunk('cart/getCartInfoByUserId', async (id, { rejectWithValue }) => {
   try {
-    const { data } = await cartService.getCartInfoByUserId(id)
+    const { data } = await cartService.getById(id)
+
+    return data
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
+export const addToCart = createAsyncThunk('cart/addToCart', async (payload, { rejectWithValue }) => {
+  try {
+    const { data } = await cartService.add(payload)
+
+    return data
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
+export const updateCartQtyById = createAsyncThunk('cart/updateCartQtyById', async (payload, { rejectWithValue }) => {
+  try {
+    const { data } = await cartService.updateCartQtyById(payload)
+
+    return data
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
+export const deleteCartItemById = createAsyncThunk('cart/deleteCartItemById', async (id, { rejectWithValue }) => {
+  try {
+    const { data } = await cartService.deleteById(id)
 
     return data
   } catch (error) {
@@ -32,18 +62,6 @@ const cartSlice = createAppSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addProduct: state => {
-      state.quantity += 1
-    },
-    deleteProduct: state => {
-      state.quantity -= 1
-    },
-    setProduct: (state, action) => {
-      state.quantity = action.payload
-    },
-    setCart: (state, { payload }) => {
-      state.cart = { ...cart, payload }
-    },
     setLoading: (state, { payload }) => {
       state.loading = payload
     },
@@ -72,6 +90,36 @@ const cartSlice = createAppSlice({
       state.loading = false
     })
     builder.addCase(getCartInfoByUserId.rejected, state => {
+      state.loading = false
+    })
+    // add to cart
+    builder.addCase(addToCart.pending, state => {
+      state.loading = true
+    })
+    builder.addCase(addToCart.fulfilled, state => {
+      state.loading = false
+    })
+    builder.addCase(addToCart.rejected, state => {
+      state.loading = false
+    })
+    // update cart quantity by id
+    builder.addCase(updateCartQtyById.pending, state => {
+      state.loading = true
+    })
+    builder.addCase(updateCartQtyById.fulfilled, state => {
+      state.loading = false
+    })
+    builder.addCase(updateCartQtyById.rejected, state => {
+      state.loading = false
+    })
+    // delete cart item by id
+    builder.addCase(deleteCartItemById.pending, state => {
+      state.loading = true
+    })
+    builder.addCase(deleteCartItemById.fulfilled, state => {
+      state.loading = false
+    })
+    builder.addCase(deleteCartItemById.rejected, state => {
       state.loading = false
     })
   }

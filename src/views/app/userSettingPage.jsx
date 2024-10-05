@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { errorActions } from '@/redux/slices/errorSlice'
 import { updateUser } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
+import { getUserAddress } from '@/redux/slices/addressSlice'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import UpdatePasswordDialog from '@/components/dialogs/UpdatePasswordDialog'
 import useModal from '@/hooks/use-modal'
@@ -38,10 +38,6 @@ const UserSettingPage = () => {
     } else {
       dispatch(getUserAddress())
     }
-
-    return () => {
-      dispatch(addressActions.resetState())
-    }
   }, [currentUser])
 
   const handle = {
@@ -55,10 +51,8 @@ const UserSettingPage = () => {
 
       dispatch(updateUser({ id: currentUser._id, payload: userDataForm }))
         .unwrap()
-        .then()
-        .catch(error => {
-          dispatch(errorActions.setErrorMessage(error.data.message))
-        })
+        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
+        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
     }
   }
 

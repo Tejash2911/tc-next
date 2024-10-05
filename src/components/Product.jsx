@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import ProductNotFound from './ProductNotFound'
 import ProductItem from './ProductItem'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { getAllProducts, productActions } from '@/redux/slices/productSlice'
+import { getAllProducts } from '@/redux/slices/productSlice'
 import { ProductItemSkeleton } from './loaders/ProductItemSkeleton'
 
 export default function Product({ sort, cat, filter }) {
@@ -26,8 +26,8 @@ export default function Product({ sort, cat, filter }) {
       const filtersChanged = JSON.stringify(prevFilters) !== JSON.stringify({ sort, color, size })
 
       if (filtersChanged) {
-        dispatch(productActions.resetProducts())
-        dispatch(getAllProducts({ ...nPayload, offset: 1 }))
+        setPage(1)
+        dispatch(getAllProducts(nPayload))
       } else {
         dispatch(getAllProducts(nPayload))
       }
