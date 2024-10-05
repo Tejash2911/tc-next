@@ -39,9 +39,7 @@ const OrdersPage = () => {
               </div>
             ) : (
               <div className='grid gap-4'>
-                {orders.map(i => (
-                  <SingleOrder key={i._id} order={i} />
-                ))}
+                {Array.isArray(orders) && orders.map(i => <SingleOrder key={i._id} order={i} />)}
               </div>
             )}
           </>

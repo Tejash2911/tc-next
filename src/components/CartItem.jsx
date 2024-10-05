@@ -3,12 +3,13 @@ import { useRouter } from 'next/navigation'
 import ClearIcon from '@mui/icons-material/Clear'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
-import { deleteCartItemById, updateCartQtyById } from '@/redux/slices/cartSlice'
-import { useAppDispatch } from '@/redux/hooks'
+import { deleteCartItemById, getCartInfoByUserId, updateCartQtyById } from '@/redux/slices/cartSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { errorActions } from '@/redux/slices/errorSlice'
 
 const CartItem = ({ product }) => {
   const dispatch = useAppDispatch()
+  const { currentUser } = useAppSelector(({ user }) => user)
   const router = useRouter()
 
   const handle = {
@@ -17,7 +18,7 @@ const CartItem = ({ product }) => {
         .unwrap()
         .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
         .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-        .finally(() => handle.getData())
+        .finally(() => dispatch(getCartInfoByUserId(currentUser._id)))
     },
     handleProductQuantityChange: (id, qty) => {
       if (qty === 0) return handle.handleDeleteProduct(id)
@@ -26,7 +27,7 @@ const CartItem = ({ product }) => {
         .unwrap()
         .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
         .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-        .finally(() => handle.getData())
+        .finally(() => dispatch(getCartInfoByUserId(currentUser._id)))
     }
   }
 

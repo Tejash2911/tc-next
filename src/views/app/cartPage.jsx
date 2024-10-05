@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import EmptyCart from '@/components/EmptyCart'
 import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
@@ -9,7 +8,6 @@ import { userRequest } from '@/lib/axios'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
 import { getCartInfoByUserId, getCartSize } from '@/redux/slices/cartSlice'
-import SkeletonCartPage from '@/components/loaders/CartPageSkeleton'
 import CartItem from '@/components/CartItem'
 import { getUserAddress } from '@/redux/slices/addressSlice'
 
@@ -18,7 +16,7 @@ const CartPage = () => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
-  const { cart, loading } = useAppSelector(({ cart }) => cart)
+  const { cart } = useAppSelector(({ cart }) => cart)
 
   const [totalCartPrice, setTotalCartPrice] = useState(0)
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false)
@@ -42,7 +40,7 @@ const CartPage = () => {
   }, [currentUser])
 
   //count cart total price
-  const productQty = cart?.products?.map(p => p.quantity)
+  const productQty = Array.isArray(cart?.products) && cart?.products?.map(p => p.quantity)
 
   useEffect(() => {
     const total = cart?.products?.reduce((total, item) => {
@@ -117,13 +115,9 @@ const CartPage = () => {
     rzp1.open()
   }
 
-  if (loading) {
-    return <SkeletonCartPage />
-  }
-
-  if (!loading && !cart?.products?.length) {
-    return <EmptyCart />
-  }
+  // if (!loading && !cart?.products?.length) {
+  //   return <EmptyCart />
+  // }
 
   return (
     <div className='container'>
@@ -139,18 +133,18 @@ const CartPage = () => {
         </div>
         <div className='grid lg:grid-cols-2 gap-5'>
           <div className='flex flex-col'>
-            {cart?.products?.map(product => (
-              <CartItem product={product} key={product.productID} />
-            ))}
+            {Array.isArray(cart?.products) &&
+              cart?.products?.map(product => <CartItem product={product} key={product.productID} />)}
           </div>
           <div className='flex flex-col gap-2 border rounded-3xl p-2 h-fit'>
             <h1 className='text-3xl my-2 font-light'>Products</h1>
-            {cart?.products?.map(product => (
-              <div className='flex items-center justify-between my-1' key={product._id}>
-                <div className='whitespace-wrap overflow-hidden'>{product.title}</div>
-                <div>{(product.price * product.quantity)?.toFixed(2)}</div>
-              </div>
-            ))}
+            {Array.isArray(cart?.products) &&
+              cart?.products?.map(product => (
+                <div className='flex items-center justify-between my-1' key={product._id}>
+                  <div className='whitespace-wrap overflow-hidden'>{product.title}</div>
+                  <div>{(product.price * product.quantity)?.toFixed(2)}</div>
+                </div>
+              ))}
             <div className='flex justify-between font-semibold my-2'>
               <div className='whitespace-nowrap overflow-hidden'>Total</div>
               <div className='flex items-center justify-center'>{totalCartPrice?.toFixed(2)}</div>
