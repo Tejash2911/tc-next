@@ -25,14 +25,12 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
       dispatch(addReview(nPayload))
         .unwrap()
         .then(res => {
-          dispatch(errorActions.setErrorMessage(res.data.message))
+          dispatch(errorActions.setErrorMessage(res?.message))
           handle.handleClose()
           setRating(0)
           setReview('')
         })
-        .catch(error => {
-          dispatch(errorActions.setErrorMessage(error.data.message))
-        })
+        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
     },
     handleClose: () => {
       setOpen(false)

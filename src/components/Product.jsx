@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import ProductNotFound from './ProductNotFound'
 import ProductItem from './ProductItem'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { getAllProducts, productActions } from '@/redux/slices/productSlice'
+import { getAllProducts } from '@/redux/slices/productSlice'
 import { ProductItemSkeleton } from './loaders/ProductItemSkeleton'
 
 export default function Product({ sort, cat, filter }) {
@@ -26,8 +26,8 @@ export default function Product({ sort, cat, filter }) {
       const filtersChanged = JSON.stringify(prevFilters) !== JSON.stringify({ sort, color, size })
 
       if (filtersChanged) {
-        dispatch(productActions.resetProducts())
-        dispatch(getAllProducts({ ...nPayload, offset: 1 }))
+        setPage(1)
+        dispatch(getAllProducts(nPayload))
       } else {
         dispatch(getAllProducts(nPayload))
       }
@@ -53,7 +53,7 @@ export default function Product({ sort, cat, filter }) {
           <div className='flex justify-center items-center flex-wrap gap-10'>
             {loading
               ? Array.from({ length: 5 }).map((e, i) => <ProductItemSkeleton key={i} />)
-              : products.map(data => <ProductItem data={data} key={data._id} />)}
+              : Array.isArray(products) && products.map(data => <ProductItem data={data} key={data._id} />)}
           </div>
           <button
             className='p-2 text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'

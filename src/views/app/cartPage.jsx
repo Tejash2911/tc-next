@@ -1,121 +1,57 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import ClearIcon from '@mui/icons-material/Clear'
-import RemoveIcon from '@mui/icons-material/Remove'
-import AddIcon from '@mui/icons-material/Add'
-import EmptyCart from '@/components/EmptyCart'
 import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import { userRequest } from '@/lib/axios'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
-import { cartActions } from '@/redux/slices/cartSlice'
-import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
-import SkeletonCartPage from '@/components/loaders/CartPageSkeleton'
+import { getCartInfoByUserId, getCartSize } from '@/redux/slices/cartSlice'
+import CartItem from '@/components/CartItem'
+import { getUserAddress } from '@/redux/slices/addressSlice'
 
 const CartPage = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
+  const { cart } = useAppSelector(({ cart }) => cart)
 
-  const [cartProductRes, setCartProductRes] = useState()
   const [totalCartPrice, setTotalCartPrice] = useState(0)
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
 
   const addressDialog = useModal()
+
+  const handle = {
+    getData: () => {
+      dispatch(getCartInfoByUserId(currentUser._id))
+      dispatch(getCartSize(currentUser._id))
+      dispatch(getUserAddress())
+    }
+  }
 
   useEffect(() => {
     if (!currentUser) {
       router.push('/login')
     } else {
-      dispatch(getUserAddress())
+      handle.getData()
     }
-
-    return () => {
-      addressActions.resetState()
-    }
-  }, [currentUser])
-
-  //get User Cart
-  useEffect(() => {
-    const fetchCartData = async () => {
-      if (currentUser) {
-        try {
-          const res = await userRequest.get(`/cart/info/${currentUser._id}`)
-
-          setCartProductRes(res.data)
-        } catch (error) {
-          console.log('error', error)
-          dispatch(errorActions.setErrorMessage(error.response.data.message))
-        } finally {
-          setIsLoading(false)
-        }
-      } else {
-        setCartProductRes(null)
-        setIsLoading(false)
-      }
-    }
-
-    fetchCartData()
   }, [currentUser])
 
   //count cart total price
-  const productQty = cartProductRes?.products?.map(p => p.quantity)
+  const productQty = Array.isArray(cart?.products) && cart?.products?.map(p => p.quantity)
 
   useEffect(() => {
-    const total = cartProductRes?.products.reduce((total, item) => {
+    const total = cart?.products?.reduce((total, item) => {
       return total + item.price * item.quantity
     }, 0)
 
     setTotalCartPrice(total)
-  }, [cartProductRes?.products, productQty])
-
-  //handle dec inc in product Quantity
-  const handleProductQuantityChange = async (productID, quantity) => {
-    if (quantity === 0) return handleDeleteProduct(productID)
-
-    try {
-      const res = await userRequest.put(`/cart/update-quantity/${productID}/${quantity}`)
-      const productIndex = cartProductRes.products.findIndex(p => p.productID === productID)
-      const newProduct = (cartProductRes.products[productIndex].quantity = quantity)
-
-      setCartProductRes(p => ({ ...p, newProduct }))
-      dispatch(errorActions.setErrorMessage(res.data.message))
-    } catch (error) {
-      console.log(error)
-      dispatch(errorActions.setErrorMessage(error.response.data.message))
-    }
-  }
-
-  //delete product
-  const handleDeleteProduct = async id => {
-    try {
-      const filteredProducts = cartProductRes?.products?.filter(p => {
-        return id !== p.productID
-      })
-
-      setCartProductRes(e => ({ ...e, products: filteredProducts }))
-      dispatch(cartActions.deleteProduct())
-      const res = await userRequest.delete(`/cart/${id}`)
-
-      dispatch(errorActions.setErrorMessage(res.data.message))
-    } catch (error) {
-      console.log('error', error)
-      dispatch(errorActions.setErrorMessage(error.response.data.message))
-    }
-  }
+  }, [cart?.products, productQty])
 
   //handle checkout
   const handleCheckout = async () => {
-    if (!currentUser) {
-      return router.push('/login')
-    }
-
     // if there is address then continue or set get address popup
     if (!address) {
       addressDialog.onOpen({})
@@ -141,8 +77,6 @@ const CartPage = () => {
       }
     })
 
-    console.log(order)
-
     const {
       data: { key }
     } = await userRequest.get('/buy/getKey')
@@ -158,7 +92,7 @@ const CartPage = () => {
       amount: order.amount,
       currency: 'INR',
       name: `${currentUser.firstName} ${currentUser.lastName}'s Cart`,
-      description: `${currentUser.firstName} ${currentUser.lastName}'s Cart includes total ${cartProductRes?.products?.length}`,
+      description: `${currentUser.firstName} ${currentUser.lastName}'s Cart includes total ${cart?.products?.length}`,
       image:
         'https://toppng.com/uploads/preview/astronaut-art-png-jpg-royalty-free-stock-astronauta-dibujo-11562856188offwkk8qo8.png',
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
@@ -179,121 +113,55 @@ const CartPage = () => {
     const rzp1 = new window.Razorpay(options)
 
     rzp1.open()
-    setCartProductRes(null)
   }
 
-  if (isLoading) {
-    return <SkeletonCartPage />
-  }
+  // if (!loading && !cart?.products?.length) {
+  //   return <EmptyCart />
+  // }
 
   return (
     <div className='container'>
       <div className='p-5 font-Urbanist'>
         <div className='text-center font-light'>Cart</div>
-        {cartProductRes?.products.length ? (
-          <>
-            <div className='flex items-center justify-between p-5'>
-              <button className='p-2 font-semibold text-sm border-2 border-black bg-transparent'>
-                Continue Shopping
+        <div className='flex items-center justify-between p-5'>
+          <button className='p-2 font-semibold text-sm border-2 border-black bg-transparent'>Continue Shopping</button>
+          <div className='hidden md:block'>
+            <span className='underline cursor-pointer m-2'>Shopping Bag</span>
+            <span className='underline cursor-pointer m-2'>Your Wishlist</span>
+          </div>
+          <button className='p-2 font-semibold text-sm border-none bg-black text-white'>Checkout Now</button>
+        </div>
+        <div className='grid lg:grid-cols-2 gap-5'>
+          <div className='flex flex-col'>
+            {Array.isArray(cart?.products) &&
+              cart?.products?.map(product => <CartItem product={product} key={product.productID} />)}
+          </div>
+          <div className='flex flex-col gap-2 border rounded-3xl p-2 h-fit'>
+            <h1 className='text-3xl my-2 font-light'>Products</h1>
+            {Array.isArray(cart?.products) &&
+              cart?.products?.map(product => (
+                <div className='flex items-center justify-between my-1' key={product._id}>
+                  <div className='whitespace-wrap overflow-hidden'>{product.title}</div>
+                  <div>{(product.price * product.quantity)?.toFixed(2)}</div>
+                </div>
+              ))}
+            <div className='flex justify-between font-semibold my-2'>
+              <div className='whitespace-nowrap overflow-hidden'>Total</div>
+              <div className='flex items-center justify-center'>{totalCartPrice?.toFixed(2)}</div>
+            </div>
+            <div className='flex items-center justify-center'>
+              <button
+                className='bg-black text-white text-sm border-none p-4 mt-5 w-4/5 disabled:bg-gray-500'
+                onClick={handleCheckout}
+                disabled={isCheckoutLoading ? true : false}
+              >
+                Check out
               </button>
-              <div className='hidden md:block'>
-                <span className='underline cursor-pointer m-2'>Shopping Bag</span>
-                <span className='underline cursor-pointer m-2'>Your Wishlist</span>
-              </div>
-              <button className='p-2 font-semibold text-sm border-none bg-black text-white'>Checkout Now</button>
             </div>
-            <div className='grid lg:grid-cols-2 gap-5'>
-              <div className='flex flex-col'>
-                {cartProductRes?.products?.map(product => (
-                  <div
-                    key={product.productID}
-                    className='flex flex-col md:flex-row h-fit my-2 rounded-xl shadow-sm hover:shadow-md overflow-hidden bg-[#f7f7f7] relative transition-all scale-95 hover:scale-100'
-                  >
-                    <div
-                      className='absolute top-1 right-1 cursor-pointer'
-                      onClick={() => handleDeleteProduct(product.productID)}
-                    >
-                      <ClearIcon style={{ color: '#AB2A28' }} />
-                    </div>
-                    <div className='flex w-3/4' onClick={() => router.push(`/product/${product._id}`)}>
-                      <Image
-                        src={product.img}
-                        alt={product.title}
-                        width={200}
-                        height={200}
-                        className='object-contain'
-                      />
-                      <div className='flex flex-col justify-around m-2'>
-                        <span>
-                          <b>Product :</b> {product.title}
-                        </span>
-                        <span>
-                          <b>ID :</b> {product.productID}
-                        </span>
-                        <span className='inline-flex items-center gap-2'>
-                          <b>Color :</b>{' '}
-                          <div
-                            className='w-3 h-3 border border-gray-700 rounded-full'
-                            style={{ background: product.color }}
-                          />
-                        </span>
-                        <span>
-                          <b>Size :</b> {product.size}
-                        </span>
-                      </div>
-                    </div>
-                    <div className='flex flex-col justify-center items-center w-1/4'>
-                      <div className='flex justify-center items-center font-semibold'>
-                        <div
-                          className='flex items-center justify-center mx-2 cursor-pointer active:scale-110'
-                          onClick={() => handleProductQuantityChange(product.productID, --product.quantity)}
-                        >
-                          <RemoveIcon />
-                        </div>
-                        <div className='flex items-center justify-center h-10 w-10 rounded-md border border-teal-700'>
-                          {product.quantity}
-                        </div>
-                        <div
-                          className='flex items-center justify-center mx-2 cursor-pointer active:scale-110'
-                          onClick={() => handleProductQuantityChange(product.productID, ++product.quantity)}
-                        >
-                          <AddIcon />
-                        </div>
-                      </div>
-                      <span className='m-2 font-semibold'>{product.price}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className='flex flex-col gap-2 border rounded-3xl p-2 h-fit'>
-                <h1 className='text-3xl my-2 font-light'>Products</h1>
-                {cartProductRes?.products?.map(product => (
-                  <div className='flex items-center justify-between my-1' key={product._id}>
-                    <div className='whitespace-wrap overflow-hidden'>{product.title}</div>
-                    <div>{(product.price * product.quantity)?.toFixed(2)}</div>
-                  </div>
-                ))}
-                <div className='flex justify-between font-semibold my-2'>
-                  <div className='whitespace-nowrap overflow-hidden'>Total</div>
-                  <div className='flex items-center justify-center'>{totalCartPrice?.toFixed(2)}</div>
-                </div>
-                <div className='flex items-center justify-center'>
-                  <button
-                    className='bg-black text-white text-sm border-none p-4 mt-5 w-4/5'
-                    onClick={handleCheckout}
-                    disabled={isCheckoutLoading ? true : false}
-                  >
-                    Check out
-                  </button>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <EmptyCart />
-        )}
-        {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
+          </div>
+        </div>
       </div>
+      {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
     </div>
   )
 }

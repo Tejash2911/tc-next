@@ -8,12 +8,12 @@ import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import Review from '@/components/Review'
-import { cartActions } from '@/redux/slices/cartSlice'
+import { addToCart } from '@/redux/slices/cartSlice'
 import { userRequest } from '@/lib/axios'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
-import { addressActions, getUserAddress } from '@/redux/slices/addressSlice'
+import { getUserAddress } from '@/redux/slices/addressSlice'
 import ProductDetailsLoader from '@/components/loaders/ProductDetailsLoader'
 
 const ProductDetailPage = ({ id }) => {
@@ -31,12 +31,37 @@ const ProductDetailPage = ({ id }) => {
   const [Color, setColor] = useState(product?.color?.length >= 0 && `#${product.color[0]}`)
   const [size, setSize] = useState(product?.size?.length >= 0 && product.size[0])
 
+  const handle = {
+    getData: () => {
+      dispatch(getProductById(id))
+      dispatch(getUserAddress())
+    },
+    addToCart: () => {
+      if (!currentUser) {
+        router.push('/login')
+      } else {
+        const payload = {
+          productID: product._id,
+          quantity: productQuantity,
+          color: Color || product.color[0],
+          size: size || product.size[0]
+        }
+
+        const nPayload = { products: [payload] }
+
+        dispatch(addToCart(nPayload))
+          .unwrap()
+          .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
+          .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+      }
+    }
+  }
+
   useEffect(() => {
     handle.getData()
 
     return () => {
       dispatch(productActions.resetProduct())
-      dispatch(addressActions.resetState())
       setProductQuantity(1)
     }
   }, [id])
@@ -44,28 +69,6 @@ const ProductDetailPage = ({ id }) => {
   const handleClick = type => {
     if (type === 'dec') setProductQuantity(prev => (productQuantity > 1 ? prev - 1 : prev))
     if (type === 'inc') setProductQuantity(prev => (productQuantity < product.quantity ? prev + 1 : prev))
-  }
-
-  const handleSubClick = async () => {
-    if (!currentUser) router.push('/login')
-
-    try {
-      const res = await userRequest.post(`/cart`, {
-        products: [
-          {
-            productID: product._id,
-            quantity: productQuantity,
-            color: Color || product.color[0],
-            size: size || product.size[0]
-          }
-        ]
-      })
-
-      !res.data.productExisted && dispatch(cartActions.addProduct())
-      dispatch(errorActions.setErrorMessage(res?.data?.message))
-    } catch (error) {
-      dispatch(errorActions.setErrorMessage(error?.response?.data?.message))
-    }
   }
 
   const handleBuyNow = async () => {
@@ -153,30 +156,24 @@ const ProductDetailPage = ({ id }) => {
     imgRef.current.style.transform = 'scale(1)'
   }
 
-  const handle = {
-    getData: () => {
-      dispatch(getProductById(id))
-      dispatch(getUserAddress())
-    }
-  }
-
   if (loading) return <ProductDetailsLoader />
 
   return (
     <div className='container'>
       <div className='grid lg:grid-cols-2 sm:grid-cols-1 gap-5 font-Urbanist p-10'>
         <div className='flex items-center justify-center cursor-zoom-in overflow-hidden'>
-          <Image
-            src={product?.img}
-            alt='product-image'
-            width={400}
-            height={168}
-            priority
-            ref={imgRef}
-            onMouseMove={handleImgMouseEnter}
-            onMouseLeave={handleImgMouseLeave}
-            className='object-cover object-center transition-transform duration-500 ease-in-out'
-          />
+          {product.img && (
+            <Image
+              src={product.img}
+              alt='product-image'
+              width={400}
+              height={168}
+              ref={imgRef}
+              onMouseMove={handleImgMouseEnter}
+              onMouseLeave={handleImgMouseLeave}
+              className='object-cover object-center transition-transform duration-500 ease-in-out'
+            />
+          )}
         </div>
         <div className='grid gap-7'>
           <div className='flex items-center justify-between'>
@@ -230,7 +227,7 @@ const ProductDetailPage = ({ id }) => {
               <button
                 className={`border-teal-500 border p-2 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] disabled:cursor-not-allowed`}
                 disabled={product?.quantity < 1}
-                onClick={handleSubClick}
+                onClick={handle.addToCart}
               >
                 Add to Cart
               </button>

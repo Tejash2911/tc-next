@@ -22,10 +22,8 @@ const LoginV2 = () => {
       e.preventDefault()
       dispatch(login({ email, password }))
         .unwrap()
-        .then()
-        .catch(error => {
-          dispatch(errorActions.setErrorMessage(error.data.message))
-        })
+        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
+        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
     }
   }
 

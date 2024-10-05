@@ -36,7 +36,7 @@ const RegisterV2 = () => {
         dispatch(register(formValues))
           .unwrap()
           .then()
-          .catch(error => dispatch(errorActions.setErrorMessage(error.data.message)))
+          .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
       }
     },
     handleOnChange: e => {
