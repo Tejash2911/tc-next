@@ -28,7 +28,7 @@ jobs:
         run: npm install -g vercel
 
       - name: Deploy to Vercel
-        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --project tc-next # Assumes you have Vercel CLI configured with a token
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} # Assumes you have Vercel CLI configured with a token
 
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Add this token in your GitHub Secrets
