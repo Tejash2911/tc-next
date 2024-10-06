@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import LocalMallIcon from '@mui/icons-material/LocalMall'
 import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -9,11 +10,14 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
-import { getCartSize } from '@/redux/slices/cartSlice'
+import { cartActions, getCartSize } from '@/redux/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getSearchProducts } from '@/redux/slices/productSlice'
 import { useDebounce } from '@/hooks/use-debounce'
 import { userActions } from '@/redux/slices/userSlice'
+import logo from '../../public/logo.png'
+import { addressActions } from '@/redux/slices/addressSlice'
+import { orderActions } from '@/redux/slices/orderSlice'
 
 export default function Navbar() {
   const router = useRouter()
@@ -36,6 +40,9 @@ export default function Navbar() {
     },
     onLogout: () => {
       dispatch(userActions.logoutUser())
+      dispatch(cartActions.resetState())
+      dispatch(orderActions.resetState())
+      dispatch(addressActions.resetState())
       setIsAuthenticated(false)
     }
   }
@@ -57,7 +64,9 @@ export default function Navbar() {
       <div className='px-4 py-2 flex justify-between items-center'>
         <div className='flex-1 hidden md:flex items-center'>
           <h1 className='font-semibold text-center md:text-left text-3xl tracking-tight'>
-            <Link href='/'>Title.</Link>
+            <Link href='/'>
+              <Image src={logo} width={40} height={40} alt='logo' />
+            </Link>
           </h1>
         </div>
         <div className='flex-1'>

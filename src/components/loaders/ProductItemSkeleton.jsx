@@ -7,10 +7,10 @@ export const ProductItemSkeleton = () => {
       {/* Text and Rating Placeholder */}
       <div className='flex flex-col p-2 gap-1'>
         {/* Title Placeholder */}
-        <div className='h-6 bg-gray-300 rounded-md w-3/4'></div>
+        <div className='h-4 bg-gray-200 rounded-md w-3/4'></div>
 
         {/* Description Placeholder */}
-        <div className='h-4 bg-gray-200 rounded-md w-full'></div>
+        <div className='h-3 bg-gray-200 rounded-md w-full'></div>
 
         {/* Price and Ratings Placeholder */}
         <div className='flex justify-between bg-teal-200 shadow-sm p-1 rounded-md'>

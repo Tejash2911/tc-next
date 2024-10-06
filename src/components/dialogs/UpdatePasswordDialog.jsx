@@ -43,7 +43,7 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
   return (
     <Modal open={open}>
       <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 max-w-[600px] font-Urbanist'>
-        <label htmlFor='currentPass' className='text-xl font-semibold block'>
+        <label htmlFor='currentPass' className='text-lg font-semibold block'>
           Current Password:
         </label>
         <input
@@ -56,7 +56,7 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           className='p-2 w-full border border-[#ccc] rounded-md focus:border-[#555]'
           required
         />
-        <label htmlFor='password' className='text-xl font-semibold block'>
+        <label htmlFor='password' className='text-lg font-semibold block'>
           New Password:
         </label>
         <input
@@ -69,7 +69,7 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           className='p-2 w-full border border-[#ccc] rounded-md focus:border-[#555]'
           required
         />
-        <label htmlFor='confPass' className='text-xl font-semibold block'>
+        <label htmlFor='confPass' className='text-lg font-semibold block'>
           Confirm Password:
         </label>
         <input

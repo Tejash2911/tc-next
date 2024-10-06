@@ -43,7 +43,7 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
         <h1>{data.product?.title}</h1>
         <div className='flex justify-start items-center gap-2 w-full'>
           <Image src='/user.png' alt='user-image' width={50} height={50} />
-          <span className='text-xl'>{currentUser?.firstName + ' ' + currentUser?.lastName}</span>
+          <span>{currentUser?.firstName + ' ' + currentUser?.lastName}</span>
         </div>
         <div className='flex flex-col items-center gap-6 max-h-72'>
           <CustomRating setProductRating={setRating} />

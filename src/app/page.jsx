@@ -6,9 +6,9 @@ export default function Home() {
   return (
     <main>
       <Slider />
-      <div className='font-Urbanist text-4xl font-medium mb-4 text-center'>Categories</div>
+      <div className='font-Urbanist text-2xl font-medium mb-4 text-center'>Categories</div>
       <Category />
-      <div className='font-Urbanist text-4xl font-medium mb-4 text-center'>Top Products</div>
+      <div className='font-Urbanist text-2xl font-medium mb-4 text-center'>Top Products</div>
       <Product sort='top-purchased' cat='' filter='' />
     </main>
   )

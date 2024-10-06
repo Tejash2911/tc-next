@@ -34,7 +34,7 @@ const CartItem = ({ product }) => {
   return (
     <div
       key={product.productID}
-      className='flex flex-col md:flex-row h-fit my-2 rounded-xl shadow-sm hover:shadow-md overflow-hidden bg-[#f7f7f7] relative transition-all scale-95 hover:scale-100'
+      className='flex flex-col md:flex-row p-2 rounded-xl h-3/4 shadow-sm hover:shadow-md overflow-hidden bg-[#f7f7f7] relative transition-all scale-100 hover:scale-100'
     >
       <div
         className='absolute top-1 right-1 cursor-pointer'
@@ -43,7 +43,7 @@ const CartItem = ({ product }) => {
         <ClearIcon style={{ color: '#AB2A28' }} />
       </div>
       <div className='flex w-3/4' onClick={() => router.push(`/product/${product._id}`)}>
-        <Image src={product.img} alt={product.title} width={200} height={200} className='object-contain' />
+        <Image src={product.img} alt={product.title} width={150} height={150} className='object-contain' />
         <div className='flex flex-col justify-around m-2'>
           <span>
             <b>Product :</b> {product.title}
