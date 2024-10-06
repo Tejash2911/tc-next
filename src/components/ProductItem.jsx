@@ -19,7 +19,7 @@ export default function ProductItem(props) {
           />
         </div>
         <div className='flex flex-col p-2 gap-1'>
-          <h2 className='text-xl text-gray-700 overflow-ellipsis overflow-hidden whitespace-nowrap'>{title}</h2>
+          <h2 className='text-sm text-gray-700 overflow-ellipsis overflow-hidden whitespace-nowrap'>{title}</h2>
           <p className='text-xs text-gray-500 overflow-ellipsis overflow-hidden whitespace-nowrap'>
             {desc ? desc : 'No Description'}
           </p>

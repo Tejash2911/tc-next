@@ -33,7 +33,7 @@ export default function Review({ product }) {
       <div className='p-7'>
         <div className='mb-2 font-Urbanist'>
           <div className='flex justify-between items-center'>
-            <h2 className='text-xl font-semibold'>{product?.title}</h2>
+            <h2 className='text-lg font-semibold'>{product?.title}</h2>
             <button
               className='flex items-center p-2 border border-teal-600 shadow-lg transition-all duration-300 hover:bg-teal-700 hover:text-white'
               onClick={handleWriteReview}
@@ -42,7 +42,7 @@ export default function Review({ product }) {
             </button>
           </div>
           <div className='flex items-center gap-1'>
-            <span className='text-2xl'>{product?.ratingsAverage}</span>
+            <span className='text-lg'>{product?.ratingsAverage}</span>
             <Rating value={Math.round(product?.ratingsAverage)} />
             {product?.ratingsQuantity} Reviews
           </div>

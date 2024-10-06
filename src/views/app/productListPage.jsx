@@ -27,13 +27,13 @@ const ProductListPage = () => {
     <div className='container font-Urbanist'>
       <h1 className='m-5 font-semibold text-3xl'>{category || 'All Products'}</h1>
       <div className='flex justify-between m-5'>
-        <div className='text-xl font-semibold'>
+        <div className='text-lg font-semibold'>
           <span className='mr-5'>Filter Products:</span>
           <select
             name='color'
             aria-label='color'
             onChange={handleFilters}
-            className='p-2 border border-black text-base mr-2 hover:shadow-md'
+            className='p-1 border border-black text-base mr-2 hover:shadow-md'
           >
             <option defaultValue='Color'>Color</option>
             <option>red</option>
@@ -47,7 +47,7 @@ const ProductListPage = () => {
             name='size'
             aria-label='size'
             onChange={handleFilters}
-            className='p-2 border border-black text-base mr-2 hover:shadow-md'
+            className='p-1 border border-black text-base mr-2 hover:shadow-md'
           >
             <option defaultValue='Size'>Size</option>
             <option>S</option>
@@ -58,13 +58,13 @@ const ProductListPage = () => {
             <option>XXXL</option>
           </select>
         </div>
-        <div className='text-xl font-semibold'>
+        <div className='text-lg font-semibold'>
           <span className='mr-5'>Sort Products:</span>
           <select
             name='sort'
             aria-label='sort'
             onChange={e => setSort(e.target.value)}
-            className='p-2 border border-black text-base mr-2 hover:shadow-md'
+            className='p-1 border border-black text-base mr-2 hover:shadow-md'
           >
             <option defaultValue='newest'>Newest</option>
             <option value='top-rated'>Top rated</option>

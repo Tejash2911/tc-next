@@ -8,7 +8,7 @@ import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import Review from '@/components/Review'
-import { addToCart } from '@/redux/slices/cartSlice'
+import { addToCart, getCartSize } from '@/redux/slices/cartSlice'
 import { userRequest } from '@/lib/axios'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
 import AddressDialog from '@/components/dialogs/AddressDialog'
@@ -21,6 +21,7 @@ const ProductDetailPage = ({ id }) => {
   const { currentUser } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
   const { product, loading } = useAppSelector(({ product }) => product)
+  const { loading: addToCartLoading } = useAppSelector(({ cart }) => cart)
   const router = useRouter()
   const imgRef = useRef(null)
   const [productQuantity, setProductQuantity] = useState(1)
@@ -53,6 +54,7 @@ const ProductDetailPage = ({ id }) => {
           .unwrap()
           .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
           .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+          .finally(() => dispatch(getCartSize(currentUser._id)))
       }
     }
   }
@@ -187,7 +189,7 @@ const ProductDetailPage = ({ id }) => {
           </span>
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center'>
-              <div className='text-xl font-light mr-2'>Color</div>
+              <div className='text-lg font-light mr-2'>Color</div>
               {(product?.color || []).map(e => (
                 <div
                   key={e}
@@ -198,7 +200,7 @@ const ProductDetailPage = ({ id }) => {
               ))}
             </div>
             <div className='flex items-center'>
-              <div className='text-xl font-light mr-2'>Size</div>
+              <div className='text-lg font-light mr-2'>Size</div>
               <select
                 name='size'
                 aria-label='size'
@@ -225,15 +227,14 @@ const ProductDetailPage = ({ id }) => {
             </div>
             <div className='flex items-center gap-3'>
               <button
-                className={`border-teal-500 border p-2 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] disabled:cursor-not-allowed`}
-                disabled={product?.quantity < 1}
+                className={`border-teal-500 border p-2 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] `}
                 onClick={handle.addToCart}
+                disabled={addToCartLoading}
               >
-                Add to Cart
+                {addToCartLoading ? 'Adding..' : 'Add to Cart'}
               </button>
               <button
-                className={`border-teal-500 border p-2 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] disabled:cursor-not-allowed`}
-                disabled={product?.quantity < 1}
+                className={`border-teal-500 border p-2 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb]`}
                 onClick={handleBuyNow}
               >
                 Buy Now

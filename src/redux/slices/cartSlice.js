@@ -72,7 +72,7 @@ const cartSlice = createAppSlice({
   extraReducers: builder => {
     // get user cart size
     builder.addCase(getCartSize.pending, state => {
-      state.loading = true
+      state.loading = false
     })
     builder.addCase(getCartSize.fulfilled, (state, { payload: { size } }) => {
       state.quantity = size
@@ -104,7 +104,7 @@ const cartSlice = createAppSlice({
     })
     // update cart quantity by id
     builder.addCase(updateCartQtyById.pending, state => {
-      state.loading = true
+      state.loading = false
     })
     builder.addCase(updateCartQtyById.fulfilled, state => {
       state.loading = false
@@ -114,7 +114,7 @@ const cartSlice = createAppSlice({
     })
     // delete cart item by id
     builder.addCase(deleteCartItemById.pending, state => {
-      state.loading = true
+      state.loading = false
     })
     builder.addCase(deleteCartItemById.fulfilled, state => {
       state.loading = false
