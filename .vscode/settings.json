@@ -50,6 +50,7 @@
     "tailwindcss",
     "scrollamount",
     "stylelint",
-    "Razorpay"
+    "Razorpay",
+    "precommit"
   ]
 }
