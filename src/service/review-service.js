@@ -1,7 +1,7 @@
 import { axiosInstance, userRequest } from '@/lib/axios'
 import { handleApiErr, handleApiRes } from './handleApi'
 
-const getAllReviewByProductId = id => {
+const getAll = id => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .get(`/review/${id}`)
@@ -21,9 +21,29 @@ const add = ORpayload => {
   })
 }
 
+const upvote = id => {
+  return new Promise((resolve, reject) => {
+    userRequest
+      .put(`/review/upvote/${id}`)
+      .then(res => resolve(handleApiRes(res)))
+      .catch(err => reject(handleApiErr(err)))
+  })
+}
+
+const abuse = id => {
+  return new Promise((resolve, reject) => {
+    userRequest
+      .put(`/review/abuse/${id}`)
+      .then(res => resolve(handleApiRes(res)))
+      .catch(err => reject(handleApiErr(err)))
+  })
+}
+
 const reviewService = {
-  getAllReviewByProductId,
-  add
+  getAll,
+  add,
+  upvote,
+  abuse
 }
 
 export default reviewService

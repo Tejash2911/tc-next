@@ -4,30 +4,23 @@ import Rating from './Rating'
 import timeSince from '@/utils/timeSince'
 import { useAppDispatch } from '@/redux/hooks'
 import { errorActions } from '@/redux/slices/errorSlice'
-import { userRequest } from '@/lib/axios'
+import { abuseReview, upvoteReview } from '@/redux/slices/reviewSlice'
 
 export default function SingleReview({ review }) {
   const dispatch = useAppDispatch()
 
-  const handleUpVote = async () => {
-    try {
-      const { data } = await userRequest.put(`/review/upvote/${review._id}`)
-
-      dispatch(errorActions.setErrorMessage(data.message))
-    } catch (error) {
-      console.log(error)
-      dispatch(errorActions.setErrorMessage(error.response.data.message))
-    }
-  }
-
-  const handleReport = async () => {
-    try {
-      const { data } = await userRequest.put(`/review/abuse/${review._id}`)
-
-      dispatch(errorActions.setErrorMessage(data.message))
-    } catch (error) {
-      console.log(error)
-      dispatch(errorActions.setErrorMessage(error.response.data.message))
+  const handle = {
+    handleUpVote: () => {
+      dispatch(upvoteReview(review._id))
+        .unwrap()
+        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
+        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+    },
+    handleReport: () => {
+      dispatch(abuseReview(review._id))
+        .unwrap()
+        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
+        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
     }
   }
 
@@ -44,10 +37,10 @@ export default function SingleReview({ review }) {
         </div>
         <div className=''>{review?.review}</div>
         <div className='flex items-center justify-between'>
-          <div className='flex items-center gap-1 cursor-pointer hover:text-blue-600' onClick={handleUpVote}>
+          <div className='flex items-center gap-1 cursor-pointer hover:text-blue-600' onClick={handle.handleUpVote}>
             <ThumbUpOffAltIcon style={{ fontSize: '30px' }} /> Helpful?
           </div>
-          <div onClick={handleReport} className='text-red-600 cursor-pointer hover:underline'>
+          <div onClick={handle.handleReport} className='text-red-600 cursor-pointer hover:underline'>
             Report as inappropriate
           </div>
         </div>
