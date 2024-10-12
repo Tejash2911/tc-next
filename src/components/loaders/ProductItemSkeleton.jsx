@@ -1,8 +1,8 @@
 export const ProductItemSkeleton = () => {
   return (
-    <div className='w-52 md:w-56 h-fit overflow-hidden shadow-md bg-opacity-30 bg-gray-100 rounded-md p-1'>
+    <div className='w-44 md:w-48 xl:w-52 h-fit overflow-hidden shadow-md bg-opacity-30 bg-gray-100 rounded-md p-1'>
       {/* Image Placeholder */}
-      <div className='flex items-center justify-center overflow-hidden p-4 md:p-10 h-40 bg-gray-300 rounded-md animate-pulse'></div>
+      <div className='flex items-center justify-center overflow-hidden p-10 h-28 md:h-32 bg-gray-300 rounded-md animate-pulse'></div>
 
       {/* Text and Rating Placeholder */}
       <div className='flex flex-col p-2 gap-1'>

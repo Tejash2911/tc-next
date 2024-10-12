@@ -49,19 +49,21 @@ export default function Product({ sort, cat, filter }) {
       {!products?.length && !loading ? (
         <ProductNotFound title='Ops! No product Found' desc='Your filter did not match any product' />
       ) : (
-        <div className='flex flex-col gap-10 justify-between items-center font-Urbanist mb-10'>
-          <div className='flex justify-center items-center flex-wrap gap-10'>
+        <div className='font-Urbanist mb-10'>
+          <div className='grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-5'>
             {loading
               ? Array.from({ length: 5 }).map((e, i) => <ProductItemSkeleton key={i} />)
               : Array.isArray(products) && products.map(data => <ProductItem data={data} key={data._id} />)}
           </div>
-          <button
-            className='p-2 text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
-            disabled={loading}
-            onClick={() => setPage(p => p + 1)}
-          >
-            {loading ? 'Loading...' : 'Load More'}
-          </button>
+          <div className='w-full grid place-content-center mt-10'>
+            <button
+              className='p-2 text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
+              disabled={loading}
+              onClick={() => setPage(p => p + 1)}
+            >
+              {loading ? 'Loading...' : 'Load More'}
+            </button>
+          </div>
         </div>
       )}
     </section>
