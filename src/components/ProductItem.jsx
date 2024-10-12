@@ -8,14 +8,14 @@ export default function ProductItem(props) {
 
   return (
     <Link href={`/product/${_id}`}>
-      <div className='w-52 md:w-56 h-fit overflow-hidden transition-all duration-300 shadow-md bg-opacity-30 bg-gray-100 rounded-md p-1 hover:shadow-xl'>
-        <div className='flex items-center justify-center overflow-hidden p-4 md:p-10 h-40'>
+      <div className='w-44 md:w-48 xl:w-52 h-fit overflow-hidden transition-all duration-300 shadow-md bg-opacity-30 bg-gray-100 rounded-md p-1 hover:shadow-xl'>
+        <div className='flex items-center justify-center overflow-hidden p-10 h-28 md:h-32'>
           <Image
             src={img}
             alt={title}
             width={128}
             height={128}
-            className='img transition-all duration-300 hover:scale-90'
+            className='transition-all duration-300 hover:scale-90'
           />
         </div>
         <div className='flex flex-col p-2 gap-1'>
@@ -23,14 +23,14 @@ export default function ProductItem(props) {
           <p className='text-xs text-gray-500 overflow-ellipsis overflow-hidden whitespace-nowrap'>
             {desc ? desc : 'No Description'}
           </p>
-          <div className='flex justify-between  bg-teal-200 shadow-sm'>
+          <div className='flex justify-between  bg-teal-200 rounded px-2 shadow-sm'>
             <span className='text-gray-700 text-sm'>Rs. {price}</span>
-            <div className=' flex items-center rounded-md text-sm'>
+            <div className=' flex items-center rounded-md text-sm gap-1'>
               <div className='flex items-center'>
-                {ratingsAverage} <StarIcon className='text-[#ff9800] text-base' />
+                {ratingsAverage} <StarIcon className='text-[#ff9800] text-sm' />
               </div>
               <div className='flex items-center'>
-                {ratingsQuantity} <ReviewIcon className='text-[#ffd700] text-sm' />
+                {ratingsQuantity} <ReviewIcon className='text-[#ffd700] text-xs' />
               </div>
             </div>
           </div>
