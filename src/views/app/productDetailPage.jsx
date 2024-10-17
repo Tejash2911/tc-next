@@ -162,7 +162,7 @@ const ProductDetailPage = ({ id }) => {
 
   return (
     <div className='container'>
-      <div className='grid lg:grid-cols-2 sm:grid-cols-1 gap-5 font-Urbanist p-10'>
+      <div className='grid md:grid-cols-2 sm:grid-cols-1 gap-5 font-Urbanist p-10'>
         <div className='flex items-center justify-center cursor-zoom-in overflow-hidden'>
           {product.img && (
             <Image
@@ -178,11 +178,9 @@ const ProductDetailPage = ({ id }) => {
           )}
         </div>
         <div className='grid gap-7'>
-          <div className='flex items-center justify-between'>
-            <h1 className='text-2xl font-light'>{product?.title}</h1>
-            <h1 className='font-light'>Design No - {product?.productNo}</h1>
-          </div>
-          <p className=''>{product?.desc}</p>
+          <h1 className='text-2xl font-light'>{product?.title}</h1>
+          <p>Design No - {product?.productNo}</p>
+          <p>{product?.desc}</p>
           <p className='text-3xl'>₹{product?.price}</p>
           <span className={`text-2xl ${product?.quantity >= 1 ? 'text-green-600' : 'text-red-600'}`}>
             {product?.quantity >= 1 ? `Only ${product?.quantity} left in stock` : 'Currently unavailable'}
