@@ -3,7 +3,7 @@ import React from 'react'
 const ProductDetailsLoader = () => {
   return (
     <div className='container'>
-      <div className='grid lg:grid-cols-2 sm:grid-cols-1 gap-5 font-Urbanist p-10 animate-pulse'>
+      <div className='grid md:grid-cols-2 sm:grid-cols-1 gap-5 font-Urbanist p-10 animate-pulse'>
         {/* Image Skeleton */}
         <div className='flex items-center justify-center cursor-zoom-in overflow-hidden'>
           <div className='w-[400px] h-[400px] bg-gray-300' />
@@ -11,12 +11,10 @@ const ProductDetailsLoader = () => {
 
         {/* Details Skeleton */}
         <div className='grid gap-7'>
-          <div className='flex items-center justify-between'>
-            <div className='w-2/3 h-8 bg-gray-300 rounded' />
-            <div className='w-1/4 h-8 bg-gray-300 rounded' />
-          </div>
+          <div className='w-2/3 h-6 bg-gray-300 rounded' />
+          <div className='w-1/4 h-5 bg-gray-300 rounded' />
 
-          <div className='h-24 bg-gray-300 rounded'></div>
+          <div className='h-5 bg-gray-300 rounded'></div>
 
           <div className='w-1/4 h-8 bg-gray-300 rounded'></div>
 
