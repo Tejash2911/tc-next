@@ -18,7 +18,7 @@ const CartItem = ({ product }) => {
         .unwrap()
         .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
         .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-        .finally(() => dispatch(getCartInfoByUserId(currentUser._id)))
+        .finally(() => dispatch(getCartInfoByUserId(currentUser?._id)))
     },
     handleProductQuantityChange: (id, qty) => {
       if (qty === 0) return handle.handleDeleteProduct(id)

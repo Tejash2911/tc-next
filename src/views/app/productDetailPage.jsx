@@ -54,7 +54,7 @@ const ProductDetailPage = ({ id }) => {
         .unwrap()
         .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
         .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-        .finally(() => dispatch(getCartSize(currentUser._id)))
+        .finally(() => dispatch(getCartSize(currentUser?._id)))
     }
   }
 
