@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
@@ -14,7 +13,6 @@ import EmptyCart from '@/components/EmptyCart'
 import SkeletonCartPage from '@/components/loaders/CartPageSkeleton'
 
 const CartPage = () => {
-  const router = useRouter()
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
@@ -34,11 +32,7 @@ const CartPage = () => {
   }
 
   useEffect(() => {
-    if (!currentUser) {
-      router.push('/login')
-    } else {
-      handle.getData()
-    }
+    handle.getData()
   }, [currentUser])
 
   //count cart total price

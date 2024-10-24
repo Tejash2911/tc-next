@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { errorActions } from '@/redux/slices/errorSlice'
 import { updateUser } from '@/redux/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
@@ -17,7 +16,6 @@ const navMap = {
 
 const UserSettingPage = () => {
   const dispatch = useAppDispatch()
-  const router = useRouter()
   const { currentUser, loading } = useAppSelector(({ user }) => user)
   const { address } = useAppSelector(({ address }) => address)
   const [isActivated, setIsActivated] = useState(1)
@@ -33,12 +31,8 @@ const UserSettingPage = () => {
   })
 
   useEffect(() => {
-    if (!currentUser) {
-      router.push('/login')
-    } else {
-      dispatch(getUserAddress())
-    }
-  }, [currentUser])
+    dispatch(getUserAddress())
+  }, [])
 
   const handle = {
     onChange: e => {

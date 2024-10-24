@@ -35,27 +35,26 @@ const ProductDetailPage = ({ id }) => {
   const handle = {
     getData: () => {
       dispatch(getProductById(id))
-      dispatch(getUserAddress())
+
+      if (currentUser) {
+        dispatch(getUserAddress())
+      }
     },
     addToCart: () => {
-      if (!currentUser) {
-        router.push('/login')
-      } else {
-        const payload = {
-          productID: product._id,
-          quantity: productQuantity,
-          color: Color || product.color[0],
-          size: size || product.size[0]
-        }
-
-        const nPayload = { products: [payload] }
-
-        dispatch(addToCart(nPayload))
-          .unwrap()
-          .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-          .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-          .finally(() => dispatch(getCartSize(currentUser._id)))
+      const payload = {
+        productID: product._id,
+        quantity: productQuantity,
+        color: Color || product.color[0],
+        size: size || product.size[0]
       }
+
+      const nPayload = { products: [payload] }
+
+      dispatch(addToCart(nPayload))
+        .unwrap()
+        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
+        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+        .finally(() => dispatch(getCartSize(currentUser._id)))
     }
   }
 

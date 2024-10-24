@@ -1,6 +1,5 @@
 'use client'
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import ProductNotFound from '@/components/ProductNotFound'
 import SingleOrder from '@/components/SingleOrder'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
@@ -12,14 +11,8 @@ const OrdersPage = () => {
   const { currentUser } = useAppSelector(({ user }) => user)
   const { orders, loading } = useAppSelector(({ order }) => order)
 
-  const router = useRouter()
-
   useEffect(() => {
-    if (!currentUser) {
-      router.push('/login')
-    } else {
-      dispatch(getOrdersByUserId(currentUser._id))
-    }
+    dispatch(getOrdersByUserId(currentUser._id))
   }, [currentUser])
 
   return (
