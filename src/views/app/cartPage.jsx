@@ -25,8 +25,8 @@ const CartPage = () => {
 
   const handle = {
     getData: () => {
-      dispatch(getCartInfoByUserId(currentUser._id))
-      dispatch(getCartSize(currentUser._id))
+      dispatch(getCartInfoByUserId(currentUser?._id))
+      dispatch(getCartSize(currentUser?._id))
       dispatch(getUserAddress())
     }
   }

@@ -43,7 +43,7 @@ const UserSettingPage = () => {
     updateProfile: async e => {
       e.preventDefault()
 
-      dispatch(updateUser({ id: currentUser._id, payload: userDataForm }))
+      dispatch(updateUser({ id: currentUser?._id, payload: userDataForm }))
         .unwrap()
         .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
         .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))

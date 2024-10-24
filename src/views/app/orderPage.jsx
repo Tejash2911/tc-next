@@ -12,7 +12,7 @@ const OrdersPage = () => {
   const { orders, loading } = useAppSelector(({ order }) => order)
 
   useEffect(() => {
-    dispatch(getOrdersByUserId(currentUser._id))
+    dispatch(getOrdersByUserId(currentUser?._id))
   }, [currentUser])
 
   return (
