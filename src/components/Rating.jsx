@@ -8,7 +8,11 @@ export default function Rating({ value }) {
 
         return (
           <span key={index}>
-            {ratingValue <= value ? <Star className='text-yellow-500' /> : <StarBorder className='text-gray-300' />}
+            {ratingValue <= value ? (
+              <Star className='text-yellow-500' fontSize='small' />
+            ) : (
+              <StarBorder className='text-gray-300' fontSize='small' />
+            )}
           </span>
         )
       })}

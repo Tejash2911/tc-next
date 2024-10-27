@@ -3,10 +3,10 @@ import React from 'react'
 const ProductDetailsLoader = () => {
   return (
     <div className='container'>
-      <div className='grid md:grid-cols-2 sm:grid-cols-1 gap-5 font-Urbanist p-10 animate-pulse'>
+      <div className='grid md:grid-cols-2 gap-5 font-Urbanist py-10 animate-pulse'>
         {/* Image Skeleton */}
-        <div className='flex items-center justify-center cursor-zoom-in overflow-hidden'>
-          <div className='w-[400px] h-[400px] bg-gray-300' />
+        <div className='flex items-center overflow-hidden'>
+          <div className='w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-gray-300' />
         </div>
 
         {/* Details Skeleton */}
@@ -30,20 +30,20 @@ const ProductDetailsLoader = () => {
 
             <div className='flex items-center'>
               <div className='w-10 h-6 bg-gray-300 rounded mr-2' />
-              <div className='w-24 h-10 bg-gray-300 rounded' />
+              <div className='w-24 h-8 bg-gray-300 rounded' />
             </div>
           </div>
 
           {/* Quantity and Buttons Skeleton */}
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
-            <div className='flex items-center'>
-              <div className='w-8 h-8 bg-gray-300 rounded-full mx-2' />
-              <div className='w-10 h-10 bg-gray-300 rounded-md grid place-content-center' />
-              <div className='w-8 h-8 bg-gray-300 rounded-full mx-2' />
+            <div className='flex items-center gap-2'>
+              <div className='w-8 h-8 bg-gray-300 rounded-full' />
+              <div className='w-10 h-8 bg-gray-300 rounded-md grid place-content-center' />
+              <div className='w-8 h-8 bg-gray-300 rounded-full' />
             </div>
             <div className='flex items-center gap-3'>
-              <div className='w-24 h-10 bg-gray-300 rounded' />
-              <div className='w-24 h-10 bg-gray-300 rounded' />
+              <div className='w-24 h-8 bg-gray-300 rounded' />
+              <div className='w-24 h-8 bg-gray-300 rounded' />
             </div>
           </div>
         </div>

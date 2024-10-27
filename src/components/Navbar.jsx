@@ -109,8 +109,8 @@ export default function Navbar() {
           ) : (
             <>
               <div className='flex flex-col cursor-pointer select-none' onClick={() => setOptionIsOpen(!optionIsOpen)}>
-                <span className='text-base font-normal'>hello, {currentUser?.firstName} </span>
-                <span className='font-bold relative flex items-center'>
+                <span className='text-xs md:text-base font-normal'>hello, {currentUser?.firstName} </span>
+                <span className='text-xs md:text-base font-bold relative flex items-center'>
                   Account{optionIsOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                 </span>
                 <div className={`${optionIsOpen ? 'block' : 'hidden'}`}>
