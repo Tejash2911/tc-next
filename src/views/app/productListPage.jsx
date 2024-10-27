@@ -24,59 +24,61 @@ const ProductListPage = () => {
   const [sort, setSort] = useState('newest')
 
   return (
-    <div className='container font-Urbanist'>
-      <h1 className='m-5 font-semibold text-3xl'>{category || 'All Products'}</h1>
-      <div className='flex justify-between m-5'>
-        <div className='text-lg font-semibold'>
-          <span className='mr-5'>Filter Products:</span>
-          <select
-            name='color'
-            aria-label='color'
-            onChange={handleFilters}
-            className='p-1 border border-black text-base mr-2 hover:shadow-md'
-          >
-            <option defaultValue='Color'>Color</option>
-            <option>red</option>
-            <option>green</option>
-            <option>blue</option>
-            <option>yellow</option>
-            <option>black</option>
-            <option>white</option>
-          </select>
-          <select
-            name='size'
-            aria-label='size'
-            onChange={handleFilters}
-            className='p-1 border border-black text-base mr-2 hover:shadow-md'
-          >
-            <option defaultValue='Size'>Size</option>
-            <option>S</option>
-            <option>M</option>
-            <option>L</option>
-            <option>XL</option>
-            <option>XXL</option>
-            <option>XXXL</option>
-          </select>
-        </div>
-        <div className='text-lg font-semibold'>
-          <span className='mr-5'>Sort Products:</span>
-          <select
-            name='sort'
-            aria-label='sort'
-            onChange={e => setSort(e.target.value)}
-            className='p-1 border border-black text-base mr-2 hover:shadow-md'
-          >
-            <option defaultValue='newest'>Newest</option>
-            <option value='top-rated'>Top rated</option>
-            <option value='top-purchased'>Most Purchased</option>
-            <option value='top-reviewed'>Most reviewed</option>
-            <option value='price-desc'>price(H T L)</option>
-            <option value='price-asc'>Price(L T H)</option>
-          </select>
+    <>
+      <div className='container font-Urbanist'>
+        <h1 className='py-5 font-semibold text-3xl'>{category || 'All Products'}</h1>
+        <div className='flex justify-between pb-5'>
+          <div className='text-lg font-semibold'>
+            <span className='mr-5'>Filter Products:</span>
+            <select
+              name='color'
+              aria-label='color'
+              onChange={handleFilters}
+              className='p-1 border border-gray-400 text-sm mr-2 hover:shadow-md'
+            >
+              <option defaultValue='Color'>Color</option>
+              <option>red</option>
+              <option>green</option>
+              <option>blue</option>
+              <option>yellow</option>
+              <option>black</option>
+              <option>white</option>
+            </select>
+            <select
+              name='size'
+              aria-label='size'
+              onChange={handleFilters}
+              className='p-1 border border-gray-400 text-sm mr-2 hover:shadow-md'
+            >
+              <option defaultValue='Size'>Size</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+              <option>XXL</option>
+              <option>XXXL</option>
+            </select>
+          </div>
+          <div className='text-lg font-semibold'>
+            <span className='mr-5'>Sort Products:</span>
+            <select
+              name='sort'
+              aria-label='sort'
+              onChange={e => setSort(e.target.value)}
+              className='p-1 border border-gray-400 text-sm mr-2 hover:shadow-md'
+            >
+              <option defaultValue='newest'>Newest</option>
+              <option value='top-rated'>Top rated</option>
+              <option value='top-purchased'>Most Purchased</option>
+              <option value='top-reviewed'>Most reviewed</option>
+              <option value='price-desc'>price(H T L)</option>
+              <option value='price-asc'>Price(L T H)</option>
+            </select>
+          </div>
         </div>
       </div>
       <Product cat={category} filter={filter} sort={sort} />
-    </div>
+    </>
   )
 }
 
