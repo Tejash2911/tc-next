@@ -99,10 +99,10 @@ export default function Navbar() {
         <div className='flex-1 flex items-center justify-end'>
           {!isAuthenticated ? (
             <>
-              <div className='cursor-pointer ml-5 md:ml-1 px-2'>
+              <div className='cursor-pointer ml-5 md:ml-1 px-2 text-xs md:text-base'>
                 <Link href='/register'>Sign Up</Link>
               </div>
-              <div className='cursor-pointer ml-5 md:ml-1 px-2'>
+              <div className='cursor-pointer ml-5 md:ml-1 px-2 text-xs md:text-base'>
                 <Link href='/login'>Log In</Link>
               </div>
             </>

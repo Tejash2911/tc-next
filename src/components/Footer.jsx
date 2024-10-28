@@ -12,7 +12,7 @@ export default function Footer() {
       <div className='container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-[1rem]'>
         <div className='flex flex-col gap-5'>
           <h1 className='text-3xl font-semibold'>TC.</h1>
-          <p>
+          <p className='text-sm sm:text-base'>
             At TejashCreation, we are committed to providing our customers with the best possible shopping experience.
             From the moment you visit our website, you will be greeted with a wide selection of fashionable and stylish
             clothing options for all genders. Shop with us now and see the difference for yourself.
@@ -34,7 +34,7 @@ export default function Footer() {
         </div>
         <div className='flex flex-col gap-5'>
           <h1 className='text-lg font-semibold'>Useful Links</h1>
-          <ul className='grid grid-cols-2 gap-4'>
+          <ul className='grid grid-cols-2 gap-4 text-sm sm:text-base'>
             <li>Login</li>
             <li>Sign up</li>
             <li>Categories</li>
@@ -49,7 +49,7 @@ export default function Footer() {
         </div>
         <div className='flex flex-col gap-5'>
           <h1 className=' text-lg font-semibold'>Contact Us</h1>
-          <p className='flex gap-4'>
+          <p className='flex gap-4 text-sm sm:text-base'>
             <MapIcon /> Street: Shop No 01, Darji Street, Damka, Hazira Road
             <br />
             City: Surat
@@ -60,11 +60,11 @@ export default function Footer() {
             <br />
             Country: India
           </p>
-          <p className='flex gap-4'>
+          <p className='flex gap-4 text-sm sm:text-base'>
             <CallIcon />
             +91 8780303049
           </p>
-          <p className='flex gap-4'>
+          <p className='flex gap-4 text-sm sm:text-base'>
             <EmailIcon /> tcpatel2911@gmail.com
           </p>
         </div>
