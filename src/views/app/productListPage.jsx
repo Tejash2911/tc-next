@@ -26,7 +26,7 @@ const ProductListPage = () => {
   return (
     <>
       <div className='container font-Urbanist'>
-        <h1 className='py-5 font-semibold text-xl sm:text-2xl'>{category || 'All Products'}</h1>
+        <h1 className='py-5 font-semibold text-xl sm:text-2xl capitalize'>{category || 'All Products'}</h1>
         <div className='flex justify-between pb-5'>
           <div className='text-xs sm:text-sm font-semibold'>
             <span className='mr-5'>Filter Products:</span>

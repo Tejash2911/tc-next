@@ -122,7 +122,7 @@ export default function Navbar() {
                   )}
                 </span>
                 <div className={`${optionIsOpen ? 'block' : 'hidden'}`}>
-                  <div className='bg-gray-100 top-16 shadow-lg border border-gray-200 flex flex-col absolute transform -translate-x-1/3 w-32'>
+                  <div className='bg-gray-100 top-14 sm:top-16 -right-7 shadow-lg border border-gray-200 flex flex-col absolute transform -translate-x-1/3 w-32'>
                     <div className='absolute left-1/2 top-1 w-2.5 h-2.5 bg-gray-100 transform -translate-x-1/2 -translate-y-full rotate-45'></div>
                     <Link href='/user-settings'>
                       <span className='z-10 text-sm sm:text-base py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>

@@ -30,15 +30,15 @@ export default function Review({ product }) {
 
   return (
     <>
-      <div className='py-7'>
-        <div className='mb-2 font-Urbanist'>
-          <div className='flex justify-between items-center'>
+      <div className='py-5'>
+        <div className='flex flex-col gap-2 font-Urbanist'>
+          <div className='flex flex-col sm:flex-row justify-between'>
             <h2 className='text-sm font-semibold'>{product?.title}</h2>
             <button
-              className='flex items-center text-xs sm:text-sm p-1 border border-teal-600 shadow-lg transition-all duration-300 hover:bg-teal-700 hover:text-white'
+              className='flex items-center text-xs sm:text-sm w-fit p-1 border border-teal-600 shadow-lg transition-all duration-300 hover:bg-teal-700 hover:text-white'
               onClick={handleWriteReview}
             >
-              <DriveFileRenameOutlineIcon /> Write a Review
+              <DriveFileRenameOutlineIcon className='text-xs sm:text-sm' /> Write a Review
             </button>
           </div>
           <div className='flex items-center gap-1 text-xs sm:text-sm'>
@@ -47,7 +47,7 @@ export default function Review({ product }) {
             {product?.ratingsQuantity} Reviews
           </div>
         </div>
-        <hr />
+        <hr className='my-2' />
         <div className='flex flex-col gap-5 mt-2'>
           {Array.isArray(reviews) && !loading ? (
             reviews.map(r => {

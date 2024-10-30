@@ -49,7 +49,7 @@ export default function Product({ sort, cat, filter }) {
       {!products?.length && !loading ? (
         <ProductNotFound title='Ops! No product Found' desc='Your filter did not match any product' />
       ) : (
-        <div className='font-Urbanist mb-10'>
+        <div className='font-Urbanist my-5'>
           <div className='grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-5'>
             {loading
               ? Array.from({ length: 5 }).map((e, i) => <ProductItemSkeleton key={i} />)

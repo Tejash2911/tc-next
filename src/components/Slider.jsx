@@ -11,7 +11,7 @@ export default function Slider() {
       <div className='w-full max-h-[65vh] overflow-hidden'>
         <Image src='/slider.jpg' alt='banner' width={999} height={667} priority className='img' />
       </div>
-      <div className='flex flex-col justify-center items-center gap-3 mb-5'>
+      <div className='flex flex-col justify-center items-center gap-3 my-5'>
         <h1 className='text-2xl sm:text-4xl font-bold font-AlfaSlabOne'>{heroInfo.title}</h1>
         <span className='font-Urbanist text-sm sm:text-base font-medium'>{heroInfo.description}</span>
         <Link href='/products/all'>
