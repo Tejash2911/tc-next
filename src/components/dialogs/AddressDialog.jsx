@@ -53,7 +53,7 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter street'
           value={address.street}
           onChange={handle.onChange}
-          className='p-2 text-lg w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 text-lg w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <label htmlFor='city' className='text-lg font-semibold block'>
@@ -66,7 +66,7 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter city'
           value={address.city}
           onChange={handle.onChange}
-          className='p-2 text-lg w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 text-lg w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <label htmlFor='state' className='text-lg font-semibold block'>
@@ -79,7 +79,7 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter state'
           value={address.state}
           onChange={handle.onChange}
-          className='p-2 text-lg w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 text-lg w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <label htmlFor='zip' className='text-lg font-semibold block'>
@@ -92,7 +92,7 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter zip code'
           value={address.zip}
           onChange={handle.onChange}
-          className='p-2 text-lg w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 text-lg w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <label htmlFor='country' className='text-lg font-semibold block'>
@@ -104,7 +104,7 @@ export default function AddressDialog({ open, setOpen, data }) {
           id='country'
           value={address.country}
           onChange={handle.onChange}
-          className='p-2 text-lg w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 text-lg w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
           autoComplete='true'
         >
@@ -127,17 +127,17 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter mobile number'
           value={address.mobile}
           onChange={handle.onChange}
-          className='p-2 text-lg w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 text-lg w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <div className='flex gap-3'>
-          <button type='submit' className='bg-black text-white py-2 px-5 border-none rounded-md hover:bg-[#777]'>
+          <button type='submit' className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'>
             Submit
           </button>
           <button
             type='reset'
             onClick={handle.handleClose}
-            className='bg-black text-white py-2 px-5 border-none rounded-md hover:bg-[#777]'
+            className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'
           >
             Cancel
           </button>

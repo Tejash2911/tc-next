@@ -14,7 +14,7 @@ const PaymentSuccess = () => {
       <h1>Payment Successful</h1>
       <p>ref_id: {refID}</p>
       <button
-        className='p-2 text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
+        className='p-2 text-xs sm:text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
         onClick={() => router.push('/')}
       >
         Home

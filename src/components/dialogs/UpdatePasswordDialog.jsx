@@ -53,7 +53,7 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           placeholder='Enter Current Password'
           value={formData.currentPass}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <label htmlFor='password' className='text-lg font-semibold block'>
@@ -66,7 +66,7 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           placeholder='Enter New Password'
           value={formData.password}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <label htmlFor='confPass' className='text-lg font-semibold block'>
@@ -79,17 +79,17 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           placeholder='Enter Confirm Password'
           value={formData.confPass}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-md focus:border-[#555]'
+          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
           required
         />
         <div className='flex gap-3'>
-          <button type='submit' className='bg-black text-white py-2 px-5 border-none rounded-md hover:bg-[#777]'>
+          <button type='submit' className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'>
             Submit
           </button>
           <button
             type='reset'
             onClick={handle.handleClose}
-            className='bg-black text-white py-2 px-5 border-none rounded-md hover:bg-[#777]'
+            className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'
           >
             Cancel
           </button>

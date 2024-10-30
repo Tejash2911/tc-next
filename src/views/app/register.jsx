@@ -59,82 +59,84 @@ const RegisterV2 = () => {
   }
 
   return (
-    <div className='min-h-screen flex justify-center items-center bg-gradient-to-b from-gray-100 to-white bg-cover'>
-      <div className='max-w-lg w-full p-8 bg-white rounded-lg shadow-md'>
-        <h1 className='text-2xl font-semibold text-gray-800 mb-6'>Sign Up</h1>
-        <form className='space-y-4' onSubmit={handle.onSubmit} autoComplete='on'>
-          <div>
-            <input
-              type='text'
-              name='firstName'
-              placeholder='first name'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handle.handleOnChange}
-            />
-            <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.firstName}</span>
-          </div>
-          <div>
-            <input
-              type='text'
-              name='lastName'
-              placeholder='last name'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handle.handleOnChange}
-            />
-            <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.lastName}</span>
-          </div>
-          <div>
-            <input
-              type='number'
-              name='number'
-              placeholder='phone number'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handle.handleOnChange}
-            />
-            <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.number}</span>
-          </div>
-          <div>
-            <input
-              type='email'
-              name='email'
-              placeholder='email'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handle.handleOnChange}
-            />
-            <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.email}</span>
-          </div>
-          <div>
-            <input
-              type='password'
-              name='password'
-              placeholder='password'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handle.handleOnChange}
-            />
-            <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.password}</span>
-          </div>
-          <div>
-            <input
-              type='password'
-              name='confirmPassword'
-              placeholder='confirm password'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-              onChange={handle.handleOnChange}
-            />
-            <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.confirmPassword}</span>
-          </div>
-          <button
-            className='bg-black text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500'
-            disabled={loading}
-          >
-            {loading ? 'signing up...' : 'Sign Up'}
-          </button>
-          <div className='text-sm font-medium text-primary-600 hover:underline'>
-            <Link href='/login' className='text-gray-500 hover:underline'>
-              Already Have Account?
-            </Link>
-          </div>
-        </form>
+    <div className='bg-[#e0dede]'>
+      <div className='container min-h-screen flex justify-center items-center'>
+        <div className='max-w-md w-full p-8 bg-white rounded-xl shadow-md'>
+          <h1 className='text-xl sm:text-2xl font-semibold text-gray-800 mb-6'>Sign Up</h1>
+          <form className='space-y-4 text-xs sm:text-sm' onSubmit={handle.onSubmit} autoComplete='on'>
+            <div>
+              <input
+                type='text'
+                name='firstName'
+                placeholder='first name'
+                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                onChange={handle.handleOnChange}
+              />
+              <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.firstName}</span>
+            </div>
+            <div>
+              <input
+                type='text'
+                name='lastName'
+                placeholder='last name'
+                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                onChange={handle.handleOnChange}
+              />
+              <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.lastName}</span>
+            </div>
+            <div>
+              <input
+                type='number'
+                name='number'
+                placeholder='phone number'
+                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                onChange={handle.handleOnChange}
+              />
+              <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.number}</span>
+            </div>
+            <div>
+              <input
+                type='email'
+                name='email'
+                placeholder='email'
+                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                onChange={handle.handleOnChange}
+              />
+              <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.email}</span>
+            </div>
+            <div>
+              <input
+                type='password'
+                name='password'
+                placeholder='password'
+                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                onChange={handle.handleOnChange}
+              />
+              <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.password}</span>
+            </div>
+            <div>
+              <input
+                type='password'
+                name='confirmPassword'
+                placeholder='confirm password'
+                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                onChange={handle.handleOnChange}
+              />
+              <span className='w-100 text-sm text-red-600 mb-[1px]'>{formErrors.confirmPassword}</span>
+            </div>
+            <button
+              className='bg-black text-white py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline disabled:bg-gray-500'
+              disabled={loading}
+            >
+              {loading ? 'signing up...' : 'Sign Up'}
+            </button>
+            <div className='font-medium text-primary-600 hover:underline'>
+              <Link href='/login' className='text-gray-500  hover:underline'>
+                Already Have Account?
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   )

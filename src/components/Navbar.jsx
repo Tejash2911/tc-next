@@ -70,17 +70,17 @@ export default function Navbar() {
           </h1>
         </div>
         <div className='flex-1'>
-          <div className='border border-gray-500 flex items-center justify-center rounded-lg p-[5px] relative'>
+          <div className='border border-gray-500 flex items-center justify-center rounded-xl p-[5px] relative'>
             <input
               type='text'
               name='search'
-              className='w-full outline-none bg-transparent'
+              className='w-full outline-none bg-transparent text-xs sm:text-sm'
               placeholder='Search'
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
             ></input>
-            <SearchIcon className='text-gray-500 text-lg cursor-pointer' />
-            <ul className='absolute w-full top-10 bg-white rounded-b-[12px] backdrop:blur-lg shadow-md overflow-hidden'>
+            <SearchIcon className='text-gray-500 text-sm sm:text-base cursor-pointer' />
+            <ul className='absolute w-full top-10 text-xs sm:text-sm bg-white rounded-b-xl backdrop:blur-lg shadow-md overflow-hidden'>
               {searchValue &&
                 searchProducts?.map(p => {
                   return (
@@ -96,50 +96,58 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
-        <div className='flex-1 flex items-center justify-end'>
+        <div className='flex-1 flex items-center gap-4 justify-end'>
           {!isAuthenticated ? (
             <>
-              <div className='cursor-pointer ml-5 md:ml-1 px-2 text-xs md:text-base'>
+              <div className='cursor-pointer text-xs sm:text-sm'>
                 <Link href='/register'>Sign Up</Link>
               </div>
-              <div className='cursor-pointer ml-5 md:ml-1 px-2 text-xs md:text-base'>
+              <div className='cursor-pointer text-xs sm:text-sm'>
                 <Link href='/login'>Log In</Link>
               </div>
             </>
           ) : (
             <>
-              <div className='flex flex-col cursor-pointer select-none' onClick={() => setOptionIsOpen(!optionIsOpen)}>
-                <span className='text-xs md:text-base font-normal'>hello, {currentUser?.firstName} </span>
-                <span className='text-xs md:text-base font-bold relative flex items-center'>
-                  Account{optionIsOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+              <div
+                className='flex flex-col items-center text-xs sm:text-sm cursor-pointer select-none'
+                onClick={() => setOptionIsOpen(!optionIsOpen)}
+              >
+                <span className='font-normal'>hello, {currentUser?.firstName} </span>
+                <span className='font-bold relative flex items-center'>
+                  Account
+                  {optionIsOpen ? (
+                    <ArrowDropUpIcon className='text-sm sm:text-base' />
+                  ) : (
+                    <ArrowDropDownIcon className='text-sm sm:text-base' />
+                  )}
                 </span>
                 <div className={`${optionIsOpen ? 'block' : 'hidden'}`}>
-                  <div className='bg-gray-100 top-16 shadow-lg border border-gray-200 flex flex-col absolute transform -translate-x-1/3 w-40'>
+                  <div className='bg-gray-100 top-16 shadow-lg border border-gray-200 flex flex-col absolute transform -translate-x-1/3 w-32'>
                     <div className='absolute left-1/2 top-1 w-2.5 h-2.5 bg-gray-100 transform -translate-x-1/2 -translate-y-full rotate-45'></div>
                     <Link href='/user-settings'>
-                      <span className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
-                        <SettingsIcon /> Setting
+                      <span className='z-10 text-sm sm:text-base py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
+                        <SettingsIcon className='text-sm sm:text-base' /> Setting
                       </span>
                     </Link>
                     <Link href='/orders'>
-                      <span className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
-                        <LocalMallIcon /> Orders
+                      <span className='z-10 text-sm sm:text-base py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
+                        <LocalMallIcon className='text-sm sm:text-base' /> Orders
                       </span>
                     </Link>
                     <span
-                      className='z-10 py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'
+                      className='z-10 text-sm sm:text-base py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'
                       onClick={handle.onLogout}
                     >
-                      <LogoutIcon /> Logout
+                      <LogoutIcon className='text-sm sm:text-base' /> Logout
                     </span>
                   </div>
                 </div>
               </div>
-              <div className='ml-5 cursor-pointer relative'>
+              <div className='cursor-pointer relative'>
                 <Link href='/cart'>
-                  <ShoppingCartOutlinedIcon />
+                  <ShoppingCartOutlinedIcon className='text-xl sm:text-2xl' />
                 </Link>
-                <span className='absolute top-0 right-0 bg-black transform translate-x-1/2 -translate-y-1/2 text-white rounded-full w-5 h-5 grid place-content-center'>
+                <span className='absolute top-0 right-0 bg-black text-xs sm:text-sm transform translate-x-1/2 -translate-y-1/2 text-white rounded-full w-4 sm:w-5 h-4 sm:h-5 grid place-content-center'>
                   {quantity ?? 0}
                 </span>
               </div>

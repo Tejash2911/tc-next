@@ -11,26 +11,26 @@ const ProductDetailsLoader = () => {
 
         {/* Details Skeleton */}
         <div className='grid gap-7'>
-          <div className='w-2/3 h-6 bg-gray-300 rounded' />
-          <div className='w-1/4 h-5 bg-gray-300 rounded' />
+          <div className='w-2/3 h-6 bg-gray-300 rounded-xl' />
+          <div className='w-1/4 h-5 bg-gray-300 rounded-xl' />
 
-          <div className='h-5 bg-gray-300 rounded'></div>
+          <div className='h-5 bg-gray-300 rounded-xl'></div>
 
-          <div className='w-1/4 h-8 bg-gray-300 rounded'></div>
+          <div className='w-1/4 h-8 bg-gray-300 rounded-xl'></div>
 
-          <span className='w-1/3 h-6 bg-gray-300 rounded' />
+          <span className='w-1/3 h-6 bg-gray-300 rounded-xl' />
 
           {/* Color and Size Selectors Skeleton */}
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center'>
-              <div className='w-10 h-6 bg-gray-300 rounded mr-2' />
+              <div className='w-10 h-6 bg-gray-300 rounded-xl mr-2' />
               <div className='w-5 h-5 bg-gray-300 rounded-full ml-1'></div>
               <div className='w-5 h-5 bg-gray-300 rounded-full ml-1'></div>
             </div>
 
             <div className='flex items-center'>
-              <div className='w-10 h-6 bg-gray-300 rounded mr-2' />
-              <div className='w-24 h-8 bg-gray-300 rounded' />
+              <div className='w-10 h-6 bg-gray-300 rounded-xl mr-2' />
+              <div className='w-24 h-8 bg-gray-300 rounded-xl' />
             </div>
           </div>
 
@@ -38,12 +38,12 @@ const ProductDetailsLoader = () => {
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center gap-2'>
               <div className='w-8 h-8 bg-gray-300 rounded-full' />
-              <div className='w-10 h-8 bg-gray-300 rounded-md grid place-content-center' />
+              <div className='w-10 h-8 bg-gray-300 rounded-xl grid place-content-center' />
               <div className='w-8 h-8 bg-gray-300 rounded-full' />
             </div>
             <div className='flex items-center gap-3'>
-              <div className='w-24 h-8 bg-gray-300 rounded' />
-              <div className='w-24 h-8 bg-gray-300 rounded' />
+              <div className='w-24 h-8 bg-gray-300 rounded-xl' />
+              <div className='w-24 h-8 bg-gray-300 rounded-xl' />
             </div>
           </div>
         </div>

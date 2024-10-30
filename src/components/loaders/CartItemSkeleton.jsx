@@ -1,25 +1,37 @@
-const CartItemSkeleton = () => (
-  <div className='flex flex-col md:flex-row p-2 rounded-xl shadow-sm overflow-hidden bg-gray-200 animate-pulse'>
-    <div className='flex items-center w-full p-3'>
-      <div className='w-[120px] h-[120px] bg-gray-300 rounded-md'></div>
-    </div>
+const CartItemSkeleton = () => {
+  return (
+    <div className='flex flex-col md:flex-row p-4 sm:p-5 rounded-xl shadow-sm bg-white relative animate-pulse'>
+      {/* Delete Icon Skeleton */}
+      <div className='absolute top-2 right-2 h-6 w-6 bg-gray-300 rounded-full'></div>
 
-    <div className='flex flex-col justify-around p-2 w-full'>
-      <div className='h-4 w-3/4 bg-gray-300 rounded mb-2'></div>
-      <div className='h-4 w-1/2 bg-gray-300 rounded mb-2'></div>
-      <div className='h-4 w-1/4 bg-gray-300 rounded mb-2'></div>
-      <div className='h-4 w-1/4 bg-gray-300 rounded'></div>
-    </div>
+      {/* Product Image and Info Skeleton */}
+      <div className='flex flex-col md:flex-row items-center justify-between gap-4 w-full'>
+        {/* Image Skeleton */}
+        <div className='w-24 h-24 bg-gray-300 rounded-xl'></div>
 
-    <div className='flex flex-col justify-center items-center w-full p-2'>
-      <div className='flex items-center'>
-        <div className='w-6 h-6 bg-gray-300 rounded-full mx-2'></div>
-        <div className='w-8 h-8 bg-gray-300 rounded-md mx-2'></div>
-        <div className='w-6 h-6 bg-gray-300 rounded-full mx-2'></div>
+        {/* Product Details Skeleton */}
+        <div className='flex flex-col gap-2 w-full'>
+          <div className='h-4 w-28 bg-gray-300 rounded-xl'></div>
+          <div className='h-4 w-20 bg-gray-300 rounded-xl'></div>
+          <div className='inline-flex items-center gap-2'>
+            <div className='h-4 w-16 bg-gray-300 rounded-xl'></div>
+            <div className='w-4 h-4 bg-gray-300 rounded-full'></div>
+          </div>
+          <div className='h-4 w-16 bg-gray-300 rounded-xl'></div>
+        </div>
+
+        {/* Quantity and Price Skeleton */}
+        <div className='flex flex-col items-center w-full md:w-1/4'>
+          <div className='flex items-center gap-2'>
+            <div className='h-6 w-6 bg-gray-300 rounded-full'></div>
+            <div className='h-6 w-8 bg-gray-300 rounded-xl'></div>
+            <div className='h-6 w-6 bg-gray-300 rounded-full'></div>
+          </div>
+          <div className='mt-2 h-4 w-16 bg-gray-300 rounded-xl'></div>
+        </div>
       </div>
-      <div className='h-5 w-16 bg-gray-300 rounded my-4'></div>
     </div>
-  </div>
-)
+  )
+}
 
 export default CartItemSkeleton
