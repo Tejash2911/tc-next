@@ -6,7 +6,7 @@ export default function Modal({ children, open }) {
 
       {/* Modal */}
       <div
-        className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-max w-[450px] bg-white shadow-xl z-50 rounded-xl p-4 ${open ? 'block' : 'hidden'}`}
+        className={`container sm:max-w-[60%] md:max-w-[50%] lg:max-w-[40%] xl:max-w-[30%] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-max w-[450px] bg-white shadow-xl z-50 rounded-xl p-4 ${open ? 'block' : 'hidden'}`}
       >
         {children}
       </div>

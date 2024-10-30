@@ -9,7 +9,7 @@ import GoogleIcon from '@mui/icons-material/Google'
 export default function Footer() {
   return (
     <div className='bg-[#f7e9d7] font-Urbanist'>
-      <div className='container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 py-4'>
+      <div className='container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 py-5'>
         <div className='flex flex-col gap-4'>
           <h1 className='text-sm sm:text-base font-semibold'>About Us</h1>
           <p className='text-xs sm:text-sm'>

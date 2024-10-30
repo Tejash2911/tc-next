@@ -45,12 +45,12 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
           <Image src='/user.png' alt='user-image' width={50} height={50} />
           <span>{currentUser?.firstName + ' ' + currentUser?.lastName}</span>
         </div>
-        <div className='flex flex-col items-center gap-6 max-h-72'>
+        <div className='flex flex-col items-center gap-6'>
           <CustomRating setProductRating={setRating} />
           <textarea
             name='review'
             id='review'
-            className='w-96 h-36 border-2 border-teal-600 text-base p-2 rounded-xl'
+            className='w-full sm:w-96 h-36 border-2 border-teal-600 text-base p-2 rounded-xl'
             placeholder='Share your thoughts on this product...'
             value={review}
             onChange={e => setReview(e.target.value)}

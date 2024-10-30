@@ -161,8 +161,8 @@ const ProductDetailPage = ({ id }) => {
 
   return (
     <div className='container'>
-      <div className='grid md:grid-cols-2 gap-5 font-Urbanist py-10'>
-        <div className='flex items-center cursor-zoom-in overflow-hidden'>
+      <div className='grid md:grid-cols-2 gap-5 font-Urbanist py-5'>
+        <div className='flex items-center cursor-zoom-in overflow-hidden h-[200px] w-[200px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px]'>
           {product.img && (
             <Image
               src={product.img}
@@ -177,7 +177,7 @@ const ProductDetailPage = ({ id }) => {
           )}
         </div>
         <div className='grid gap-5'>
-          <h1 className='text-lg sm:text-2xl font-light'>{product?.title}</h1>
+          <h1 className='text-lg sm:text-xl font-light'>{product?.title}</h1>
           <p className='text-sm sm:text-base'>Design No - {product?.productNo}</p>
           <p className='text-sm sm:text-base'>{product?.desc}</p>
           <p className='text-sm sm:text-base'>₹{product?.price}</p>
