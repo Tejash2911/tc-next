@@ -50,7 +50,7 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
           <textarea
             name='review'
             id='review'
-            className='w-96 h-36 border-2 border-teal-600 text-base p-2 rounded-2xl'
+            className='w-96 h-36 border-2 border-teal-600 text-base p-2 rounded-xl'
             placeholder='Share your thoughts on this product...'
             value={review}
             onChange={e => setReview(e.target.value)}

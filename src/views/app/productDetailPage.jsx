@@ -177,16 +177,16 @@ const ProductDetailPage = ({ id }) => {
           )}
         </div>
         <div className='grid gap-5'>
-          <h1 className='text-2xl font-light'>{product?.title}</h1>
-          <p>Design No - {product?.productNo}</p>
-          <p>{product?.desc}</p>
-          <p className='text-2xl'>₹{product?.price}</p>
-          <span className={`text-xl ${product?.quantity >= 1 ? 'text-green-600' : 'text-red-600'}`}>
+          <h1 className='text-lg sm:text-2xl font-light'>{product?.title}</h1>
+          <p className='text-sm sm:text-base'>Design No - {product?.productNo}</p>
+          <p className='text-sm sm:text-base'>{product?.desc}</p>
+          <p className='text-sm sm:text-base'>₹{product?.price}</p>
+          <span className={`text-sm sm:text-base ${product?.quantity >= 1 ? 'text-green-600' : 'text-red-600'}`}>
             {product?.quantity >= 1 ? `Only ${product?.quantity} left in stock` : 'Currently unavailable'}
           </span>
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
-            <div className='flex items-center'>
-              <div className='text-md font-light mr-2'>Color</div>
+            <div className='flex items-center text-xs sm:text-sm'>
+              <div className=' font-light mr-2'>Color</div>
               {(product?.color || []).map(e => (
                 <div
                   key={e}
@@ -196,12 +196,12 @@ const ProductDetailPage = ({ id }) => {
                 />
               ))}
             </div>
-            <div className='flex items-center'>
-              <div className='text-md font-light mr-2'>Size</div>
+            <div className='flex items-center text-xs sm:text-sm'>
+              <div className='font-light mr-2'>Size</div>
               <select
                 name='size'
                 aria-label='size'
-                className='border border-gray-400 text-sm p-1'
+                className='border border-gray-400 p-1'
                 onChange={e => setSize(e.target.value)}
               >
                 {(product?.size || []).map(e => (
@@ -212,26 +212,26 @@ const ProductDetailPage = ({ id }) => {
           </div>
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center gap-2 font-semibold'>
-              <div className='cursor-pointer flex items-center justify-between active:scale-110'>
-                <RemoveIcon onClick={() => handleClick('dec')} />
+              <div className='cursor-pointer flex items-center justify-between active:scale-110 rounded-full bg-gray-100 hover:bg-gray-200'>
+                <RemoveIcon onClick={() => handleClick('dec')} className='text-xs sm:text-sm' />
               </div>
-              <span className='h-8 w-8 border border-teal-600 p-2 rounded-md grid place-content-center'>
+              <span className='h-8 w-8 text-xs sm:text-sm border border-teal-600 p-2 rounded-xl grid place-content-center'>
                 {productQuantity}
               </span>
-              <div className='cursor-pointer flex items-center justify-between active:scale-110'>
-                <AddIcon onClick={() => handleClick('inc')} />
+              <div className='cursor-pointer flex items-center justify-between active:scale-110 rounded-full bg-gray-100 hover:bg-gray-200'>
+                <AddIcon onClick={() => handleClick('inc')} className='text-xs sm:text-sm' />
               </div>
             </div>
             <div className='flex items-center gap-3'>
               <button
-                className={`border-teal-500 text-sm border p-1 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] `}
+                className={`border-teal-500 text-xs sm:text-sm border p-1 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] `}
                 onClick={handle.addToCart}
                 disabled={addToCartLoading}
               >
                 {addToCartLoading ? 'Adding..' : 'Add to Cart'}
               </button>
               <button
-                className={`border-teal-500 text-sm border p-1 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb]`}
+                className={`border-teal-500 text-xs sm:text-sm border p-1 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb]`}
                 onClick={handleBuyNow}
               >
                 Buy Now

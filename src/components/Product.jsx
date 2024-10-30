@@ -57,7 +57,7 @@ export default function Product({ sort, cat, filter }) {
           </div>
           <div className='w-full grid place-content-center mt-10'>
             <button
-              className='p-2 text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
+              className='p-2 text-xs sm:text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
               disabled={loading}
               onClick={() => setPage(p => p + 1)}
             >

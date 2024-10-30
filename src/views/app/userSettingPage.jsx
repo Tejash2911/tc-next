@@ -51,12 +51,13 @@ const UserSettingPage = () => {
   }
 
   return (
-    <div className='container'>
-      <div className='flex items-center justify-center  font-Urbanist'>
-        <div className='flex flex-col gap-4 w-[1200px] py-12'>
+    <div className='container mx-auto px-4'>
+      <div className='flex items-center justify-center font-Urbanist'>
+        <div className='flex flex-col gap-4 w-full max-w-[1200px] py-12'>
           <h2 className='text-2xl font-semibold mb-5'>Settings</h2>
-          <div className='flex justify-start gap-4'>
-            <div className='flex flex-col w-[20%]'>
+          <div className='flex flex-col md:flex-row gap-4'>
+            {/* Navigation Links */}
+            <div className='flex flex-row md:flex-col gap-2 w-full md:w-1/4'>
               <a onClick={() => setIsActivated(1)} className='decoration-black mb-2 cursor-pointer hover:text-[#777]'>
                 Account Details
               </a>
@@ -64,7 +65,9 @@ const UserSettingPage = () => {
                 Delivery Addresses
               </a>
             </div>
-            <div className='flex flex-col items-start w-[500px] max-w-[100%]'>
+
+            {/* Content Section */}
+            <div className='flex flex-col items-start w-full md:w-3/4 max-w-full'>
               <h2 className='text-2xl font-semibold mb-5'>{navMap[isActivated]}</h2>
               {isActivated === 1 && (
                 <form onSubmit={handle.updateProfile} className='w-full'>
@@ -75,7 +78,7 @@ const UserSettingPage = () => {
                     placeholder='First name'
                     value={userDataForm.firstName}
                     onChange={handle.onChange}
-                    className='w-full mb-2 p-2 rounded-md border border-[#ccc]'
+                    className='w-full mb-2 p-2 rounded-xl border border-[#ccc]'
                   />
                   <p>Last name</p>
                   <input
@@ -84,7 +87,7 @@ const UserSettingPage = () => {
                     placeholder='Last name'
                     value={userDataForm.lastName}
                     onChange={handle.onChange}
-                    className='w-full mb-2 p-2 rounded-md border border-[#ccc]'
+                    className='w-full mb-2 p-2 rounded-xl border border-[#ccc]'
                   />
                   <p>Email address</p>
                   <input
@@ -93,7 +96,7 @@ const UserSettingPage = () => {
                     placeholder='Email'
                     value={userDataForm.email}
                     onChange={handle.onChange}
-                    className='w-full mb-2 p-2 rounded-md border border-[#ccc]'
+                    className='w-full mb-2 p-2 rounded-xl border border-[#ccc]'
                     autoComplete='true'
                   />
                   <p>Number</p>
@@ -103,10 +106,10 @@ const UserSettingPage = () => {
                     placeholder='Phone number'
                     value={userDataForm.number}
                     onChange={handle.onChange}
-                    className='w-full mb-2 p-2 rounded-md border border-[#ccc]'
+                    className='w-full mb-2 p-2 rounded-xl border border-[#ccc]'
                   />
                   <p>Password</p>
-                  <div className='flex justify-between w-full border border-[#ccc] rounded-md p-2 mb-2'>
+                  <div className='flex justify-between w-full border border-[#ccc] rounded-xl p-2 mb-2'>
                     *************
                     <p className='underline cursor-pointer' onClick={() => passwordDialog.onOpen({})}>
                       Edit
@@ -114,7 +117,7 @@ const UserSettingPage = () => {
                   </div>
                   <button
                     type='submit'
-                    className='bg-black text-white text-sm py-2 px-5 border-none rounded-md hover:bg-[#777] disabled:bg-gray-500'
+                    className='bg-black text-white text-sm py-2 px-5 border-none rounded-xl hover:bg-[#777] disabled:bg-gray-500'
                     disabled={loading}
                   >
                     {loading ? 'Saving...' : 'Save Changes'}
@@ -122,7 +125,7 @@ const UserSettingPage = () => {
                 </form>
               )}
               {isActivated === 2 && (
-                <div className='flex justify-between'>
+                <div className='flex flex-col md:flex-row md:justify-between gap-2'>
                   {address && (
                     <div>
                       <p>Default Delivery Address</p>

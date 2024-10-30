@@ -23,7 +23,7 @@ const OrdersPage = () => {
         ) : (
           <>
             <div className='mb-5'>
-              <h1 className='ml-2 text-2xl sm:text-3xl font-semibold'>Your Orders</h1>
+              <h1 className='ml-2 text-xl sm:text-2xl font-semibold'>Your Orders</h1>
             </div>
             {loading ? (
               <div className='grid gap-4'>

@@ -33,16 +33,16 @@ export default function Review({ product }) {
       <div className='py-7'>
         <div className='mb-2 font-Urbanist'>
           <div className='flex justify-between items-center'>
-            <h2 className='text-md font-semibold'>{product?.title}</h2>
+            <h2 className='text-sm font-semibold'>{product?.title}</h2>
             <button
-              className='flex items-center text-sm p-1 border border-teal-600 shadow-lg transition-all duration-300 hover:bg-teal-700 hover:text-white'
+              className='flex items-center text-xs sm:text-sm p-1 border border-teal-600 shadow-lg transition-all duration-300 hover:bg-teal-700 hover:text-white'
               onClick={handleWriteReview}
             >
               <DriveFileRenameOutlineIcon /> Write a Review
             </button>
           </div>
-          <div className='flex items-center gap-1'>
-            <span className='text-lg'>{product?.ratingsAverage}</span>
+          <div className='flex items-center gap-1 text-xs sm:text-sm'>
+            <span>{product?.ratingsAverage}</span>
             <Rating value={Math.round(product?.ratingsAverage)} />
             {product?.ratingsQuantity} Reviews
           </div>

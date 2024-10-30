@@ -30,13 +30,13 @@ export default function SingleReview({ review }) {
         <Image src='/user.png' alt='profile-image' width={40} height={40} />
       </div>
       <div className='flex flex-col gap-1 w-full'>
-        <p className='text-lg'>{`${review?.user?.firstName} ${review?.user?.lastName}`}</p>
+        <p className='text-sm sm:text-base'>{`${review?.user?.firstName} ${review?.user?.lastName}`}</p>
         <div className='flex items-center gap-2'>
           <Rating value={review?.rating} />
-          <span className='text-sm'>{timeSince(review?.createdAt)}</span>
+          <span className='text-xs sm:text-sm'>{timeSince(review?.createdAt)}</span>
         </div>
-        <p className='text-sm'>{review?.review}</p>
-        <div className='flex items-center justify-between text-sm'>
+        <p className='text-xs sm:text-sm'>{review?.review}</p>
+        <div className='flex items-center justify-between text-xs sm:text-sm'>
           <div className='flex items-center gap-1 cursor-pointer hover:text-blue-600' onClick={handle.handleUpVote}>
             <ThumbUpOffAltIcon style={{ fontSize: '18px' }} /> Helpful?
           </div>

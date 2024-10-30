@@ -37,7 +37,7 @@ export default function Message() {
     <>
       {isShow && (
         <div className='fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 animate-fadeInOut font-Urbanist'>
-          <div style={{ backgroundColor }} className='rounded-2xl shadow-md max-w-sm w-full p-3'>
+          <div style={{ backgroundColor }} className='rounded-xl shadow-md max-w-sm w-full p-3'>
             <span className='mx-2 capitalize'>{message}</span>
             <button onClick={handleClose} className='text-white hover:text-red-500 focus:outline-none'>
               <CancelIcon />
