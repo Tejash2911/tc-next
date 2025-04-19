@@ -111,38 +111,38 @@ const CartPage = () => {
   }
 
   return (
-    <div className={`w-full font-Urbanist py-5 ${cart.length !== 0 || loading ? 'bg-[#e0dede]' : 'bg-white'}`}>
+    <div className={`w-full py-5 font-Urbanist ${cart.length !== 0 || loading ? 'bg-[#e0dede]' : 'bg-white'}`}>
       <div className='container'>
         <div className='font-Urbanist'>
           <div className='mb-5'>
-            <h1 className='ml-2 text-xl sm:text-2xl font-semibold'>Cart</h1>
+            <h1 className='ml-2 text-xl font-semibold sm:text-2xl'>Cart</h1>
           </div>
           {cart?.products?.length === 0 ? (
             <EmptyCart />
           ) : !cart?.products?.length || loading ? (
             <SkeletonCartPage />
           ) : (
-            <div className='grid lg:grid-cols-2 gap-5'>
+            <div className='grid gap-5 lg:grid-cols-2'>
               <div className='grid gap-4'>
                 {Array.isArray(cart?.products) &&
                   cart?.products?.map(product => <CartItem product={product} key={product.productID} />)}
               </div>
-              <div className='flex flex-col gap-2 border rounded-xl p-4 sm:p-5 h-fit bg-white shadow-sm hover:shadow-md'>
-                <h1 className='text-xl sm:text-2xl mb-2 font-light'>Products</h1>
+              <div className='flex h-fit flex-col gap-2 rounded-xl border bg-white p-4 shadow-sm hover:shadow-md sm:p-5'>
+                <h1 className='mb-2 text-xl font-light sm:text-2xl'>Products</h1>
                 {Array.isArray(cart?.products) &&
                   cart?.products?.map(product => (
-                    <div className='flex items-center justify-between my-1 text-xs sm:text-sm' key={product._id}>
+                    <div className='my-1 flex items-center justify-between text-xs sm:text-sm' key={product._id}>
                       <div className='whitespace-wrap overflow-hidden'>{product.title}</div>
                       <div>{(product.price * product.quantity)?.toFixed(2)}</div>
                     </div>
                   ))}
-                <div className='flex justify-between font-semibold my-2 text-xs sm:text-sm'>
-                  <div className='whitespace-nowrap overflow-hidden'>Total</div>
+                <div className='my-2 flex justify-between text-xs font-semibold sm:text-sm'>
+                  <div className='overflow-hidden whitespace-nowrap'>Total</div>
                   <div className='flex items-center justify-center'>{totalCartPrice?.toFixed(2)}</div>
                 </div>
                 <div className='flex items-center justify-center'>
                   <button
-                    className='bg-black text-white text-xs sm:text-sm font-semibold border-none rounded-xl p-2 sm:p-3 w-3/5 disabled:bg-gray-500'
+                    className='w-3/5 rounded-xl border-none bg-black p-2 text-xs font-semibold text-white disabled:bg-gray-500 sm:p-3 sm:text-sm'
                     onClick={handleCheckout}
                     disabled={isCheckoutLoading ? true : false}
                   >

@@ -8,14 +8,14 @@ export default function Slider() {
 
   return (
     <section className='container'>
-      <div className='w-full max-h-[65vh] overflow-hidden'>
+      <div className='max-h-[65vh] w-full overflow-hidden'>
         <Image src='/slider.jpg' alt='banner' width={999} height={667} priority className='img' />
       </div>
-      <div className='flex flex-col justify-center items-center gap-3 my-5'>
-        <h1 className='text-2xl sm:text-4xl font-bold font-AlfaSlabOne'>{heroInfo.title}</h1>
-        <span className='font-Urbanist text-sm sm:text-base font-medium'>{heroInfo.description}</span>
+      <div className='my-5 flex flex-col items-center justify-center gap-3'>
+        <h1 className='font-AlfaSlabOne text-2xl font-bold sm:text-4xl'>{heroInfo.title}</h1>
+        <span className='font-Urbanist text-sm font-medium sm:text-base'>{heroInfo.description}</span>
         <Link href='/products/all'>
-          <button className='font-Urbanist text-xs sm:text-sm rounded-full bg-black text-white px-10 py-2 cursor-pointer'>
+          <button className='cursor-pointer rounded-full bg-black px-10 py-2 font-Urbanist text-xs text-white sm:text-sm'>
             {heroInfo.cta}
           </button>
         </Link>

@@ -25,9 +25,9 @@ export default function CustomRating({ setProductRating }) {
               />
               <span onMouseEnter={() => setHover(ratingValue)} onMouseLeave={() => setHover(null)}>
                 {ratingValue <= (hover || rating) ? (
-                  <Star className='text-yellow-500 text-3xl cursor-pointer' />
+                  <Star className='cursor-pointer text-3xl text-yellow-500' />
                 ) : (
-                  <StarBorder className='text-gray-300 text-3xl cursor-pointer' />
+                  <StarBorder className='cursor-pointer text-3xl text-gray-300' />
                 )}
               </span>
             </label>

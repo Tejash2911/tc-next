@@ -60,33 +60,33 @@ export default function Navbar() {
   }, [])
 
   return (
-    <div className='shadow-md sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-md font-Urbanist'>
-      <div className='px-4 py-2 flex justify-between items-center'>
-        <div className='flex-1 hidden md:flex items-center'>
-          <h1 className='font-semibold text-center md:text-left text-3xl tracking-tight'>
+    <div className='sticky top-0 z-50 bg-white bg-opacity-80 font-Urbanist shadow-md backdrop-blur-md'>
+      <div className='flex items-center justify-between px-4 py-2'>
+        <div className='hidden flex-1 items-center md:flex'>
+          <h1 className='text-center text-3xl font-semibold tracking-tight md:text-left'>
             <Link href='/'>
               <Image src={logo} width={40} height={40} alt='logo' />
             </Link>
           </h1>
         </div>
         <div className='flex-1'>
-          <div className='border border-gray-500 flex items-center justify-center rounded-xl p-[5px] relative'>
+          <div className='relative flex items-center justify-center rounded-xl border border-gray-500 p-[5px]'>
             <input
               type='text'
               name='search'
-              className='w-full outline-none bg-transparent text-xs sm:text-sm'
+              className='w-full bg-transparent text-xs outline-none sm:text-sm'
               placeholder='Search'
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
             ></input>
-            <SearchIcon className='text-gray-500 text-sm sm:text-base cursor-pointer' />
-            <ul className='absolute w-full top-10 text-xs sm:text-sm bg-white rounded-b-xl backdrop:blur-lg shadow-md overflow-hidden'>
+            <SearchIcon className='cursor-pointer text-sm text-gray-500 sm:text-base' />
+            <ul className='absolute top-10 w-full overflow-hidden rounded-b-xl bg-white text-xs shadow-md backdrop:blur-lg sm:text-sm'>
               {searchValue &&
                 searchProducts?.map(p => {
                   return (
                     <li
                       key={p._id}
-                      className='list-none text-left p-1 w-full cursor-pointer hover:bg-[#ededeb]'
+                      className='w-full cursor-pointer list-none p-1 text-left hover:bg-[#ededeb]'
                       onClick={() => handle.onClick(p._id)}
                     >
                       {p.title}
@@ -96,7 +96,7 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
-        <div className='flex-1 flex items-center gap-4 justify-end'>
+        <div className='flex flex-1 items-center justify-end gap-4'>
           {!isAuthenticated ? (
             <>
               <div className='cursor-pointer text-xs sm:text-sm'>
@@ -109,11 +109,11 @@ export default function Navbar() {
           ) : (
             <>
               <div
-                className='flex flex-col items-center text-xs sm:text-sm cursor-pointer select-none'
+                className='flex cursor-pointer select-none flex-col items-center text-xs sm:text-sm'
                 onClick={() => setOptionIsOpen(!optionIsOpen)}
               >
                 <span className='font-normal'>hello, {currentUser?.firstName} </span>
-                <span className='font-bold relative flex items-center'>
+                <span className='relative flex items-center font-bold'>
                   Account
                   {optionIsOpen ? (
                     <ArrowDropUpIcon className='text-sm sm:text-base' />
@@ -122,20 +122,20 @@ export default function Navbar() {
                   )}
                 </span>
                 <div className={`${optionIsOpen ? 'block' : 'hidden'}`}>
-                  <div className='bg-gray-100 top-14 sm:top-16 -right-7 shadow-lg border border-gray-200 flex flex-col absolute transform -translate-x-1/3 w-32'>
-                    <div className='absolute left-1/2 top-1 w-2.5 h-2.5 bg-gray-100 transform -translate-x-1/2 -translate-y-full rotate-45'></div>
+                  <div className='absolute -right-7 top-14 flex w-32 -translate-x-1/3 transform flex-col border border-gray-200 bg-gray-100 shadow-lg sm:top-16'>
+                    <div className='absolute left-1/2 top-1 h-2.5 w-2.5 -translate-x-1/2 -translate-y-full rotate-45 transform bg-gray-100'></div>
                     <Link href='/user-settings'>
-                      <span className='z-10 text-sm sm:text-base py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
+                      <span className='z-10 flex items-center justify-start gap-2 bg-transparent px-4 py-2 text-sm text-black hover:font-semibold sm:text-base'>
                         <SettingsIcon className='text-sm sm:text-base' /> Setting
                       </span>
                     </Link>
                     <Link href='/orders'>
-                      <span className='z-10 text-sm sm:text-base py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'>
+                      <span className='z-10 flex items-center justify-start gap-2 bg-transparent px-4 py-2 text-sm text-black hover:font-semibold sm:text-base'>
                         <LocalMallIcon className='text-sm sm:text-base' /> Orders
                       </span>
                     </Link>
                     <span
-                      className='z-10 text-sm sm:text-base py-2 px-4 bg-transparent text-black flex items-center justify-start gap-2 hover:font-semibold'
+                      className='z-10 flex items-center justify-start gap-2 bg-transparent px-4 py-2 text-sm text-black hover:font-semibold sm:text-base'
                       onClick={handle.onLogout}
                     >
                       <LogoutIcon className='text-sm sm:text-base' /> Logout
@@ -143,11 +143,11 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <div className='cursor-pointer relative'>
-                <Link href='/cart'>
+              <div className='relative cursor-pointer'>
+                <Link href='/cart' aria-label='view items in cart'>
                   <ShoppingCartOutlinedIcon className='text-xl sm:text-2xl' />
                 </Link>
-                <span className='absolute top-0 right-0 bg-black text-xs sm:text-sm transform translate-x-1/2 -translate-y-1/2 text-white rounded-full w-4 sm:w-5 h-4 sm:h-5 grid place-content-center'>
+                <span className='absolute right-0 top-0 grid h-4 w-4 -translate-y-1/2 translate-x-1/2 transform place-content-center rounded-full bg-black text-xs text-white sm:h-5 sm:w-5 sm:text-sm'>
                   {quantity ?? 0}
                 </span>
               </div>

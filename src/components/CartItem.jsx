@@ -34,23 +34,23 @@ const CartItem = ({ product }) => {
   return (
     <div
       key={product.productID}
-      className='flex flex-col md:flex-row p-4 sm:p-5 rounded-xl shadow-sm hover:shadow-md bg-white relative transition-all overflow-hidden scale-100 hover:scale-100'
+      className='relative flex scale-100 flex-col overflow-hidden rounded-xl bg-white p-4 shadow-sm transition-all hover:scale-100 hover:shadow-md sm:p-5 md:flex-row'
     >
       <div
-        className='absolute top-2 right-2 cursor-pointer'
+        className='absolute right-2 top-2 cursor-pointer'
         onClick={() => handle.handleDeleteProduct(product.productID)}
       >
         <ClearIcon style={{ color: '#AB2A28' }} />
       </div>
       <div
-        className='flex flex-col md:flex-row items-center justify-between gap-4 w-full cursor-pointer'
+        className='flex w-full cursor-pointer flex-col items-center justify-between gap-4 md:flex-row'
         onClick={() => router.push(`/product/${product._id}`)}
       >
         <div className=''>
           <Image src={product.img} alt={product.title} width={100} height={100} className='object-contain' />
         </div>
         <div className='flex flex-col justify-around gap-2'>
-          <span className='text-xs sm:text-sm font-medium'>
+          <span className='text-xs font-medium sm:text-sm'>
             <b>Product:</b> {product.title}
           </span>
           <span className='text-xs sm:text-sm'>
@@ -58,31 +58,31 @@ const CartItem = ({ product }) => {
           </span>
           <span className='inline-flex items-center gap-2 text-xs sm:text-sm'>
             <b>Color:</b>
-            <div className='w-4 h-4 border border-gray-700 rounded-full' style={{ background: product.color }} />
+            <div className='h-4 w-4 rounded-full border border-gray-700' style={{ background: product.color }} />
           </span>
           <span className='text-xs sm:text-sm'>
             <b>Size:</b> {product.size}
           </span>
         </div>
-        <div className='flex flex-col justify-center items-center w-full md:w-1/4'>
+        <div className='flex w-full flex-col items-center justify-center md:w-1/4'>
           <div className='flex items-center font-semibold'>
             <button
-              className='flex items-center justify-center mx-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'
+              className='mx-2 flex items-center justify-center rounded-full bg-gray-100 p-1 hover:bg-gray-200 active:scale-110'
               onClick={() => handle.handleProductQuantityChange(product.productID, product.quantity - 1)}
             >
               <RemoveIcon className='text-xs sm:text-sm' />
             </button>
-            <span className='flex items-center justify-center h-8 w-8 rounded-xl border border-teal-700 text-xs sm:text-sm'>
+            <span className='flex h-8 w-8 items-center justify-center rounded-xl border border-teal-700 text-xs sm:text-sm'>
               {product.quantity}
             </span>
             <button
-              className='flex items-center justify-center mx-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'
+              className='mx-2 flex items-center justify-center rounded-full bg-gray-100 p-1 hover:bg-gray-200 active:scale-110'
               onClick={() => handle.handleProductQuantityChange(product.productID, product.quantity + 1)}
             >
               <AddIcon className='text-xs sm:text-sm' />
             </button>
           </div>
-          <span className='mt-2 text-xs sm:text-sm font-semibold'>Rs: {product.price}</span>
+          <span className='mt-2 text-xs font-semibold sm:text-sm'>Rs: {product.price}</span>
         </div>
       </div>
     </div>

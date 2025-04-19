@@ -8,8 +8,8 @@ export default function ProductItem(props) {
 
   return (
     <Link href={`/product/${_id}`}>
-      <div className='w-[160px] sm:w-44 md:w-[180px] xl:w-52 h-fit overflow-hidden transition-all duration-300 shadow-md bg-opacity-30 bg-gray-100 rounded-xl p-1 hover:shadow-xl'>
-        <div className='flex items-center justify-center overflow-hidden p-10 h-28 md:h-32'>
+      <div className='h-fit w-[160px] overflow-hidden rounded-xl bg-gray-100 bg-opacity-30 p-1 shadow-md transition-all duration-300 hover:shadow-xl sm:w-44 md:w-[180px] xl:w-52'>
+        <div className='flex h-28 items-center justify-center overflow-hidden p-10 md:h-32'>
           <Image
             src={img}
             alt={title}
@@ -18,19 +18,19 @@ export default function ProductItem(props) {
             className='transition-all duration-300 hover:scale-90'
           />
         </div>
-        <div className='flex flex-col p-2 gap-1'>
-          <h2 className='text-sm text-gray-700 overflow-ellipsis overflow-hidden whitespace-nowrap'>{title}</h2>
-          <p className='text-xs text-gray-500 overflow-ellipsis overflow-hidden whitespace-nowrap'>
+        <div className='flex flex-col gap-1 p-2'>
+          <h2 className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-700'>{title}</h2>
+          <p className='overflow-hidden overflow-ellipsis whitespace-nowrap text-xs text-gray-500'>
             {desc ? desc : 'No Description'}
           </p>
-          <div className='flex justify-between  bg-teal-200 rounded-xl p-1 shadow-sm'>
-            <span className='text-gray-700 text-xs'>Rs. {price}</span>
-            <div className=' flex items-center rounded-xl text-gray-700 text-xs gap-1'>
+          <div className='flex justify-between rounded-xl bg-teal-200 p-1 shadow-sm'>
+            <span className='text-xs text-gray-700'>Rs. {price}</span>
+            <div className='flex items-center gap-1 rounded-xl text-xs text-gray-700'>
               <div className='flex items-center'>
-                {ratingsAverage} <StarIcon className='text-[#ff9800] text-sm' />
+                {ratingsAverage} <StarIcon className='text-sm text-[#ff9800]' />
               </div>
               <div className='flex items-center gap-1'>
-                {ratingsQuantity} <ReviewIcon className='text-[#ffd700] text-xs' />
+                {ratingsQuantity} <ReviewIcon className='text-xs text-[#ffd700]' />
               </div>
             </div>
           </div>

@@ -53,20 +53,20 @@ const UserSettingPage = () => {
   return (
     <div className='container min-h-[40vh]'>
       <div className='flex items-center justify-center font-Urbanist'>
-        <div className='flex flex-col gap-4 w-full max-w-[1200px] py-5'>
-          <h2 className='text-xl sm:text-2xl font-semibold'>Settings</h2>
-          <div className='flex flex-col md:flex-row gap-4 md:gap-40'>
+        <div className='flex w-full max-w-[1200px] flex-col gap-4 py-5'>
+          <h2 className='text-xl font-semibold sm:text-2xl'>Settings</h2>
+          <div className='flex flex-col gap-4 md:flex-row md:gap-40'>
             {/* Navigation Links */}
-            <div className='flex flex-row md:flex-col gap-2 text-sm sm:text-base'>
+            <div className='flex flex-row gap-2 text-sm sm:text-base md:flex-col'>
               <a
                 onClick={() => setIsActivated(1)}
-                className={`decoration-black cursor-pointer ${isActivated === 1 && 'text-teal-700'}`}
+                className={`cursor-pointer decoration-black ${isActivated === 1 && 'text-teal-700'}`}
               >
                 Account Details
               </a>
               <a
                 onClick={() => setIsActivated(2)}
-                className={`decoration-black cursor-pointer ${isActivated === 2 && 'text-teal-700'}`}
+                className={`cursor-pointer decoration-black ${isActivated === 2 && 'text-teal-700'}`}
               >
                 Delivery Addresses
               </a>
@@ -74,9 +74,9 @@ const UserSettingPage = () => {
 
             {/* Content Section */}
             <div className='flex flex-col items-start gap-5 sm:w-[60%] md:w-[50%]'>
-              <h2 className='text-base sm:text-lg font-semibold'>{navMap[isActivated]}</h2>
+              <h2 className='text-base font-semibold sm:text-lg'>{navMap[isActivated]}</h2>
               {isActivated === 1 && (
-                <form onSubmit={handle.updateProfile} className='text-xs sm:text-sm flex flex-col gap-2 w-full'>
+                <form onSubmit={handle.updateProfile} className='flex w-full flex-col gap-2 text-xs sm:text-sm'>
                   <p className='font-semibold'>First name</p>
                   <input
                     type='text'
@@ -84,7 +84,7 @@ const UserSettingPage = () => {
                     placeholder='First name'
                     value={userDataForm.firstName}
                     onChange={handle.onChange}
-                    className='p-2 rounded-xl border border-[#ccc]'
+                    className='rounded-xl border border-[#ccc] p-2'
                   />
                   <p className='font-semibold'>Last name</p>
                   <input
@@ -93,7 +93,7 @@ const UserSettingPage = () => {
                     placeholder='Last name'
                     value={userDataForm.lastName}
                     onChange={handle.onChange}
-                    className='p-2 rounded-xl border border-[#ccc]'
+                    className='rounded-xl border border-[#ccc] p-2'
                   />
                   <p className='font-semibold'>Email address</p>
                   <input
@@ -102,7 +102,7 @@ const UserSettingPage = () => {
                     placeholder='Email'
                     value={userDataForm.email}
                     onChange={handle.onChange}
-                    className='p-2 rounded-xl border border-[#ccc]'
+                    className='rounded-xl border border-[#ccc] p-2'
                     autoComplete='true'
                   />
                   <p className='font-semibold'>Number</p>
@@ -112,18 +112,18 @@ const UserSettingPage = () => {
                     placeholder='Phone number'
                     value={userDataForm.number}
                     onChange={handle.onChange}
-                    className='p-2 rounded-xl border border-[#ccc]'
+                    className='rounded-xl border border-[#ccc] p-2'
                   />
                   <p className='font-semibold'>Password</p>
-                  <div className='flex justify-between border border-[#ccc] rounded-xl p-2'>
+                  <div className='flex justify-between rounded-xl border border-[#ccc] p-2'>
                     *************
-                    <p className='underline cursor-pointer' onClick={() => passwordDialog.onOpen({})}>
+                    <p className='cursor-pointer underline' onClick={() => passwordDialog.onOpen({})}>
                       Edit
                     </p>
                   </div>
                   <button
                     type='submit'
-                    className='bg-black text-white w-fit py-2 px-5 border-none rounded-xl hover:bg-[#777] disabled:bg-gray-500'
+                    className='w-fit rounded-xl border-none bg-black px-5 py-2 text-white hover:bg-[#777] disabled:bg-gray-500'
                     disabled={loading}
                   >
                     {loading ? 'Saving...' : 'Save Changes'}
@@ -131,7 +131,7 @@ const UserSettingPage = () => {
                 </form>
               )}
               {isActivated === 2 && (
-                <div className='text-xs sm:text-sm flex flex-col gap-2'>
+                <div className='flex flex-col gap-2 text-xs sm:text-sm'>
                   {address && (
                     <div className='flex flex-col gap-2'>
                       <p>Default Delivery Address</p>
@@ -140,7 +140,7 @@ const UserSettingPage = () => {
                       <p>{`${address?.city}, ${address?.zip}`}</p>
                     </div>
                   )}
-                  <p className='underline cursor-pointer' onClick={() => addressDialog.onOpen({ ...address })}>
+                  <p className='cursor-pointer underline' onClick={() => addressDialog.onOpen({ ...address })}>
                     {address ? 'Edit' : 'Add'}
                   </p>
                 </div>

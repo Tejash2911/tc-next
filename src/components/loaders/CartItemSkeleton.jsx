@@ -1,33 +1,33 @@
 const CartItemSkeleton = () => {
   return (
-    <div className='flex flex-col md:flex-row p-4 sm:p-5 rounded-xl shadow-sm bg-white relative animate-pulse'>
+    <div className='relative flex animate-pulse flex-col rounded-xl bg-white p-4 shadow-sm sm:p-5 md:flex-row'>
       {/* Delete Icon Skeleton */}
-      <div className='absolute top-2 right-2 h-6 w-6 bg-gray-300 rounded-full'></div>
+      <div className='absolute right-2 top-2 h-6 w-6 rounded-full bg-gray-300'></div>
 
       {/* Product Image and Info Skeleton */}
-      <div className='flex flex-col md:flex-row items-center justify-between gap-4 w-full'>
+      <div className='flex w-full flex-col items-center justify-between gap-4 md:flex-row'>
         {/* Image Skeleton */}
-        <div className='w-24 h-24 bg-gray-300 rounded-xl'></div>
+        <div className='h-24 w-24 rounded-xl bg-gray-300'></div>
 
         {/* Product Details Skeleton */}
-        <div className='flex flex-col gap-2 w-full'>
-          <div className='h-4 w-28 bg-gray-300 rounded-xl'></div>
-          <div className='h-4 w-20 bg-gray-300 rounded-xl'></div>
+        <div className='flex w-full flex-col gap-2'>
+          <div className='h-4 w-28 rounded-xl bg-gray-300'></div>
+          <div className='h-4 w-20 rounded-xl bg-gray-300'></div>
           <div className='inline-flex items-center gap-2'>
-            <div className='h-4 w-16 bg-gray-300 rounded-xl'></div>
-            <div className='w-4 h-4 bg-gray-300 rounded-full'></div>
+            <div className='h-4 w-16 rounded-xl bg-gray-300'></div>
+            <div className='h-4 w-4 rounded-full bg-gray-300'></div>
           </div>
-          <div className='h-4 w-16 bg-gray-300 rounded-xl'></div>
+          <div className='h-4 w-16 rounded-xl bg-gray-300'></div>
         </div>
 
         {/* Quantity and Price Skeleton */}
-        <div className='flex flex-col items-center w-full md:w-1/4'>
+        <div className='flex w-full flex-col items-center md:w-1/4'>
           <div className='flex items-center gap-2'>
-            <div className='h-6 w-6 bg-gray-300 rounded-full'></div>
-            <div className='h-6 w-8 bg-gray-300 rounded-xl'></div>
-            <div className='h-6 w-6 bg-gray-300 rounded-full'></div>
+            <div className='h-6 w-6 rounded-full bg-gray-300'></div>
+            <div className='h-6 w-8 rounded-xl bg-gray-300'></div>
+            <div className='h-6 w-6 rounded-full bg-gray-300'></div>
           </div>
-          <div className='mt-2 h-4 w-16 bg-gray-300 rounded-xl'></div>
+          <div className='mt-2 h-4 w-16 rounded-xl bg-gray-300'></div>
         </div>
       </div>
     </div>

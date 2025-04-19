@@ -19,7 +19,7 @@ export default function Announcement() {
   return (
     <>
       {announcement && (
-        <div className='min-h-7 bg-teal-700 text-xs sm:text-sm text-white font-Urbanist flex justify-center items-center overflow-hidden tracking-widest'>
+        <div className='flex min-h-7 items-center justify-center overflow-hidden bg-teal-700 font-Urbanist text-xs tracking-widest text-white sm:text-sm'>
           <marquee direction='left' scrollamount='10'>
             {announcement.title}
           </marquee>

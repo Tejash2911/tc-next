@@ -10,11 +10,11 @@ const PaymentSuccess = () => {
   if (!refID) return router.push('/')
 
   return (
-    <div className='h-screen flex flex-col items-center justify-center gap-3'>
+    <div className='flex h-screen flex-col items-center justify-center gap-3'>
       <h1>Payment Successful</h1>
       <p>ref_id: {refID}</p>
       <button
-        className='p-2 text-xs sm:text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
+        className='border border-teal-700 bg-white p-2 text-xs transition-all duration-300 hover:bg-teal-700 hover:text-white sm:text-sm'
         onClick={() => router.push('/')}
       >
         Home

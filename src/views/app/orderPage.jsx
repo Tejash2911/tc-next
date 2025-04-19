@@ -16,14 +16,14 @@ const OrdersPage = () => {
   }, [currentUser])
 
   return (
-    <div className={`w-full font-Urbanist py-5 ${orders.length !== 0 || loading ? 'bg-[#e0dede]' : 'bg-white'}`}>
+    <div className={`w-full py-5 font-Urbanist ${orders.length !== 0 || loading ? 'bg-[#e0dede]' : 'bg-white'}`}>
       <div className='container'>
         {!orders.length && !loading ? (
           <ProductNotFound title='No Orders Found' desc="Sorry, it looks like you haven't placed any orders yet." />
         ) : (
           <>
             <div className='mb-5'>
-              <h1 className='ml-2 text-xl sm:text-2xl font-semibold'>Your Orders</h1>
+              <h1 className='ml-2 text-xl font-semibold sm:text-2xl'>Your Orders</h1>
             </div>
             {loading ? (
               <div className='grid gap-4'>
