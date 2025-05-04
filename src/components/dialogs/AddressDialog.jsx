@@ -42,8 +42,8 @@ export default function AddressDialog({ open, setOpen, data }) {
 
   return (
     <Modal open={open}>
-      <form onSubmit={handle.onSubmit} className='font-Urbanist text-xs sm:text-sm flex flex-col gap-2'>
-        <label htmlFor='street' className='font-semibold block'>
+      <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 font-Urbanist text-xs sm:text-sm'>
+        <label htmlFor='street' className='block font-semibold'>
           Street
         </label>
         <input
@@ -53,10 +53,10 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter street'
           value={address.street}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
-        <label htmlFor='city' className='font-semibold block'>
+        <label htmlFor='city' className='block font-semibold'>
           City
         </label>
         <input
@@ -66,10 +66,10 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter city'
           value={address.city}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
-        <label htmlFor='state' className='font-semibold block'>
+        <label htmlFor='state' className='block font-semibold'>
           State
         </label>
         <input
@@ -79,10 +79,10 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter state'
           value={address.state}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
-        <label htmlFor='zip' className='font-semibold block'>
+        <label htmlFor='zip' className='block font-semibold'>
           Zip
         </label>
         <input
@@ -92,10 +92,10 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter zip code'
           value={address.zip}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
-        <label htmlFor='country' className='font-semibold block'>
+        <label htmlFor='country' className='block font-semibold'>
           Country
         </label>
         <select
@@ -104,7 +104,7 @@ export default function AddressDialog({ open, setOpen, data }) {
           id='country'
           value={address.country}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
           autoComplete='true'
         >
@@ -117,7 +117,7 @@ export default function AddressDialog({ open, setOpen, data }) {
             </option>
           ))}
         </select>
-        <label htmlFor='mobile' className='font-semibold block'>
+        <label htmlFor='mobile' className='block font-semibold'>
           Mobile Number
         </label>
         <input
@@ -127,17 +127,17 @@ export default function AddressDialog({ open, setOpen, data }) {
           placeholder='enter mobile number'
           value={address.mobile}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
         <div className='flex gap-3'>
-          <button type='submit' className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'>
+          <button type='submit' className='rounded-xl border-none bg-black px-5 py-2 text-white hover:bg-[#777]'>
             Submit
           </button>
           <button
             type='reset'
             onClick={handle.handleClose}
-            className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'
+            className='rounded-xl border-none bg-black px-5 py-2 text-white hover:bg-[#777]'
           >
             Cancel
           </button>

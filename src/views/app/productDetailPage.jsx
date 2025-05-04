@@ -161,8 +161,8 @@ const ProductDetailPage = ({ id }) => {
 
   return (
     <div className='container'>
-      <div className='grid md:grid-cols-2 gap-5 font-Urbanist py-5'>
-        <div className='flex items-center cursor-zoom-in overflow-hidden h-[200px] w-[200px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px]'>
+      <div className='grid gap-5 py-5 font-Urbanist md:grid-cols-2'>
+        <div className='flex h-[200px] w-[200px] cursor-zoom-in items-center overflow-hidden sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]'>
           {product.img && (
             <Image
               src={product.img}
@@ -177,7 +177,7 @@ const ProductDetailPage = ({ id }) => {
           )}
         </div>
         <div className='grid gap-5'>
-          <h1 className='text-lg sm:text-xl font-light'>{product?.title}</h1>
+          <h1 className='text-lg font-light sm:text-xl'>{product?.title}</h1>
           <p className='text-sm sm:text-base'>Design No - {product?.productNo}</p>
           <p className='text-sm sm:text-base'>{product?.desc}</p>
           <p className='text-sm sm:text-base'>₹{product?.price}</p>
@@ -186,18 +186,18 @@ const ProductDetailPage = ({ id }) => {
           </span>
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center text-xs sm:text-sm'>
-              <div className=' font-light mr-2'>Color</div>
+              <div className='mr-2 font-light'>Color</div>
               {(product?.color || []).map(e => (
                 <div
                   key={e}
-                  className='w-5 h-5 border border-gray-500 rounded-full cursor-pointer ml-1 hover:scale-110 active:border-black'
+                  className='ml-1 h-5 w-5 cursor-pointer rounded-full border border-gray-500 hover:scale-110 active:border-black'
                   style={{ backgroundColor: e }}
                   onClick={() => setColor(e)}
                 />
               ))}
             </div>
             <div className='flex items-center text-xs sm:text-sm'>
-              <div className='font-light mr-2'>Size</div>
+              <div className='mr-2 font-light'>Size</div>
               <select
                 name='size'
                 aria-label='size'
@@ -212,26 +212,26 @@ const ProductDetailPage = ({ id }) => {
           </div>
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center gap-2 font-semibold'>
-              <div className='cursor-pointer flex items-center justify-between active:scale-110 rounded-full bg-gray-100 hover:bg-gray-200'>
+              <div className='flex cursor-pointer items-center justify-between rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'>
                 <RemoveIcon onClick={() => handleClick('dec')} className='text-xs sm:text-sm' />
               </div>
-              <span className='h-8 w-8 text-xs sm:text-sm border border-teal-600 p-2 rounded-xl grid place-content-center'>
+              <span className='grid h-8 w-8 place-content-center rounded-xl border border-teal-600 p-2 text-xs sm:text-sm'>
                 {productQuantity}
               </span>
-              <div className='cursor-pointer flex items-center justify-between active:scale-110 rounded-full bg-gray-100 hover:bg-gray-200'>
+              <div className='flex cursor-pointer items-center justify-between rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'>
                 <AddIcon onClick={() => handleClick('inc')} className='text-xs sm:text-sm' />
               </div>
             </div>
             <div className='flex items-center gap-3'>
               <button
-                className={`border-teal-500 text-xs sm:text-sm border p-1 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] `}
+                className={`border border-teal-500 p-1 text-xs shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] sm:text-sm`}
                 onClick={handle.addToCart}
                 disabled={addToCartLoading}
               >
                 {addToCartLoading ? 'Adding..' : 'Add to Cart'}
               </button>
               <button
-                className={`border-teal-500 text-xs sm:text-sm border p-1 shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb]`}
+                className={`border border-teal-500 p-1 text-xs shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] sm:text-sm`}
                 onClick={handleBuyNow}
               >
                 Buy Now

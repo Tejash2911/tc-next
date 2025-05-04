@@ -41,7 +41,7 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
     <Modal open={open}>
       <div className='flex flex-col items-center gap-5 font-Urbanist'>
         <h1>{data.product?.title}</h1>
-        <div className='flex justify-start items-center gap-2 w-full'>
+        <div className='flex w-full items-center justify-start gap-2'>
           <Image src='/user.png' alt='user-image' width={50} height={50} />
           <span>{currentUser?.firstName + ' ' + currentUser?.lastName}</span>
         </div>
@@ -50,21 +50,21 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
           <textarea
             name='review'
             id='review'
-            className='w-full sm:w-96 h-36 border-2 border-teal-600 text-base p-2 rounded-xl'
+            className='h-36 w-full rounded-xl border-2 border-teal-600 p-2 text-base sm:w-96'
             placeholder='Share your thoughts on this product...'
             value={review}
             onChange={e => setReview(e.target.value)}
           ></textarea>
         </div>
-        <div className='flex justify-end items-end w-full'>
+        <div className='flex w-full items-end justify-end'>
           <button
-            className='m-2 py-2 px-5 rounded-full border border-teal-600 bg-white font-semibold text-teal-600 disabled:bg-[#c0f3f3] disabled:border-[#c0f3f3] disabled:cursor-not-allowed disabled:text-black'
+            className='m-2 rounded-full border border-teal-600 bg-white px-5 py-2 font-semibold text-teal-600 disabled:cursor-not-allowed disabled:border-[#c0f3f3] disabled:bg-[#c0f3f3] disabled:text-black'
             onClick={handle.handleClose}
           >
             Cancel
           </button>
           <button
-            className='m-2 py-2 px-5 rounded-full border border-teal-600 bg-teal-600 font-semibold text-white disabled:bg-[#c0f3f3] disabled:border-[#c0f3f3] disabled:cursor-not-allowed disabled:text-black'
+            className='m-2 rounded-full border border-teal-600 bg-teal-600 px-5 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:border-[#c0f3f3] disabled:bg-[#c0f3f3] disabled:text-black'
             disabled={!review && !rating ? true : false}
             onClick={handle.onSubmit}
           >

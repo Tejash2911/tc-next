@@ -42,8 +42,8 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
 
   return (
     <Modal open={open}>
-      <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 text-xs sm:text-sm font-Urbanist'>
-        <label htmlFor='currentPass' className='font-semibold block'>
+      <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 font-Urbanist text-xs sm:text-sm'>
+        <label htmlFor='currentPass' className='block font-semibold'>
           Current Password:
         </label>
         <input
@@ -53,10 +53,10 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           placeholder='Enter Current Password'
           value={formData.currentPass}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
-        <label htmlFor='password' className='font-semibold block'>
+        <label htmlFor='password' className='block font-semibold'>
           New Password:
         </label>
         <input
@@ -66,10 +66,10 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           placeholder='Enter New Password'
           value={formData.password}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
-        <label htmlFor='confPass' className='font-semibold block'>
+        <label htmlFor='confPass' className='block font-semibold'>
           Confirm Password:
         </label>
         <input
@@ -79,17 +79,17 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
           placeholder='Enter Confirm Password'
           value={formData.confPass}
           onChange={handle.onChange}
-          className='p-2 w-full border border-[#ccc] rounded-xl focus:border-[#555]'
+          className='w-full rounded-xl border border-[#ccc] p-2 focus:border-[#555]'
           required
         />
         <div className='flex gap-3'>
-          <button type='submit' className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'>
+          <button type='submit' className='rounded-xl border-none bg-black px-5 py-2 text-white hover:bg-[#777]'>
             Submit
           </button>
           <button
             type='reset'
             onClick={handle.handleClose}
-            className='bg-black text-white py-2 px-5 border-none rounded-xl hover:bg-[#777]'
+            className='rounded-xl border-none bg-black px-5 py-2 text-white hover:bg-[#777]'
           >
             Cancel
           </button>

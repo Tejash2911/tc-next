@@ -17,6 +17,7 @@ export default function Product({ sort, cat, filter }) {
     getData: () => {
       const nPayload = {
         offset: page,
+        limit: 5,
         ...(cat && { category: cat }),
         ...(color && { color: color }),
         ...(size && { size: size }),
@@ -49,15 +50,15 @@ export default function Product({ sort, cat, filter }) {
       {!products?.length && !loading ? (
         <ProductNotFound title='Ops! No product Found' desc='Your filter did not match any product' />
       ) : (
-        <div className='font-Urbanist my-5'>
-          <div className='grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-5'>
+        <div className='my-5 font-Urbanist'>
+          <div className='grid grid-cols-2 place-items-center gap-5 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5'>
             {loading
               ? Array.from({ length: 5 }).map((e, i) => <ProductItemSkeleton key={i} />)
               : Array.isArray(products) && products.map(data => <ProductItem data={data} key={data._id} />)}
           </div>
-          <div className='w-full grid place-content-center mt-10'>
+          <div className='mt-10 grid w-full place-content-center'>
             <button
-              className='p-2 text-xs sm:text-sm border border-teal-700 bg-white transition-all duration-300 hover:bg-teal-700 hover:text-white'
+              className='border border-teal-700 bg-white p-2 text-xs transition-all duration-300 hover:bg-teal-700 hover:text-white sm:text-sm'
               disabled={loading}
               onClick={() => setPage(p => p + 1)}
             >

@@ -29,7 +29,7 @@ export default function SingleReview({ review }) {
       <div className='h-fit'>
         <Image src='/user.png' alt='profile-image' width={40} height={40} />
       </div>
-      <div className='flex flex-col gap-1 w-full'>
+      <div className='flex w-full flex-col gap-1'>
         <p className='text-sm sm:text-base'>{`${review?.user?.firstName} ${review?.user?.lastName}`}</p>
         <div className='flex items-center gap-2'>
           <Rating value={review?.rating} />
@@ -37,10 +37,10 @@ export default function SingleReview({ review }) {
         </div>
         <p className='text-xs sm:text-sm'>{review?.review}</p>
         <div className='flex items-center justify-between text-xs sm:text-sm'>
-          <div className='flex items-center gap-1 cursor-pointer hover:text-blue-600' onClick={handle.handleUpVote}>
+          <div className='flex cursor-pointer items-center gap-1 hover:text-blue-600' onClick={handle.handleUpVote}>
             <ThumbUpOffAltIcon style={{ fontSize: '18px' }} /> Helpful?
           </div>
-          <div onClick={handle.handleReport} className='text-red-600 cursor-pointer hover:underline'>
+          <div onClick={handle.handleReport} className='cursor-pointer text-red-600 hover:underline'>
             Report as inappropriate
           </div>
         </div>

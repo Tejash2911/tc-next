@@ -1,18 +1,18 @@
 export default function SingleReviewSkeleton() {
   return (
-    <div className='flex gap-5 font-Urbanist animate-pulse'>
+    <div className='flex animate-pulse gap-5 font-Urbanist'>
       <div className='h-fit'>
-        <div className='w-10 h-10 bg-gray-300 rounded-full'></div>
+        <div className='h-10 w-10 rounded-full bg-gray-300'></div>
       </div>
       <div className='w-full'>
-        <div className='h-4 bg-gray-300 rounded-xl w-1/12 mb-2'></div>
-        <div className='flex items-center gap-2 mb-2'>
-          <div className='h-4 bg-gray-300 rounded-xl w-1/5'></div>
+        <div className='mb-2 h-4 w-1/12 rounded-xl bg-gray-300'></div>
+        <div className='mb-2 flex items-center gap-2'>
+          <div className='h-4 w-1/5 rounded-xl bg-gray-300'></div>
         </div>
-        <div className='h-4 bg-gray-300 rounded-xl w-1/2 mb-4'></div>
+        <div className='mb-4 h-4 w-1/2 rounded-xl bg-gray-300'></div>
         <div className='flex items-center justify-between'>
-          <div className='h-4 bg-gray-300 rounded-xl w-1/12'></div>
-          <div className='h-4 bg-gray-300 rounded-xl w-2/12'></div>
+          <div className='h-4 w-1/12 rounded-xl bg-gray-300'></div>
+          <div className='h-4 w-2/12 rounded-xl bg-gray-300'></div>
         </div>
       </div>
     </div>

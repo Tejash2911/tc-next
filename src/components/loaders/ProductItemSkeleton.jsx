@@ -1,26 +1,26 @@
 export const ProductItemSkeleton = () => {
   return (
-    <div className='w-[160px] sm:w-44 md:w-[180px] xl:w-52 h-fit overflow-hidden shadow-md bg-opacity-30 bg-gray-100 rounded-xl p-1'>
+    <div className='h-fit w-[160px] overflow-hidden rounded-xl bg-gray-100 bg-opacity-30 p-1 shadow-md sm:w-44 md:w-[180px] xl:w-52'>
       {/* Image Placeholder */}
-      <div className='flex items-center justify-center overflow-hidden p-10 h-28 md:h-32 bg-gray-300 rounded-xl animate-pulse'></div>
+      <div className='flex h-28 animate-pulse items-center justify-center overflow-hidden rounded-xl bg-gray-300 p-10 md:h-32'></div>
 
       {/* Text and Rating Placeholder */}
-      <div className='flex flex-col p-2 gap-1'>
+      <div className='flex flex-col gap-1 p-2'>
         {/* Title Placeholder */}
-        <div className='h-4 bg-gray-200 rounded-xl w-3/4'></div>
+        <div className='h-4 w-3/4 rounded-xl bg-gray-200'></div>
 
         {/* Description Placeholder */}
-        <div className='h-3 bg-gray-200 rounded-xl w-full'></div>
+        <div className='h-3 w-full rounded-xl bg-gray-200'></div>
 
         {/* Price and Ratings Placeholder */}
-        <div className='flex justify-between bg-teal-200 shadow-sm p-1 rounded-xl'>
+        <div className='flex justify-between rounded-xl bg-teal-200 p-1 shadow-sm'>
           {/* Price Placeholder */}
-          <div className='w-12 h-4 bg-gray-300 rounded-xl'></div>
+          <div className='h-4 w-12 rounded-xl bg-gray-300'></div>
 
           {/* Ratings Placeholder */}
-          <div className='flex gap-1 items-center'>
-            <div className='w-6 h-4 bg-gray-300 rounded-xl'></div>
-            <div className='w-6 h-4 bg-gray-300 rounded-xl'></div>
+          <div className='flex items-center gap-1'>
+            <div className='h-4 w-6 rounded-xl bg-gray-300'></div>
+            <div className='h-4 w-6 rounded-xl bg-gray-300'></div>
           </div>
         </div>
       </div>

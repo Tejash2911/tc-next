@@ -24,7 +24,7 @@ export default function BackToTopBTN() {
 
   return (
     <div className={`fixed bottom-10 right-10 z-50 ${isShow && 'hidden'}`}>
-      <div className='flex items-center justify-center bg-white border-2 border-black scale-150 cursor-pointer rounded-full transition-all ease-in-out hover:bg-black hover:text-white'>
+      <div className='flex scale-150 cursor-pointer items-center justify-center rounded-full border-2 border-black bg-white transition-all ease-in-out hover:bg-black hover:text-white'>
         <KeyboardDoubleArrowUp onClick={HandleClick} />
       </div>
     </div>

@@ -26,15 +26,15 @@ const ProductListPage = () => {
   return (
     <>
       <div className='container font-Urbanist'>
-        <h1 className='py-5 font-semibold text-xl sm:text-2xl capitalize'>{category || 'All Products'}</h1>
+        <h1 className='py-5 text-xl font-semibold capitalize sm:text-2xl'>{category || 'All Products'}</h1>
         <div className='flex justify-between pb-5'>
-          <div className='text-xs sm:text-sm font-semibold'>
+          <div className='text-xs font-semibold sm:text-sm'>
             <span className='mr-5'>Filter Products:</span>
             <select
               name='color'
               aria-label='color'
               onChange={handleFilters}
-              className='p-1 border border-gray-400 mr-2 hover:shadow-md'
+              className='mr-2 border border-gray-400 p-1 hover:shadow-md'
             >
               <option defaultValue='Color'>Color</option>
               <option>red</option>
@@ -48,7 +48,7 @@ const ProductListPage = () => {
               name='size'
               aria-label='size'
               onChange={handleFilters}
-              className='p-1 border border-gray-400 mr-2 hover:shadow-md'
+              className='mr-2 border border-gray-400 p-1 hover:shadow-md'
             >
               <option defaultValue='Size'>Size</option>
               <option>S</option>
@@ -59,13 +59,13 @@ const ProductListPage = () => {
               <option>XXXL</option>
             </select>
           </div>
-          <div className='text-xs sm:text-sm font-semibold'>
+          <div className='text-xs font-semibold sm:text-sm'>
             <span className='mr-5'>Sort Products:</span>
             <select
               name='sort'
               aria-label='sort'
               onChange={e => setSort(e.target.value)}
-              className='p-1 border border-gray-400 mr-2 hover:shadow-md'
+              className='mr-2 border border-gray-400 p-1 hover:shadow-md'
             >
               <option defaultValue='newest'>Newest</option>
               <option value='top-rated'>Top rated</option>
