@@ -17,6 +17,7 @@ export default function Product({ sort, cat, filter }) {
     getData: () => {
       const nPayload = {
         offset: page,
+        limit: 5,
         ...(cat && { category: cat }),
         ...(color && { color: color }),
         ...(size && { size: size }),
