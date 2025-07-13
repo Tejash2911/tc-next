@@ -6,7 +6,7 @@ export const login = createAsyncThunk('user/login', async (payload, { rejectWith
   try {
     const { data } = await userService.login(payload)
 
-    return data
+    return data?.data
   } catch (error) {
     return rejectWithValue(error)
   }
