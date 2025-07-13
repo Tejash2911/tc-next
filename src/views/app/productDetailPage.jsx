@@ -1,51 +1,37 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import addDynamicScript from '@/utils/addDynamicScript'
 import Review from '@/components/Review'
 import { addToCart, getCartSize } from '@/redux/slices/cartSlice'
-import { userRequest } from '@/lib/axios'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
-import AddressDialog from '@/components/dialogs/AddressDialog'
-import useModal from '@/hooks/use-modal'
-import { getUserAddress } from '@/redux/slices/addressSlice'
 import ProductDetailsLoader from '@/components/loaders/ProductDetailsLoader'
 
 const ProductDetailPage = ({ id }) => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
-  const { address } = useAppSelector(({ address }) => address)
   const { product, loading } = useAppSelector(({ product }) => product)
   const { loading: addToCartLoading } = useAppSelector(({ cart }) => cart)
-  const router = useRouter()
   const imgRef = useRef(null)
   const [productQuantity, setProductQuantity] = useState(1)
 
-  const addressDialog = useModal()
-
   //setting default size and color for product
-  const [Color, setColor] = useState(product?.color?.length >= 0 && `#${product.color[0]}`)
+  const [color, setColor] = useState(product?.color?.length >= 0 && `#${product.color[0]}`)
   const [size, setSize] = useState(product?.size?.length >= 0 && product.size[0])
 
   const handle = {
     getData: () => {
       dispatch(getProductById(id))
-
-      if (currentUser) {
-        dispatch(getUserAddress())
-      }
     },
     addToCart: () => {
       const payload = {
         productID: product._id,
         quantity: productQuantity,
-        color: Color || product.color[0],
-        size: size || product.size[0]
+        color: color,
+        size: size
       }
 
       const nPayload = { products: [payload] }
@@ -70,78 +56,6 @@ const ProductDetailPage = ({ id }) => {
   const handleClick = type => {
     if (type === 'dec') setProductQuantity(prev => (productQuantity > 1 ? prev - 1 : prev))
     if (type === 'inc') setProductQuantity(prev => (productQuantity < product.quantity ? prev + 1 : prev))
-  }
-
-  const handleBuyNow = async () => {
-    if (!currentUser) router.push('/login')
-
-    // if there is address then continue or set get address popup
-    if (!address) {
-      return addressDialog.onOpen({})
-    }
-
-    if (!window.Razorpay) {
-      await addDynamicScript('https://checkout.razorpay.com/v1/checkout.js') //script is not loading at first time dk why so i added this XD
-    }
-
-    let DbOrder, DbKey
-
-    try {
-      const {
-        data: { order }
-      } = await userRequest.post('/buy/checkout', {
-        user: currentUser._id,
-        product: {
-          productID: product._id,
-          quantity: productQuantity,
-          size,
-          color: Color
-        },
-        type: 'product',
-        userInfo: {
-          address: address,
-          name: `${currentUser.firstName} ${currentUser.lastName}`,
-          email: currentUser.email,
-          number: currentUser.number
-        }
-      })
-
-      DbOrder = order
-
-      const {
-        data: { key }
-      } = await userRequest.get('/buy/getKey')
-
-      DbKey = key
-    } catch (error) {
-      dispatch(errorActions.setErrorMessage(error?.response?.data?.message || 'error occurred while creating order'))
-    }
-
-    const options = {
-      key: DbKey, //receiving key from backend due to security
-      amount: DbOrder.amount,
-      currency: 'INR',
-      name: product.title,
-      description: `${product.desc.slice(0, 252)}...` || 'random description', //slicing it because razor pay does'nt allow desc length more then 255
-      image: product.img,
-      order_id: DbOrder.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      callback_url: `${process.env.NEXT_PUBLIC_API_URL}/buy/paymentVerify`,
-      prefill: {
-        name: `${currentUser.firstName} ${currentUser.lastName}`,
-        email: currentUser.email,
-        contact: currentUser.number
-      },
-      notes: {
-        address: 'Dummy Office address'
-      },
-      theme: {
-        color: '#40a0a0'
-      }
-    }
-
-    const rzp1 = new window.Razorpay(options)
-
-    rzp1.open()
   }
 
   const handleImgMouseEnter = e => {
@@ -230,18 +144,11 @@ const ProductDetailPage = ({ id }) => {
               >
                 {addToCartLoading ? 'Adding..' : 'Add to Cart'}
               </button>
-              <button
-                className={`border border-teal-500 p-1 text-xs shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] sm:text-sm`}
-                onClick={handleBuyNow}
-              >
-                Buy Now
-              </button>
             </div>
           </div>
         </div>
       </div>
       {product && <Review product={product} />}
-      {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
     </div>
   )
 }

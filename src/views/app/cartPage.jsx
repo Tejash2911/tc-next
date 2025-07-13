@@ -48,11 +48,7 @@ const CartPage = () => {
 
   const handleCheckout = async () => {
     // if there is address then continue or set get address popup
-    if (!address) {
-      addressDialog.onOpen({})
-
-      return
-    }
+    if (!address) return addressDialog.onOpen({})
 
     setIsCheckoutLoading(true)
 
@@ -68,7 +64,8 @@ const CartPage = () => {
       userInfo: {
         address: address,
         name: `${currentUser.firstName} ${currentUser.lastName}`,
-        email: currentUser.email
+        email: currentUser.email,
+        number: currentUser.number
       }
     })
 
