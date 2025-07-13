@@ -21,7 +21,8 @@ const rootReducer = combineReducers({
 
 export const makeStore = () => {
   const store = configureStore({
-    reducer: rootReducer
+    reducer: rootReducer,
+    devTools: process.env.NEXT_MODE === 'development'
   })
 
   return store
