@@ -64,7 +64,7 @@ export default function Navbar() {
       <div className='flex items-center justify-between px-4 py-2'>
         <div className='hidden flex-1 items-center md:flex'>
           <h1 className='text-center text-3xl font-semibold tracking-tight md:text-left'>
-            <Link href='/'>
+            <Link href='/home'>
               <Image src={logo} width={40} height={40} alt='logo' />
             </Link>
           </h1>

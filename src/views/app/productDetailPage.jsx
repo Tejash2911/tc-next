@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import { errorActions } from '@/redux/slices/errorSlice'
@@ -17,6 +18,7 @@ const ProductDetailPage = ({ id }) => {
   const { loading: addToCartLoading } = useAppSelector(({ cart }) => cart)
   const imgRef = useRef(null)
   const [productQuantity, setProductQuantity] = useState(1)
+  const router = useRouter()
 
   //setting default size and color for product
   const [color, setColor] = useState(product?.color?.length >= 0 && `#${product.color[0]}`)
@@ -27,6 +29,12 @@ const ProductDetailPage = ({ id }) => {
       dispatch(getProductById(id))
     },
     addToCart: () => {
+      if (!currentUser) {
+        router.push('/login')
+
+        return
+      }
+
       const payload = {
         productID: product._id,
         quantity: productQuantity,
