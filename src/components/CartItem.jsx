@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import ClearIcon from '@mui/icons-material/Clear'
-import RemoveIcon from '@mui/icons-material/Remove'
-import AddIcon from '@mui/icons-material/Add'
+import { Icon } from '@iconify/react'
 import { deleteCartItemById, getCartInfoByUserId, updateCartQtyById } from '@/redux/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { errorActions } from '@/redux/slices/errorSlice'
@@ -40,13 +38,10 @@ const CartItem = ({ product }) => {
         className='absolute right-2 top-2 cursor-pointer'
         onClick={() => handle.handleDeleteProduct(product.productID)}
       >
-        <ClearIcon style={{ color: '#AB2A28' }} />
+        <Icon icon='ri:close-line' className='text-red-600' />
       </div>
-      <div
-        className='flex w-full cursor-pointer flex-col items-center justify-between gap-4 md:flex-row'
-        onClick={() => router.push(`/product/${product._id}`)}
-      >
-        <div className=''>
+      <div className='flex w-full flex-col items-center justify-between gap-4 md:flex-row'>
+        <div className='cursor-pointer' onClick={() => router.push(`/product/${product._id}`)}>
           <Image src={product.img} alt={product.title} width={100} height={100} className='object-contain' />
         </div>
         <div className='flex flex-col justify-around gap-2'>
@@ -67,19 +62,19 @@ const CartItem = ({ product }) => {
         <div className='flex w-full flex-col items-center justify-center md:w-1/4'>
           <div className='flex items-center font-semibold'>
             <button
-              className='mx-2 flex items-center justify-center rounded-full bg-gray-100 p-1 hover:bg-gray-200 active:scale-110'
+              className='mx-2 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'
               onClick={() => handle.handleProductQuantityChange(product.productID, product.quantity - 1)}
             >
-              <RemoveIcon className='text-xs sm:text-sm' />
+              <Icon icon='ri:subtract-line' />
             </button>
             <span className='flex h-8 w-8 items-center justify-center rounded-xl border border-teal-700 text-xs sm:text-sm'>
               {product.quantity}
             </span>
             <button
-              className='mx-2 flex items-center justify-center rounded-full bg-gray-100 p-1 hover:bg-gray-200 active:scale-110'
+              className='mx-2 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'
               onClick={() => handle.handleProductQuantityChange(product.productID, product.quantity + 1)}
             >
-              <AddIcon className='text-xs sm:text-sm' />
+              <Icon icon='ri:add-line' />
             </button>
           </div>
           <span className='mt-2 text-xs font-semibold sm:text-sm'>Rs: {product.price}</span>

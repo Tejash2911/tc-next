@@ -1,4 +1,4 @@
-import SendIcon from '@mui/icons-material/Send'
+import { Icon } from '@iconify/react'
 
 export default function NewsLetter() {
   return (
@@ -17,7 +17,7 @@ export default function NewsLetter() {
             aria-label='submit'
             className='grid w-1/4 place-content-center bg-blue-500 text-white transition duration-300 hover:bg-blue-600 focus:outline-none'
           >
-            <SendIcon />
+            <Icon icon='ri:send-plane-2-fill' width={24} height={24} />
           </button>
         </div>
       </div>

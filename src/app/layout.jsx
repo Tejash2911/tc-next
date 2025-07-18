@@ -1,4 +1,4 @@
-import LayoutWrapper from '@/@layouts/LayoutWrapper'
+import Message from '@/components/Message'
 import './globals.css'
 import StoreProvider from '@/redux/storeProvider'
 
@@ -12,7 +12,8 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body>
         <StoreProvider>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          {children}
+          <Message />
         </StoreProvider>
       </body>
     </html>

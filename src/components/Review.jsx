@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
+import { Icon } from '@iconify/react'
 import Rating from './Rating'
 import SingleReview from './SingleReview'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
@@ -35,10 +35,10 @@ export default function Review({ product }) {
           <div className='flex flex-col justify-between sm:flex-row'>
             <h2 className='text-sm font-semibold'>{product?.title}</h2>
             <button
-              className='flex w-fit items-center border border-teal-600 p-1 text-xs shadow-lg transition-all duration-300 hover:bg-teal-700 hover:text-white sm:text-sm'
+              className='flex w-fit items-center gap-1 border border-teal-600 p-1 text-xs shadow-lg transition-all duration-300 hover:bg-teal-700 hover:text-white sm:text-sm'
               onClick={handleWriteReview}
             >
-              <DriveFileRenameOutlineIcon className='text-xs sm:text-sm' /> Write a Review
+              <Icon icon='ri:edit-line' /> Write a Review
             </button>
           </div>
           <div className='flex items-center gap-1 text-xs sm:text-sm'>

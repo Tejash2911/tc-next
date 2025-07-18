@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+import { Icon } from '@iconify/react'
 import Rating from './Rating'
 import timeSince from '@/utils/timeSince'
 import { useAppDispatch } from '@/redux/hooks'
@@ -38,7 +38,7 @@ export default function SingleReview({ review }) {
         <p className='text-xs sm:text-sm'>{review?.review}</p>
         <div className='flex items-center justify-between text-xs sm:text-sm'>
           <div className='flex cursor-pointer items-center gap-1 hover:text-blue-600' onClick={handle.handleUpVote}>
-            <ThumbUpOffAltIcon style={{ fontSize: '18px' }} /> Helpful?
+            <Icon icon='ri:thumb-up-line' /> Helpful?
           </div>
           <div onClick={handle.handleReport} className='cursor-pointer text-red-600 hover:underline'>
             Report as inappropriate

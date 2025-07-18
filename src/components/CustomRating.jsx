@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Star, StarBorder } from '@mui/icons-material'
+import { Icon } from '@iconify/react'
 
 export default function CustomRating({ setProductRating }) {
   const [rating, setRating] = useState(0)
@@ -25,9 +25,9 @@ export default function CustomRating({ setProductRating }) {
               />
               <span onMouseEnter={() => setHover(ratingValue)} onMouseLeave={() => setHover(null)}>
                 {ratingValue <= (hover || rating) ? (
-                  <Star className='cursor-pointer text-3xl text-yellow-500' />
+                  <Icon icon='ri:star-fill' width={24} height={24} className='text-yellow-500' />
                 ) : (
-                  <StarBorder className='cursor-pointer text-3xl text-gray-300' />
+                  <Icon icon='ri:star-line' width={24} height={24} className='text-gray-300' />
                 )}
               </span>
             </label>
