@@ -2,8 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import RemoveIcon from '@mui/icons-material/Remove'
-import AddIcon from '@mui/icons-material/Add'
+import { Icon } from '@iconify/react'
 import { errorActions } from '@/redux/slices/errorSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Review from '@/components/Review'
@@ -135,21 +134,22 @@ const ProductDetailPage = ({ id }) => {
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
             <div className='flex items-center gap-2 font-semibold'>
               <div className='flex cursor-pointer items-center justify-between rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'>
-                <RemoveIcon onClick={() => handleClick('dec')} className='text-xs sm:text-sm' />
+                <Icon icon='ri:subtract-line' onClick={() => handleClick('dec')} className='text-xs sm:text-sm' />
               </div>
               <span className='grid h-8 w-8 place-content-center rounded-xl border border-teal-600 p-2 text-xs sm:text-sm'>
                 {productQuantity}
               </span>
               <div className='flex cursor-pointer items-center justify-between rounded-full bg-gray-100 hover:bg-gray-200 active:scale-110'>
-                <AddIcon onClick={() => handleClick('inc')} className='text-xs sm:text-sm' />
+                <Icon icon='ri:add-line' onClick={() => handleClick('inc')} className='text-xs sm:text-sm' />
               </div>
             </div>
             <div className='flex items-center gap-3'>
               <button
-                className={`border border-teal-500 p-1 text-xs shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] sm:text-sm`}
+                className={`flex items-center gap-1 border border-teal-500 p-1 text-xs shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] sm:text-sm`}
                 onClick={handle.addToCart}
                 disabled={addToCartLoading}
               >
+                <Icon icon='ri:shopping-cart-line' />
                 {addToCartLoading ? 'Adding..' : 'Add to Cart'}
               </button>
             </div>

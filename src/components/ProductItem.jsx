@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import StarIcon from '@mui/icons-material/Star'
-import ReviewIcon from '@mui/icons-material/RateReview'
+import { Icon } from '@iconify/react'
 
 export default function ProductItem(props) {
   const { img, title, _id, desc, price, ratingsAverage, ratingsQuantity } = props.data
@@ -27,10 +26,10 @@ export default function ProductItem(props) {
             <span className='text-xs text-gray-700'>Rs. {price}</span>
             <div className='flex items-center gap-1 rounded-xl text-xs text-gray-700'>
               <div className='flex items-center'>
-                {ratingsAverage} <StarIcon className='text-sm text-[#ff9800]' />
+                {ratingsAverage} <Icon icon='ri:star-fill' className='text-yellow-500' />
               </div>
               <div className='flex items-center gap-1'>
-                {ratingsQuantity} <ReviewIcon className='text-xs text-[#ffd700]' />
+                {ratingsQuantity} <Icon icon='ri:message-fill' className='text-yellow-300' />
               </div>
             </div>
           </div>

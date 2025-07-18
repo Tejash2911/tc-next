@@ -1,4 +1,4 @@
-import { Star, StarBorder } from '@mui/icons-material'
+import { Icon } from '@iconify/react'
 
 export default function Rating({ value }) {
   return (
@@ -7,11 +7,11 @@ export default function Rating({ value }) {
         const ratingValue = index + 1
 
         return (
-          <span key={index}>
+          <span key={index} className='text-xs sm:text-sm'>
             {ratingValue <= value ? (
-              <Star className='text-yellow-500' fontSize='small' />
+              <Icon icon='ri:star-fill' className='text-yellow-500' />
             ) : (
-              <StarBorder className='text-gray-300' fontSize='small' />
+              <Icon icon='ri:star-line' className='text-gray-300' />
             )}
           </span>
         )

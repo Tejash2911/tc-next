@@ -1,10 +1,4 @@
-import CallIcon from '@mui/icons-material/Call'
-import EmailIcon from '@mui/icons-material/Email'
-import MapIcon from '@mui/icons-material/Map'
-import FacebookIcon from '@mui/icons-material/Facebook'
-import InstagramIcon from '@mui/icons-material/Instagram'
-import WhatsAppIcon from '@mui/icons-material/WhatsApp'
-import GoogleIcon from '@mui/icons-material/Google'
+import { Icon } from '@iconify/react'
 
 export default function Footer() {
   return (
@@ -19,16 +13,16 @@ export default function Footer() {
           </p>
           <div className='flex gap-4'>
             <span className='grid h-7 w-7 place-content-center rounded-full bg-[#3b5998] text-white sm:h-8 sm:w-8'>
-              <FacebookIcon className='text-base sm:text-lg' />
+              <Icon icon='ri:facebook-circle-fill' className='text-base sm:text-lg' />
             </span>
             <span className='grid h-7 w-7 place-content-center rounded-full bg-[#bc2a8d] text-white sm:h-8 sm:w-8'>
-              <InstagramIcon className='text-base sm:text-lg' />
+              <Icon icon='ri:instagram-fill' className='text-base sm:text-lg' />
             </span>
             <span className='grid h-7 w-7 place-content-center rounded-full bg-[#075e54] text-white sm:h-8 sm:w-8'>
-              <WhatsAppIcon className='text-base sm:text-lg' />
+              <Icon icon='ri:whatsapp-fill' className='text-base sm:text-lg' />
             </span>
             <span className='grid h-7 w-7 place-content-center rounded-full bg-[#4885ed] text-white sm:h-8 sm:w-8'>
-              <GoogleIcon className='text-base sm:text-lg' />
+              <Icon icon='ri:google-fill' className='text-base sm:text-lg' />
             </span>
           </div>
         </div>
@@ -50,7 +44,7 @@ export default function Footer() {
         <div className='flex flex-col gap-3'>
           <h1 className='text-sm font-semibold sm:text-base'>Contact Us</h1>
           <p className='flex gap-4 text-xs sm:text-sm'>
-            <MapIcon className='text-base sm:text-lg' />
+            <Icon icon='ri:map-pin-line' className='text-base sm:text-lg' />
             Shop No 01, Darji Street, Damka, Hazira Road
             <br />
             City: Surat
@@ -62,11 +56,11 @@ export default function Footer() {
             Country: India
           </p>
           <p className='flex gap-4 text-sm sm:text-base'>
-            <CallIcon className='text-base sm:text-lg' />
+            <Icon icon='ri:phone-line' className='text-base sm:text-lg' />
             +91 8780303049
           </p>
           <p className='flex gap-4 text-sm sm:text-base'>
-            <EmailIcon className='text-base sm:text-lg' /> tcpatel2911@gmail.com
+            <Icon icon='ri:mail-line' className='text-base sm:text-lg' /> tcpatel2911@gmail.com
           </p>
         </div>
       </div>

@@ -51,6 +51,7 @@
     "scrollamount",
     "stylelint",
     "Razorpay",
-    "precommit"
+    "precommit",
+    "iconify"
   ]
 }
