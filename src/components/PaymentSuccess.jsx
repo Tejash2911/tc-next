@@ -7,7 +7,11 @@ const PaymentSuccess = () => {
   const refID = query.get('reference')
   const router = useRouter()
 
-  if (!refID) return router.push('/')
+  if (!refID) {
+    router.push('/home')
+
+    return
+  }
 
   return (
     <div className='flex h-screen flex-col items-center justify-center gap-3'>
