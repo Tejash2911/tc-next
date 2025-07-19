@@ -1,8 +1,9 @@
 import React from 'react'
+import Container from '@/components/Container'
 
 const ProductDetailsLoader = () => {
   return (
-    <div className='container'>
+    <Container>
       <div className='grid animate-pulse gap-5 py-5 font-Urbanist md:grid-cols-2'>
         {/* Image Skeleton */}
         <div className='flex items-center overflow-hidden'>
@@ -48,7 +49,7 @@ const ProductDetailsLoader = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }
 

@@ -4,7 +4,7 @@ import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import NewsLetter from '@/components/NewsLetter'
 
-export default function MinLayout({ children }) {
+export default function MainLayout({ children }) {
   return (
     <main>
       <Announcement />

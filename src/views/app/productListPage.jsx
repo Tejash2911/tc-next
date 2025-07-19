@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import Product from '@/components/Product'
+import Container from '@/components/Container'
 
 const ProductListPage = () => {
   const params = useParams()
@@ -24,8 +25,8 @@ const ProductListPage = () => {
   const [sort, setSort] = useState('newest')
 
   return (
-    <>
-      <div className='container font-Urbanist'>
+    <Container>
+      <div className='font-Urbanist'>
         <h1 className='py-5 text-xl font-semibold capitalize sm:text-2xl'>{category || 'All Products'}</h1>
         <div className='flex justify-between pb-5'>
           <div className='text-xs font-semibold sm:text-sm'>
@@ -78,7 +79,7 @@ const ProductListPage = () => {
         </div>
       </div>
       <Product cat={category} filter={filter} sort={sort} />
-    </>
+    </Container>
   )
 }
 
