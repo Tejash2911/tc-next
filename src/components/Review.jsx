@@ -30,8 +30,8 @@ export default function Review({ product }) {
 
   return (
     <>
-      <div className='py-5'>
-        <div className='flex flex-col gap-2 font-Urbanist'>
+      <div className='py-5 font-Urbanist'>
+        <div className='flex flex-col gap-2'>
           <div className='flex flex-col justify-between sm:flex-row'>
             <h2 className='text-sm font-semibold'>{product?.title}</h2>
             <button
@@ -49,12 +49,15 @@ export default function Review({ product }) {
         </div>
         <hr className='my-2' />
         <div className='mt-2 flex flex-col gap-5'>
-          {Array.isArray(reviews) && !loading ? (
-            reviews.map(r => {
-              return <SingleReview review={r} key={r._id}></SingleReview>
-            })
-          ) : (
+          {loading ? (
             <SingleReviewSkeleton />
+          ) : Array.isArray(reviews) && reviews.length > 0 ? (
+            reviews.map(r => <SingleReview review={r} key={r._id} />)
+          ) : (
+            <div className='flex flex-col items-center justify-center py-4 text-center text-gray-500'>
+              <p className='text-sm font-medium sm:text-base'>No reviews yet</p>
+              <p className='text-xs sm:text-sm'>Be the first to review this product</p>
+            </div>
           )}
         </div>
       </div>

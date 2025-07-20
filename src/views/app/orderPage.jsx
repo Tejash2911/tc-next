@@ -5,6 +5,7 @@ import SingleOrder from '@/components/SingleOrder'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getOrdersByUserId } from '@/redux/slices/orderSlice'
 import OrderSkeleton from '@/components/loaders/OrderSkeleton'
+import Container from '@/components/Container'
 
 const OrdersPage = () => {
   const dispatch = useAppDispatch()
@@ -17,7 +18,7 @@ const OrdersPage = () => {
 
   return (
     <div className={`w-full py-5 font-Urbanist ${orders.length !== 0 || loading ? 'bg-[#e0dede]' : 'bg-white'}`}>
-      <div className='container'>
+      <Container>
         {!orders.length && !loading ? (
           <ProductNotFound title='No Orders Found' desc="Sorry, it looks like you haven't placed any orders yet." />
         ) : (
@@ -37,7 +38,7 @@ const OrdersPage = () => {
             )}
           </>
         )}
-      </div>
+      </Container>
     </div>
   )
 }

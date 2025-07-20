@@ -67,7 +67,7 @@ export default function Product({ sort, cat, filter }) {
   }, [])
 
   return (
-    <section className='container'>
+    <section>
       {!allProducts.length && !loading ? (
         <ProductNotFound title='Oops! No product Found' desc='Your filter did not match any product' />
       ) : (

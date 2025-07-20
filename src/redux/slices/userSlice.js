@@ -22,6 +22,16 @@ export const register = createAsyncThunk('user/register', async (payload, { reje
   }
 })
 
+export const logout = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await userService.logout()
+
+    return data
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
 export const updateUser = createAsyncThunk('user/updateUser', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await userService.update(payload)
@@ -48,11 +58,6 @@ const userSlice = createAppSlice({
   name: 'user',
   initialState,
   reducers: {
-    logoutUser: state => {
-      state.currentUser = null
-      localStorage.removeItem('user')
-      state.address = null
-    },
     setLoading: (state, { payload }) => {
       state.loading = payload
     },
@@ -82,6 +87,19 @@ const userSlice = createAppSlice({
       state.currentUser = payload
     })
     builder.addCase(register.rejected, state => {
+      state.loading = false
+    })
+    // logout
+    builder.addCase(logout.pending, state => {
+      state.loading = true
+    })
+    builder.addCase(logout.fulfilled, state => {
+      state.loading = false
+      state.currentUser = null
+      localStorage.removeItem('user')
+      state.address = null
+    })
+    builder.addCase(logout.rejected, state => {
       state.loading = false
     })
     // update user

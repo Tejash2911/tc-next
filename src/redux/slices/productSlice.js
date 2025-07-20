@@ -37,7 +37,8 @@ const initialState = {
   products: [],
   searchProducts: [],
   product: {},
-  rowCount: 0
+  rowCount: 0,
+  productNotFound: false
 }
 
 const productSlice = createAppSlice({
@@ -87,9 +88,11 @@ const productSlice = createAppSlice({
     builder.addCase(getProductById.fulfilled, (state, { payload }) => {
       state.product = payload
       state.loading = false
+      state.productNotFound = false
     })
     builder.addCase(getProductById.rejected, state => {
       state.loading = false
+      state.productNotFound = true
     })
   }
 })

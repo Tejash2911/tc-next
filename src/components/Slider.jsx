@@ -7,7 +7,7 @@ export default function Slider() {
   const heroInfo = hero[index]
 
   return (
-    <section className='container'>
+    <section>
       <div className='max-h-[65vh] w-full overflow-hidden'>
         <Image src='/slider.jpg' alt='banner' width={999} height={667} priority className='img' />
       </div>
