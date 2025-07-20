@@ -19,6 +19,15 @@ const register = payload => {
   })
 }
 
+const logout = () => {
+  return new Promise((resolve, reject) => {
+    axiosInstance
+      .post('/auth/logout')
+      .then(res => resolve(handleApiRes(res)))
+      .catch(err => reject(handleApiErr(err)))
+  })
+}
+
 const update = ORpayload => {
   return new Promise((resolve, reject) => {
     const { id, payload } = ORpayload
@@ -33,6 +42,7 @@ const update = ORpayload => {
 const userService = {
   login,
   register,
+  logout,
   update
 }
 

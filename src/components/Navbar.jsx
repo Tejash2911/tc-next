@@ -8,10 +8,11 @@ import { cartActions, getCartSize } from '@/redux/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getSearchProducts } from '@/redux/slices/productSlice'
 import { useDebounce } from '@/hooks/use-debounce'
-import { userActions } from '@/redux/slices/userSlice'
+import { logout } from '@/redux/slices/userSlice'
 import logo from '../../public/logo.png'
 import { addressActions } from '@/redux/slices/addressSlice'
 import { orderActions } from '@/redux/slices/orderSlice'
+import { errorActions } from '@/redux/slices/errorSlice'
 
 export default function Navbar() {
   const router = useRouter()
@@ -33,7 +34,9 @@ export default function Navbar() {
       router.push(`/product/${id}`)
     },
     onLogout: () => {
-      dispatch(userActions.logoutUser())
+      dispatch(logout())
+        .unwrap()
+        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
       dispatch(cartActions.resetState())
       dispatch(orderActions.resetState())
       dispatch(addressActions.resetState())
