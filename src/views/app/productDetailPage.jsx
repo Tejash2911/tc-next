@@ -10,11 +10,12 @@ import { addToCart, getCartSize } from '@/redux/slices/cartSlice'
 import { getProductById, productActions } from '@/redux/slices/productSlice'
 import ProductDetailsLoader from '@/components/loaders/ProductDetailsLoader'
 import Container from '@/components/Container'
+import ProductNotFound from '@/components/ProductNotFound'
 
 const ProductDetailPage = ({ id }) => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector(({ user }) => user)
-  const { product, loading } = useAppSelector(({ product }) => product)
+  const { product, loading, productNotFound } = useAppSelector(({ product }) => product)
   const { loading: addToCartLoading } = useAppSelector(({ cart }) => cart)
   const imgRef = useRef(null)
   const [productQuantity, setProductQuantity] = useState(1)
@@ -80,6 +81,9 @@ const ProductDetailPage = ({ id }) => {
   }
 
   if (loading) return <ProductDetailsLoader />
+
+  if (productNotFound)
+    return <ProductNotFound title='Product Not Found' desc='The product you are looking for does not exist' />
 
   return (
     <Container>
