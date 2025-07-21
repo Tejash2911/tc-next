@@ -8,7 +8,6 @@ import { getUserAddress } from '@/redux/slices/addressSlice'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import UpdatePasswordDialog from '@/components/dialogs/UpdatePasswordDialog'
 import useModal from '@/hooks/use-modal'
-import Container from '@/components/Container'
 
 const navMap = {
   1: 'Account Details',
@@ -52,8 +51,8 @@ const UserSettingPage = () => {
   }
 
   return (
-    <Container>
-      <div className='flex min-h-[40vh] items-center justify-center font-Urbanist'>
+    <div className='container min-h-[40vh]'>
+      <div className='flex items-center justify-center font-Urbanist'>
         <div className='flex w-full max-w-[1200px] flex-col gap-4 py-5'>
           <h2 className='text-xl font-semibold sm:text-2xl'>Settings</h2>
           <div className='flex flex-col gap-4 md:flex-row md:gap-40'>
@@ -154,7 +153,7 @@ const UserSettingPage = () => {
         <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} data={addressDialog.selectedRow} />
       )}
       {passwordDialog.isOpen && <UpdatePasswordDialog open={passwordDialog.isOpen} setOpen={passwordDialog.onClose} />}
-    </Container>
+    </div>
   )
 }
 

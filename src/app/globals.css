@@ -18,6 +18,12 @@ a {
   text-decoration: none;
 }
 
+.container {
+  width: 90%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
 .img {
   width: 100%;
   height: auto;

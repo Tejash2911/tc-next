@@ -1,18 +1,18 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
 import { cartActions, getCartSize } from '@/redux/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getSearchProducts } from '@/redux/slices/productSlice'
 import { useDebounce } from '@/hooks/use-debounce'
 import { logout } from '@/redux/slices/userSlice'
-import logo from '../../public/logo.png'
 import { addressActions } from '@/redux/slices/addressSlice'
 import { orderActions } from '@/redux/slices/orderSlice'
 import { errorActions } from '@/redux/slices/errorSlice'
+import logo from '../../public/logo.png'
 
 export default function Navbar() {
   const router = useRouter()
