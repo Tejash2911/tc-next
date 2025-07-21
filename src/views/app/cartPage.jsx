@@ -11,7 +11,6 @@ import CartItem from '@/components/CartItem'
 import { getUserAddress } from '@/redux/slices/addressSlice'
 import EmptyCart from '@/components/EmptyCart'
 import SkeletonCartPage from '@/components/loaders/CartPageSkeleton'
-import Container from '@/components/Container'
 
 const CartPage = () => {
   const dispatch = useAppDispatch()
@@ -110,7 +109,7 @@ const CartPage = () => {
 
   return (
     <div className={`w-full py-5 font-Urbanist ${cart?.products?.length !== 0 ? 'bg-[#e0dede]' : 'bg-white'}`}>
-      <Container>
+      <div className='container'>
         <div className='font-Urbanist'>
           <div className='mb-5'>
             <h1 className='ml-2 text-xl font-semibold sm:text-2xl'>Cart</h1>
@@ -152,7 +151,7 @@ const CartPage = () => {
           )}
         </div>
         {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
-      </Container>
+      </div>
     </div>
   )
 }
