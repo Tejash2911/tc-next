@@ -149,10 +149,8 @@ const UserSettingPage = () => {
           </div>
         </div>
       </div>
-      {addressDialog.isOpen && (
-        <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} data={addressDialog.selectedRow} />
-      )}
-      {passwordDialog.isOpen && <UpdatePasswordDialog open={passwordDialog.isOpen} setOpen={passwordDialog.onClose} />}
+      <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} data={addressDialog.selectedRow} />
+      <UpdatePasswordDialog open={passwordDialog.isOpen} setOpen={passwordDialog.onClose} />
     </div>
   )
 }

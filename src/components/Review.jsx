@@ -61,9 +61,7 @@ export default function Review({ product }) {
           )}
         </div>
       </div>
-      {reviewDialog.isOpen && (
-        <WriteReviewDialog open={reviewDialog.isOpen} setOpen={reviewDialog.onClose} data={reviewDialog.selectedRow} />
-      )}
+      <WriteReviewDialog open={reviewDialog.isOpen} setOpen={reviewDialog.onClose} data={reviewDialog.selectedRow} />
     </>
   )
 }

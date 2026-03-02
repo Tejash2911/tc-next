@@ -48,12 +48,6 @@ const initialState = {
   loading: false
 }
 
-if (typeof window !== 'undefined') {
-  const storedUser = localStorage.getItem('user')
-
-  initialState.currentUser = storedUser ? JSON.parse(storedUser) : null
-}
-
 const userSlice = createAppSlice({
   name: 'user',
   initialState,

@@ -150,7 +150,7 @@ const CartPage = () => {
             </div>
           )}
         </div>
-        {addressDialog.isOpen && <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />}
+        <AddressDialog open={addressDialog.isOpen} setOpen={addressDialog.onClose} />
       </div>
     </div>
   )

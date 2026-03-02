@@ -76,8 +76,8 @@ const ProductListPage = () => {
             </select>
           </div>
         </div>
+        <Product cat={category} filter={filter} sort={sort} />
       </div>
-      <Product cat={category} filter={filter} sort={sort} />
     </>
   )
 }
