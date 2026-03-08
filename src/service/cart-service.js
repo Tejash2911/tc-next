@@ -1,51 +1,55 @@
 import { userRequest } from '@/lib/axios'
 import { handleApiErr, handleApiRes } from './handleApi'
 
-const getCartSize = () => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .get('/cart/size')
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const getCartSize = async () => {
+  try {
+    const res = await userRequest.get('/cart/size')
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const getById = id => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .get(`/cart/info/${id}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const getById = async id => {
+  try {
+    const res = await userRequest.get(`/cart/info/${id}`)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const add = payload => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .post('/cart', payload)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const add = async payload => {
+  try {
+    const res = await userRequest.post('/cart', payload)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const updateCartQtyById = payload => {
-  return new Promise((resolve, reject) => {
+const updateCartQtyById = async payload => {
+  try {
     const { id, qty } = payload
+    const res = await userRequest.put(`/cart/update-quantity/${id}/${qty}`)
 
-    userRequest
-      .put(`/cart/update-quantity/${id}/${qty}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const deleteById = id => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .delete(`/cart/${id}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(error => reject(handleApiErr(error)))
-  })
+const deleteById = async id => {
+  try {
+    const res = await userRequest.delete(`/cart/${id}`)
+
+    return handleApiRes(res)
+  } catch (error) {
+    throw handleApiErr(error)
+  }
 }
 
 const cartService = {

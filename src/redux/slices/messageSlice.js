@@ -1,23 +1,23 @@
 import { v4 as uuid } from 'uuid'
 import { createAppSlice } from '../createAppSlice'
 
-const errorSlice = createAppSlice({
-  name: 'error',
+const messageSlice = createAppSlice({
+  name: 'message',
   initialState: {
     message: null,
     id: null
   },
   reducers: {
-    setErrorMessage: (state, action) => {
+    setMessage: (state, action) => {
       state.message = action.payload
       state.id = uuid()
     },
-    clearError: state => {
+    clearMessage: state => {
       state.message = null
       state.id = null
     }
   }
 })
 
-export const errorActions = errorSlice.actions
-export default errorSlice.reducer
+export const messageActions = messageSlice.actions
+export default messageSlice.reducer

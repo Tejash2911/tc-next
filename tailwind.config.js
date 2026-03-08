@@ -11,8 +11,8 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      Urbanist: ['"Urbanist"', 'sans-serif'],
-      AlfaSlabOne: ['"Alfa Slab One"', 'cursive']
+      Urbanist: ['var(--font-urbanist)', 'sans-serif'],
+      AlfaSlabOne: ['var(--font-alfa)', 'cursive']
     }
   },
   plugins: []

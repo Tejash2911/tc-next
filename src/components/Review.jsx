@@ -1,27 +1,20 @@
-import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
 import Rating from './Rating'
 import SingleReview from './SingleReview'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { getAllReviewByProductId } from '@/redux/slices/reviewSlice'
 import useModal from '@/hooks/use-modal'
 import WriteReviewDialog from './dialogs/WriteReviewDialog'
 import SingleReviewSkeleton from './loaders/SingleReviewSkeleton'
+import { useReviewsByProductId } from '@/hooks/useReviewQueries'
+import { useCurrentUser } from '@/hooks/useUserQueries'
 
 export default function Review({ product }) {
-  const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector(({ user }) => user)
-  const { reviews, loading } = useAppSelector(({ review }) => review)
+  const { data: currentUser } = useCurrentUser()
+  const { data: reviews, isPending } = useReviewsByProductId(product._id)
 
   const reviewDialog = useModal()
 
   const router = useRouter()
-
-  useEffect(() => {
-    if (!product._id) return
-    dispatch(getAllReviewByProductId(product._id))
-  }, [product._id])
 
   const handleWriteReview = () => {
     if (!currentUser) router.push('/login')
@@ -30,7 +23,7 @@ export default function Review({ product }) {
 
   return (
     <>
-      <div className='container py-5 font-Urbanist'>
+      <div className='container py-5'>
         <div className='flex flex-col gap-2'>
           <div className='flex flex-col justify-between sm:flex-row'>
             <h2 className='text-sm font-semibold'>{product?.title}</h2>
@@ -49,7 +42,7 @@ export default function Review({ product }) {
         </div>
         <hr className='my-2' />
         <div className='mt-2 flex flex-col gap-5'>
-          {loading ? (
+          {isPending ? (
             <SingleReviewSkeleton />
           ) : Array.isArray(reviews) && reviews.length > 0 ? (
             reviews.map(r => <SingleReview review={r} key={r._id} />)

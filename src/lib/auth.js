@@ -13,3 +13,19 @@ export default function getAccessToken() {
 
   return null
 }
+
+export const getCurrentUser = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const user = JSON.parse(localStorage.getItem('user') || null)
+
+      return user || null
+    } catch (error) {
+      console.error('Error retrieving access token:', error)
+
+      return null
+    }
+  }
+
+  return null
+}

@@ -13,6 +13,8 @@
   "dependencies": {
     "@iconify/react": "^6.0.0",
     "@reduxjs/toolkit": "^2.2.3",
+    "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-query-devtools": "^5.91.3",
     "axios": "^1.6.8",
     "next": "^14.2.13",
     "react": "^18",

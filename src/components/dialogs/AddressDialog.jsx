@@ -1,22 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Modal from '../Modal'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { errorActions } from '@/redux/slices/errorSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { messageActions } from '@/redux/slices/messageSlice'
 import { countries } from '@/utils/dummyData'
-import { userRequest } from '@/lib/axios'
+import { useSetUserAddress } from '@/hooks/useAddressQueries'
+import { useCurrentUser } from '@/hooks/useUserQueries'
 
 export default function AddressDialog({ open, setOpen, data }) {
-  const { currentUser } = useAppSelector(({ user }) => user)
+  const { data: currentUser } = useCurrentUser()
   const dispatch = useAppDispatch()
+  const setAddressMutation = useSetUserAddress()
 
   const [address, setAddress] = useState({
-    street: data?.street ?? '',
-    city: data?.city ?? '',
-    state: data?.state ?? '',
-    zip: data?.zip ?? '',
-    country: data?.country ?? '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
     mobile: currentUser?.number ?? ''
   })
+
+  // Update form when data prop changes (after successful address update)
+  useEffect(() => {
+    if (data) {
+      setAddress({
+        street: data.street ?? '',
+        city: data.city ?? '',
+        state: data.state ?? '',
+        zip: data.zip ?? '',
+        country: data.country ?? '',
+        mobile: currentUser?.number ?? ''
+      })
+    }
+  }, [data, currentUser])
 
   const handle = {
     onChange: e => {
@@ -26,14 +42,13 @@ export default function AddressDialog({ open, setOpen, data }) {
       e.preventDefault()
 
       try {
-        const { data } = await userRequest.post(`/address?${q}`, address)
+        const res = await setAddressMutation.mutateAsync(address)
 
-        console.log(data)
+        dispatch(messageActions.setMessage(res?.message))
+        handle.handleClose()
       } catch (error) {
-        dispatch(errorActions.setErrorMessage(error?.response?.data?.message))
+        dispatch(messageActions.setMessage(error?.message))
       }
-
-      handle.handleClose()
     },
     handleClose: () => {
       setOpen(false)
@@ -42,7 +57,7 @@ export default function AddressDialog({ open, setOpen, data }) {
 
   return (
     <Modal open={open}>
-      <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 font-Urbanist text-xs sm:text-sm'>
+      <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 text-xs sm:text-sm'>
         <label htmlFor='street' className='block font-semibold'>
           Street
         </label>

@@ -13,9 +13,9 @@ export default function Slider() {
       </div>
       <div className='my-5 flex flex-col items-center justify-center gap-3'>
         <h1 className='font-AlfaSlabOne text-2xl font-bold sm:text-4xl'>{heroInfo.title}</h1>
-        <span className='font-Urbanist text-sm font-medium sm:text-base'>{heroInfo.description}</span>
+        <span className='text-sm font-medium sm:text-base'>{heroInfo.description}</span>
         <Link href='/products/all'>
-          <button className='cursor-pointer rounded-full bg-black px-10 py-2 font-Urbanist text-xs text-white sm:text-sm'>
+          <button className='cursor-pointer rounded-full bg-black px-10 py-2 text-xs text-white sm:text-sm'>
             {heroInfo.cta}
           </button>
         </Link>

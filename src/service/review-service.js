@@ -1,42 +1,45 @@
 import { axiosInstance, userRequest } from '@/lib/axios'
 import { handleApiErr, handleApiRes } from './handleApi'
 
-const getAll = id => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .get(`/review/${id}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const getAll = async id => {
+  try {
+    const res = await axiosInstance.get(`/review/${id}`)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const add = ORpayload => {
-  return new Promise((resolve, reject) => {
+const add = async ORpayload => {
+  try {
     const { id, payload } = ORpayload
+    const res = await userRequest.post(`/review/${id}`, payload)
 
-    userRequest
-      .post(`/review/${id}`, payload)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const upvote = id => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .put(`/review/upvote/${id}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const upvote = async id => {
+  try {
+    const res = await userRequest.put(`/review/upvote/${id}`)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const abuse = id => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .put(`/review/abuse/${id}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const abuse = async id => {
+  try {
+    const res = await userRequest.put(`/review/abuse/${id}`)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
 const reviewService = {

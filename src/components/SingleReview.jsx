@@ -3,29 +3,37 @@ import { Icon } from '@iconify/react'
 import Rating from './Rating'
 import timeSince from '@/utils/timeSince'
 import { useAppDispatch } from '@/redux/hooks'
-import { errorActions } from '@/redux/slices/errorSlice'
-import { abuseReview, upvoteReview } from '@/redux/slices/reviewSlice'
+import { messageActions } from '@/redux/slices/messageSlice'
+import { useUpvoteReview, useAbuseReview } from '@/hooks/useReviewQueries'
 
 export default function SingleReview({ review }) {
   const dispatch = useAppDispatch()
+  const upvoteMutation = useUpvoteReview()
+  const abuseMutation = useAbuseReview()
 
   const handle = {
-    handleUpVote: () => {
-      dispatch(upvoteReview(review._id))
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+    handleUpVote: async () => {
+      try {
+        const res = await upvoteMutation.mutateAsync(review._id)
+
+        dispatch(messageActions.setMessage(res?.message))
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     },
-    handleReport: () => {
-      dispatch(abuseReview(review._id))
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+    handleReport: async () => {
+      try {
+        const res = await abuseMutation.mutateAsync(review._id)
+
+        dispatch(messageActions.setMessage(res?.message))
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     }
   }
 
   return (
-    <div className='flex gap-5 font-Urbanist'>
+    <div className='flex gap-5'>
       <div className='h-fit'>
         <Image src='/user.png' alt='profile-image' width={40} height={40} />
       </div>

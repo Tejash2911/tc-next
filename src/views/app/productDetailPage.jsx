@@ -1,34 +1,34 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
-import { errorActions } from '@/redux/slices/errorSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { messageActions } from '@/redux/slices/messageSlice'
+import { useAppDispatch } from '@/redux/hooks'
 import Review from '@/components/Review'
-import { addToCart, getCartSize } from '@/redux/slices/cartSlice'
-import { getProductById, productActions } from '@/redux/slices/productSlice'
+import { useProductById } from '@/hooks/useProductQueries'
 import ProductDetailsLoader from '@/components/loaders/ProductDetailsLoader'
 import ProductNotFound from '@/components/ProductNotFound'
+import { useAddToCart } from '@/hooks/useCartQueries'
+import { useCurrentUser } from '@/hooks/useUserQueries'
 
 const ProductDetailPage = ({ id }) => {
   const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector(({ user }) => user)
-  const { product, loading, productNotFound } = useAppSelector(({ product }) => product)
-  const { loading: addToCartLoading } = useAppSelector(({ cart }) => cart)
+  const { data: currentUser } = useCurrentUser()
+  const addToCartMutation = useAddToCart()
   const imgRef = useRef(null)
   const [productQuantity, setProductQuantity] = useState(1)
   const router = useRouter()
+
+  // React Query for product data
+  const { data: product, isLoading, isError } = useProductById(id)
 
   //setting default size and color for product
   const [color, setColor] = useState(product?.color?.length >= 0 && `#${product.color[0]}`)
   const [size, setSize] = useState(product?.size?.length >= 0 && product.size[0])
 
   const handle = {
-    getData: () => {
-      dispatch(getProductById(id))
-    },
-    addToCart: () => {
+    addToCart: async () => {
       if (!currentUser) {
         router.push('/login')
 
@@ -36,30 +36,25 @@ const ProductDetailPage = ({ id }) => {
       }
 
       const payload = {
-        productID: product._id,
-        quantity: productQuantity,
-        color: color,
-        size: size
+        products: [
+          {
+            productID: product._id,
+            quantity: productQuantity,
+            color: color,
+            size: size
+          }
+        ]
       }
 
-      const nPayload = { products: [payload] }
+      try {
+        const res = await addToCartMutation.mutateAsync(payload)
 
-      dispatch(addToCart(nPayload))
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-        .finally(() => dispatch(getCartSize(currentUser?._id)))
+        dispatch(messageActions.setMessage(res?.message))
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     }
   }
-
-  useEffect(() => {
-    handle.getData()
-
-    return () => {
-      dispatch(productActions.resetProduct())
-      setProductQuantity(1)
-    }
-  }, [id])
 
   const handleClick = type => {
     if (type === 'dec') setProductQuantity(prev => (productQuantity > 1 ? prev - 1 : prev))
@@ -79,14 +74,14 @@ const ProductDetailPage = ({ id }) => {
     imgRef.current.style.transform = 'scale(1)'
   }
 
-  if (loading) return <ProductDetailsLoader />
+  if (isLoading) return <ProductDetailsLoader />
 
-  if (productNotFound)
+  if (isError || !product)
     return <ProductNotFound title='Product Not Found' desc='The product you are looking for does not exist' />
 
   return (
     <>
-      <div className='container grid gap-5 py-5 font-Urbanist md:grid-cols-2'>
+      <div className='container grid gap-5 py-5 md:grid-cols-2'>
         <div className='flex h-[200px] w-[200px] cursor-zoom-in items-center overflow-hidden sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]'>
           {product.img && (
             <Image
@@ -106,7 +101,7 @@ const ProductDetailPage = ({ id }) => {
           <p className='text-sm sm:text-base'>Design No - {product?.productNo}</p>
           <p className='text-sm sm:text-base'>{product?.desc}</p>
           <p className='text-sm sm:text-base'>₹{product?.price}</p>
-          <span className={`text-sm sm:text-base ${product?.quantity >= 1 ? 'text-green-600' : 'text-red-600'}`}>
+          <span className={`text-sm sm:text-base ${product?.quantity >= 1 ? 'text-green-800' : 'text-red-600'}`}>
             {product?.quantity >= 1 ? `Only ${product?.quantity} left in stock` : 'Currently unavailable'}
           </span>
           <div className='flex items-center justify-between sm:w-full md:w-2/3 lg:w-2/3'>
@@ -151,10 +146,10 @@ const ProductDetailPage = ({ id }) => {
               <button
                 className={`flex items-center gap-1 border border-teal-500 p-1 text-xs shadow-lg hover:bg-[#c3c7c4] disabled:bg-[#ebebeb] sm:text-sm`}
                 onClick={handle.addToCart}
-                disabled={addToCartLoading}
+                disabled={addToCartMutation.isPending}
               >
                 <Icon icon='ri:shopping-cart-line' />
-                {addToCartLoading ? 'Adding..' : 'Add to Cart'}
+                {addToCartMutation.isPending ? 'Adding..' : 'Add to Cart'}
               </button>
             </div>
           </div>

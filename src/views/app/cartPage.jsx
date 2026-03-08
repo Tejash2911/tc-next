@@ -1,39 +1,28 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { errorActions } from '@/redux/slices/errorSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { messageActions } from '@/redux/slices/messageSlice'
+import { useAppDispatch } from '@/redux/hooks'
 import addDynamicScript from '@/utils/addDynamicScript'
 import { userRequest } from '@/lib/axios'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import useModal from '@/hooks/use-modal'
-import { getCartInfoByUserId, getCartSize } from '@/redux/slices/cartSlice'
 import CartItem from '@/components/CartItem'
-import { getUserAddress } from '@/redux/slices/addressSlice'
 import EmptyCart from '@/components/EmptyCart'
 import SkeletonCartPage from '@/components/loaders/CartPageSkeleton'
+import { useCurrentUser } from '@/hooks/useUserQueries'
+import { useCartByUserId } from '@/hooks/useCartQueries'
+import { useUserAddress } from '@/hooks/useAddressQueries'
 
 const CartPage = () => {
   const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector(({ user }) => user)
-  const { address } = useAppSelector(({ address }) => address)
-  const { cart, loading } = useAppSelector(({ cart }) => cart)
+  const { data: currentUser } = useCurrentUser()
+  const { data: address } = useUserAddress()
+  const { data: cart, isPending } = useCartByUserId(currentUser?._id)
 
   const [totalCartPrice, setTotalCartPrice] = useState(0)
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false)
 
   const addressDialog = useModal()
-
-  const handle = {
-    getData: () => {
-      dispatch(getCartInfoByUserId(currentUser?._id))
-      dispatch(getCartSize(currentUser?._id))
-      dispatch(getUserAddress())
-    }
-  }
-
-  useEffect(() => {
-    handle.getData()
-  }, [currentUser])
 
   //count cart total price
   const productQty = Array.isArray(cart?.products) && cart?.products?.map(p => p.quantity)
@@ -76,7 +65,7 @@ const CartPage = () => {
     setIsCheckoutLoading(false)
 
     if (!order || !key) {
-      return dispatch(errorActions.setErrorMessage('error occurred while creating order'))
+      return dispatch(messageActions.setMessage('error occurred while creating order'))
     }
 
     const options = {
@@ -108,15 +97,15 @@ const CartPage = () => {
   }
 
   return (
-    <div className={`w-full py-5 font-Urbanist ${cart?.products?.length !== 0 ? 'bg-[#e0dede]' : 'bg-white'}`}>
+    <div className={`w-full py-5 ${cart?.products?.length !== 0 ? 'bg-[#e0dede]' : 'bg-white'}`}>
       <div className='container'>
-        <div className='font-Urbanist'>
+        <div>
           <div className='mb-5'>
             <h1 className='ml-2 text-xl font-semibold sm:text-2xl'>Cart</h1>
           </div>
           {cart?.products?.length === 0 ? (
             <EmptyCart />
-          ) : !cart?.products?.length || loading ? (
+          ) : !cart?.products?.length || isPending ? (
             <SkeletonCartPage />
           ) : (
             <div className='grid gap-5 lg:grid-cols-2'>

@@ -1,13 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { errorActions } from '@/redux/slices/errorSlice'
-import { updateUser } from '@/redux/slices/userSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { getUserAddress } from '@/redux/slices/addressSlice'
+import { useState } from 'react'
+import { messageActions } from '@/redux/slices/messageSlice'
+import { useAppDispatch } from '@/redux/hooks'
 import AddressDialog from '@/components/dialogs/AddressDialog'
 import UpdatePasswordDialog from '@/components/dialogs/UpdatePasswordDialog'
 import useModal from '@/hooks/use-modal'
+import { useUpdateUser, useCurrentUser } from '@/hooks/useUserQueries'
+
+import { useUserAddress } from '@/hooks/useAddressQueries'
 
 const navMap = {
   1: 'Account Details',
@@ -16,12 +17,13 @@ const navMap = {
 
 const UserSettingPage = () => {
   const dispatch = useAppDispatch()
-  const { currentUser, loading } = useAppSelector(({ user }) => user)
-  const { address } = useAppSelector(({ address }) => address)
+  const { data: currentUser } = useCurrentUser()
+  const { data: address, isLoading: addressLoading } = useUserAddress()
   const [isActivated, setIsActivated] = useState(1)
 
   const addressDialog = useModal()
   const passwordDialog = useModal()
+  const updateUserMutation = useUpdateUser()
 
   const [userDataForm, setUserDataForm] = useState({
     firstName: currentUser?.firstName || '',
@@ -29,10 +31,6 @@ const UserSettingPage = () => {
     email: currentUser?.email || '',
     number: currentUser?.number || ''
   })
-
-  useEffect(() => {
-    dispatch(getUserAddress())
-  }, [])
 
   const handle = {
     onChange: e => {
@@ -43,16 +41,19 @@ const UserSettingPage = () => {
     updateProfile: async e => {
       e.preventDefault()
 
-      dispatch(updateUser({ id: currentUser?._id, payload: userDataForm }))
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+      try {
+        const res = await updateUserMutation.mutateAsync({ id: currentUser?._id, payload: userDataForm })
+
+        dispatch(messageActions.setMessage(res?.message))
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     }
   }
 
   return (
     <div className='container min-h-[40vh]'>
-      <div className='flex items-center justify-center font-Urbanist'>
+      <div className='flex items-center justify-center'>
         <div className='flex w-full max-w-[1200px] flex-col gap-4 py-5'>
           <h2 className='text-xl font-semibold sm:text-2xl'>Settings</h2>
           <div className='flex flex-col gap-4 md:flex-row md:gap-40'>
@@ -124,20 +125,29 @@ const UserSettingPage = () => {
                   <button
                     type='submit'
                     className='w-fit rounded-xl border-none bg-black px-5 py-2 text-white hover:bg-[#777] disabled:bg-gray-500'
-                    disabled={loading}
+                    disabled={updateUserMutation.isPending}
                   >
-                    {loading ? 'Saving...' : 'Save Changes'}
+                    {updateUserMutation.isPending ? 'Saving...' : 'Save Changes'}
                   </button>
                 </form>
               )}
               {isActivated === 2 && (
                 <div className='flex flex-col gap-2 text-xs sm:text-sm'>
-                  {address && (
+                  {addressLoading ? (
+                    <div className='flex gap-2'>
+                      <div className='h-4 w-32 animate-pulse rounded bg-gray-200'></div>
+                      <div className='h-4 w-48 animate-pulse rounded bg-gray-200'></div>
+                    </div>
+                  ) : address ? (
                     <div className='flex flex-col gap-2'>
                       <p>Default Delivery Address</p>
                       <p>{`${currentUser?.firstName} ${currentUser?.lastName}`}</p>
                       <p>{`${address?.street}, ${address?.city}, ${address?.state}, ${address?.country}`}</p>
                       <p>{`${address?.city}, ${address?.zip}`}</p>
+                    </div>
+                  ) : (
+                    <div className='text-gray-500'>
+                      <p>No address found</p>
                     </div>
                   )}
                   <p className='cursor-pointer underline' onClick={() => addressDialog.onOpen({ ...address })}>
