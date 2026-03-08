@@ -1,22 +1,24 @@
 import { userRequest } from '@/lib/axios'
 import { handleApiErr, handleApiRes } from './handleApi'
 
-const getUserAddress = () => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .get('/address')
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const getUserAddress = async () => {
+  try {
+    const res = await userRequest.get('/address')
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const setUserAddress = payload => {
-  return new Promise((resolve, reject) => {
-    userRequest
-      .post('/address', payload)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const setUserAddress = async payload => {
+  try {
+    const res = await userRequest.post('/address', payload)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
 const addressService = {

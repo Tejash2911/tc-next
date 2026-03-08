@@ -3,7 +3,7 @@ import React from 'react'
 const ProductDetailsLoader = () => {
   return (
     <div className='container'>
-      <div className='grid animate-pulse gap-5 py-5 font-Urbanist md:grid-cols-2'>
+      <div className='grid animate-pulse gap-5 py-5 md:grid-cols-2'>
         {/* Image Skeleton */}
         <div className='flex items-center overflow-hidden'>
           <div className='h-[200px] w-[200px] bg-gray-300 sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]' />

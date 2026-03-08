@@ -1,31 +1,34 @@
 import { handleApiErr, handleApiRes } from './handleApi'
 import { axiosInstance } from '@/lib/axios'
 
-const getAll = payload => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .get('/product/all', { params: payload })
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const getAll = async payload => {
+  try {
+    const res = await axiosInstance.get('/product/all', { params: payload })
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const getSearchProducts = payload => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .get(`/product/search/${payload}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const getSearchProducts = async payload => {
+  try {
+    const res = await axiosInstance.get(`/product/search/${payload}`)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const getById = id => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .get(`/product/info/${id}`)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const getById = async id => {
+  try {
+    const res = await axiosInstance.get(`/product/info/${id}`)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
 const productService = {

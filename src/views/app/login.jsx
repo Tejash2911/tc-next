@@ -2,28 +2,63 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { errorActions } from '@/redux/slices/errorSlice'
-import { login } from '@/redux/slices/userSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useCurrentUser, useLogin } from '@/hooks/useUserQueries'
+import { useAppDispatch } from '@/redux/hooks'
+import { messageActions } from '@/redux/slices/messageSlice'
 
 const LoginV2 = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { currentUser, loading } = useAppSelector(({ user }) => user)
+  const [errors, setErrors] = useState({})
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const loginMutation = useLogin()
+  const { data: currentUser } = useCurrentUser()
 
   useEffect(() => {
-    if (currentUser) router.push('/')
+    if (!currentUser) return
+    router.push('/')
   }, [currentUser])
 
   const handle = {
-    onSubmit: e => {
+    validateForm: () => {
+      const newErrors = {}
+
+      if (!email.trim()) {
+        newErrors.email = 'Email is required'
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        newErrors.email = 'Please enter a valid email address'
+      }
+
+      if (!password.trim()) {
+        newErrors.password = 'Password is required'
+      } else if (password.length < 6) {
+        newErrors.password = 'Password must be at least 6 characters long'
+      }
+
+      setErrors(newErrors)
+
+      return Object.keys(newErrors).length === 0
+    },
+
+    clearError: field => {
+      setErrors(prev => ({ ...prev, [field]: '' }))
+    },
+
+    onSubmit: async e => {
       e.preventDefault()
-      dispatch(login({ email, password }))
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.data?.message)))
+
+      if (!handle.validateForm()) {
+        return
+      }
+
+      try {
+        const res = await loginMutation.mutateAsync({ email, password })
+
+        dispatch(messageActions.setMessage(res?.message))
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.data?.message))
+      }
     }
   }
 
@@ -39,8 +74,13 @@ const LoginV2 = () => {
                 name='emailField'
                 type='email'
                 placeholder='Email'
-                onChange={e => setEmail(e.target.value)}
+                value={email}
+                onChange={e => {
+                  setEmail(e.target.value)
+                  handle.clearError('email')
+                }}
               />
+              {errors.email && <p className='mt-1 text-xs text-red-500'>{errors.email}</p>}
             </div>
             <div>
               <input
@@ -48,9 +88,14 @@ const LoginV2 = () => {
                 name='passwordField'
                 type='password'
                 placeholder='Password'
-                onChange={e => setPassword(e.target.value)}
+                value={password}
+                onChange={e => {
+                  setPassword(e.target.value)
+                  handle.clearError('password')
+                }}
                 autoComplete='off'
               />
+              {errors.password && <p className='mt-1 text-xs text-red-500'>{errors.password}</p>}
             </div>
             <div className='text-primary-600 text-right font-medium hover:underline'>
               <Link href='/forgot-password' className='text-gray-500 hover:underline'>
@@ -60,9 +105,9 @@ const LoginV2 = () => {
             <button
               type='submit'
               className='focus:shadow-outline rounded-xl bg-black px-4 py-2 text-white focus:outline-none disabled:bg-gray-500'
-              disabled={loading}
+              disabled={loginMutation.isPending}
             >
-              {loading ? 'Logging in...' : 'Login'}
+              {loginMutation.isPending ? 'Logging in...' : 'Login'}
             </button>
           </form>
           <div className='mt-4 text-center'>

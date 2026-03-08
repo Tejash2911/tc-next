@@ -25,7 +25,7 @@ const ProductListPage = () => {
 
   return (
     <>
-      <div className='container font-Urbanist'>
+      <div className='container'>
         <h1 className='py-5 text-xl font-semibold capitalize sm:text-2xl'>{category || 'All Products'}</h1>
         <div className='flex justify-between pb-5'>
           <div className='text-xs font-semibold sm:text-sm'>

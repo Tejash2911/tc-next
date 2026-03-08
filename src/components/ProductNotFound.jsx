@@ -3,7 +3,7 @@ import itemNf from '../../public/itemNF.png'
 
 export default function ProductNotFound(props) {
   return (
-    <div className='flex min-h-[30vh] flex-col items-center justify-center py-4 font-Urbanist'>
+    <div className='flex min-h-[30vh] flex-col items-center justify-center py-4'>
       <div className='w-full max-w-xs'>
         <Image src={itemNf} alt='not-found' width={1348} height={900} className='w-full' priority />
       </div>

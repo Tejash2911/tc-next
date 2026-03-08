@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation'
 import axios from 'axios'
 import getAccessToken from '../auth'
 
@@ -33,19 +32,19 @@ userRequest.interceptors.request.use(
   }
 )
 
-userRequest.interceptors.response.use(
-  response => response,
-  error => {
-    const { response } = error
+// userRequest.interceptors.response.use(
+//   response => response,
+//   error => {
+//     const { response } = error
 
-    if (response && (response.status === 401 || response.status === 403)) {
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login' // Client-side redirection
-      } else {
-        redirect('/login') // Server-side redirection
-      }
-    }
+//     if (response && (response.status === 401 || response.status === 403)) {
+//       if (typeof window !== 'undefined') {
+//         window.location.href = '/login' // Client-side redirection
+//       } else {
+//         redirect('/login') // Server-side redirection
+//       }
+//     }
 
-    return Promise.reject(error)
-  }
-)
+//     return Promise.reject(error)
+//   }
+// )

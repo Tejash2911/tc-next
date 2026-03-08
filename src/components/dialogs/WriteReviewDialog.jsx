@@ -1,36 +1,39 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useAppDispatch } from '@/redux/hooks'
 import Modal from '../Modal'
-import { errorActions } from '@/redux/slices/errorSlice'
+import { messageActions } from '@/redux/slices/messageSlice'
 import CustomRating from '../CustomRating'
-import { addReview } from '@/redux/slices/reviewSlice'
+import { useCurrentUser } from '@/hooks/useUserQueries'
+import { useAddReview } from '@/hooks/useReviewQueries'
 
 export default function WriteReviewDialog({ open, setOpen, data }) {
   const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector(({ user }) => user)
+  const { data: currentUser } = useCurrentUser()
   const [review, setReview] = useState('')
   const [rating, setRating] = useState(0)
+  const addReviewMutation = useAddReview()
 
   const handle = {
-    onSubmit: () => {
-      const nPayload = {
-        id: data.product._id,
+    onSubmit: async () => {
+      const payload = {
+        productId: data.product._id,
         payload: {
           rating,
           review
         }
       }
 
-      dispatch(addReview(nPayload))
-        .unwrap()
-        .then(res => {
-          dispatch(errorActions.setErrorMessage(res?.message))
-          handle.handleClose()
-          setRating(0)
-          setReview('')
-        })
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
+      try {
+        const res = await addReviewMutation.mutateAsync(payload)
+
+        dispatch(messageActions.setMessage(res?.message))
+        handle.handleClose()
+        setRating(0)
+        setReview('')
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     },
     handleClose: () => {
       setOpen(false)
@@ -39,7 +42,7 @@ export default function WriteReviewDialog({ open, setOpen, data }) {
 
   return (
     <Modal open={open}>
-      <div className='flex flex-col items-center gap-5 font-Urbanist'>
+      <div className='flex flex-col items-center gap-5'>
         <h1>{data.product?.title}</h1>
         <div className='flex w-full items-center justify-start gap-2'>
           <Image src='/user.png' alt='user-image' width={50} height={50} />

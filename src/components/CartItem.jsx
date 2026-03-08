@@ -1,31 +1,36 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
-import { deleteCartItemById, getCartInfoByUserId, updateCartQtyById } from '@/redux/slices/cartSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { errorActions } from '@/redux/slices/errorSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { messageActions } from '@/redux/slices/messageSlice'
+import { useDeleteCartItem, useUpdateCartQuantity } from '@/hooks/useCartQueries'
 
 const CartItem = ({ product }) => {
   const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector(({ user }) => user)
+  const deleteCartMutation = useDeleteCartItem()
+  const updateCartQuantityMutation = useUpdateCartQuantity()
   const router = useRouter()
 
   const handle = {
-    handleDeleteProduct: id => {
-      dispatch(deleteCartItemById(id))
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-        .finally(() => dispatch(getCartInfoByUserId(currentUser?._id)))
+    handleDeleteProduct: async id => {
+      try {
+        const res = await deleteCartMutation.mutateAsync(id)
+
+        dispatch(messageActions.setMessage(res?.message))
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     },
-    handleProductQuantityChange: (id, qty) => {
+    handleProductQuantityChange: async (id, qty) => {
       if (qty === 0) return handle.handleDeleteProduct(id)
 
-      dispatch(updateCartQtyById({ id, qty }))
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-        .catch(error => dispatch(errorActions.setErrorMessage(error?.message)))
-        .finally(() => dispatch(getCartInfoByUserId(currentUser._id)))
+      try {
+        const res = await updateCartQuantityMutation.mutateAsync({ id, qty })
+
+        dispatch(messageActions.setMessage(res?.message))
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     }
   }
 

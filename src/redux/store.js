@@ -1,22 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import userReducer from './slices/userSlice'
-import cartReducer from './slices/cartSlice'
-import errorReducer from './slices/errorSlice'
-import announcementReducer from './slices/announcementSlice'
-import productReducer from './slices/productSlice'
-import reviewReducer from './slices/reviewSlice'
-import addressReducer from './slices/addressSlice'
-import orderReducer from './slices/orderSlice'
+import messageReducer from './slices/messageSlice'
 
 const rootReducer = combineReducers({
-  user: userReducer,
-  address: addressReducer,
-  cart: cartReducer,
-  error: errorReducer,
-  announcement: announcementReducer,
-  product: productReducer,
-  review: reviewReducer,
-  order: orderReducer
+  message: messageReducer
 })
 
 export const makeStore = () => {

@@ -4,65 +4,56 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
-import { cartActions, getCartSize } from '@/redux/slices/cartSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { getSearchProducts } from '@/redux/slices/productSlice'
+import { useAppDispatch } from '@/redux/hooks'
 import { useDebounce } from '@/hooks/use-debounce'
-import { logout } from '@/redux/slices/userSlice'
-import { addressActions } from '@/redux/slices/addressSlice'
-import { orderActions } from '@/redux/slices/orderSlice'
-import { errorActions } from '@/redux/slices/errorSlice'
-import logo from '../../public/logo.png'
+import { useCurrentUser, useLogout } from '@/hooks/useUserQueries'
+import { useCartSize } from '@/hooks/useCartQueries'
+import { useSearchProducts } from '@/hooks/useProductQueries'
+import { messageActions } from '@/redux/slices/messageSlice'
 
 export default function Navbar() {
   const router = useRouter()
   const dispatch = useAppDispatch()
 
-  const { currentUser } = useAppSelector(({ user }) => user)
-  const { quantity } = useAppSelector(({ cart }) => cart)
-  const { searchProducts } = useAppSelector(({ product }) => product)
+  const { data: currentUser, isLoading } = useCurrentUser()
+  const logoutMutation = useLogout()
+  const { data: quantity } = useCartSize(currentUser)
 
   const [optionIsOpen, setOptionIsOpen] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [searchValue, setSearchValue] = useState('')
+  const [isMounted, setIsMounted] = useState(false)
 
   const debouncedSearchValue = useDebounce(searchValue, 500)
+  const { data: searchProducts } = useSearchProducts(debouncedSearchValue)
 
   const handle = {
     onClick: id => {
       setSearchValue('')
       router.push(`/product/${id}`)
     },
-    onLogout: () => {
-      dispatch(logout())
-        .unwrap()
-        .then(res => dispatch(errorActions.setErrorMessage(res?.message)))
-      dispatch(cartActions.resetState())
-      dispatch(orderActions.resetState())
-      dispatch(addressActions.resetState())
-      setIsAuthenticated(false)
+    onLogout: async () => {
+      try {
+        const res = await logoutMutation.mutateAsync()
+
+        dispatch(messageActions.setMessage(res?.data?.message))
+        router.push('/')
+      } catch (error) {
+        dispatch(messageActions.setMessage(error?.message))
+      }
     }
   }
 
   useEffect(() => {
-    if (debouncedSearchValue) {
-      dispatch(getSearchProducts(debouncedSearchValue))
-    }
-  }, [debouncedSearchValue])
-
-  useEffect(() => {
-    setIsAuthenticated(currentUser ? true : false)
-    if (!currentUser) return
-    dispatch(getCartSize())
+    setIsMounted(true)
   }, [])
 
   return (
-    <div className='sticky top-0 z-50 bg-white bg-opacity-80 font-Urbanist shadow-md backdrop-blur-md'>
+    <div className='sticky top-0 z-50 bg-white bg-opacity-80 shadow-md backdrop-blur-md'>
       <div className='flex items-center justify-between px-4 py-2'>
         <div className='hidden flex-1 items-center md:flex'>
           <h1 className='text-center text-3xl font-semibold tracking-tight md:text-left'>
             <Link href='/home'>
-              <Image src={logo} width={40} height={40} alt='logo' />
+              <Image src={'/logo.png'} width={40} height={40} alt='logo' />
             </Link>
           </h1>
         </div>
@@ -94,7 +85,12 @@ export default function Navbar() {
           </div>
         </div>
         <div className='flex flex-1 items-center justify-end gap-4'>
-          {!isAuthenticated ? (
+          {!isMounted || isLoading ? (
+            <div className='flex gap-4'>
+              <div className='h-4 w-16 animate-pulse rounded bg-gray-200'></div>
+              <div className='h-4 w-12 animate-pulse rounded bg-gray-200'></div>
+            </div>
+          ) : !currentUser ? (
             <>
               <div className='cursor-pointer text-xs sm:text-sm'>
                 <Link href='/register'>Sign Up</Link>

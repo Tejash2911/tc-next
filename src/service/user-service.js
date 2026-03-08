@@ -1,42 +1,45 @@
 import { axiosInstance, userRequest } from '@/lib/axios'
 import { handleApiErr, handleApiRes } from './handleApi'
 
-const login = payload => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .post('/auth/login', payload)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const login = async payload => {
+  try {
+    const res = await axiosInstance.post('/auth/login', payload)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const register = payload => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .post('/auth/register', payload)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const register = async payload => {
+  try {
+    const res = await axiosInstance.post('/auth/register', payload)
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const logout = () => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .post('/auth/logout')
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+const logout = async () => {
+  try {
+    const res = await axiosInstance.post('/auth/logout')
+
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
-const update = ORpayload => {
-  return new Promise((resolve, reject) => {
+const update = async ORpayload => {
+  try {
     const { id, payload } = ORpayload
+    const res = await userRequest.put(`/user/${id}`, payload)
 
-    userRequest
-      .put(`/user/${id}`, payload)
-      .then(res => resolve(handleApiRes(res)))
-      .catch(err => reject(handleApiErr(err)))
-  })
+    return handleApiRes(res)
+  } catch (err) {
+    throw handleApiErr(err)
+  }
 }
 
 const userService = {

@@ -1,6 +1,6 @@
 export default function SingleReviewSkeleton() {
   return (
-    <div className='flex animate-pulse gap-5 font-Urbanist'>
+    <div className='flex animate-pulse gap-5'>
       <div className='h-fit'>
         <div className='h-10 w-10 rounded-full bg-gray-300'></div>
       </div>

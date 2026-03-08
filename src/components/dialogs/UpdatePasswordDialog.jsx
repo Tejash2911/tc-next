@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useAppDispatch } from '@/redux/hooks'
 import Modal from '../Modal'
-import { errorActions } from '@/redux/slices/errorSlice'
-import { userRequest } from '@/lib/axios'
+import { messageActions } from '@/redux/slices/messageSlice'
+import { useCurrentUser, useUpdateUser } from '@/hooks/useUserQueries'
 
 export default function UpdatePasswordDialog({ open, setOpen }) {
   const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector(({ user }) => user)
+  const { data: currentUser } = useCurrentUser()
+  const updatePasswordMutation = useUpdateUser()
 
   const [formData, setFormData] = useState({
     currentPass: '',
@@ -21,19 +22,20 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
     onSubmit: async e => {
       e.preventDefault()
       if (formData.password !== formData.confPass)
-        return dispatch(errorActions.setErrorMessage("Password and Confirm Password Does'nt matched!!"))
+        return dispatch(messageActions.setMessage("Password and Confirm Password Doesn't matched!!"))
 
       try {
-        const { data } = await userRequest.put(`/users/${currentUser._id}`, formData)
+        const res = await updatePasswordMutation.mutateAsync({
+          userId: currentUser._id,
+          password: formData.password,
+          currentPassword: formData.currentPass
+        })
 
-        console.log(data)
-
-        dispatch(errorActions.setErrorMessage('Password updated Successfully!!'))
+        dispatch(messageActions.setMessage(res?.message))
+        handle.handleClose()
       } catch (error) {
-        dispatch(errorActions.setErrorMessage(error.response.data.error))
+        dispatch(messageActions.setMessage(error?.message))
       }
-
-      handle.handleClose()
     },
     handleClose: () => {
       setOpen(false)
@@ -42,7 +44,7 @@ export default function UpdatePasswordDialog({ open, setOpen }) {
 
   return (
     <Modal open={open}>
-      <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 font-Urbanist text-xs sm:text-sm'>
+      <form onSubmit={handle.onSubmit} className='flex flex-col gap-2 text-xs sm:text-sm'>
         <label htmlFor='currentPass' className='block font-semibold'>
           Current Password:
         </label>

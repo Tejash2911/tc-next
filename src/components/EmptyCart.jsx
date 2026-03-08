@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function EmptyCart() {
   return (
-    <div className='flex min-h-[30vh] flex-col items-center justify-center p-4 font-Urbanist sm:px-6 lg:px-8'>
+    <div className='flex min-h-[30vh] flex-col items-center justify-center p-4 sm:px-6 lg:px-8'>
       <div className='w-full max-w-xs'>
         <Image src='/cart.svg' alt='Empty cart' width={900} height={600} className='w-full' priority />
       </div>
