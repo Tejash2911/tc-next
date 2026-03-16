@@ -4,28 +4,22 @@ import cartService from '@/service/cart-service'
 export const useCartSize = currentUser => {
   return useQuery({
     queryKey: ['cartSize'],
-    queryFn: async () => {
-      const response = await cartService.getCartSize()
-
-      return response.data.size
-    },
+    queryFn: cartService.getCartSize,
     enabled: !!currentUser, // Only run when user is authenticated
     staleTime: 2 * 60 * 1000, // 2 minutes
-    cacheTime: 5 * 60 * 1000 // 5 minutes
+    cacheTime: 5 * 60 * 1000, // 5 minutes
+    select: response => response.data.size
   })
 }
 
 export const useCartByUserId = userId => {
   return useQuery({
     queryKey: ['cart', userId],
-    queryFn: async () => {
-      const response = await cartService.getById(userId)
-
-      return response.data
-    },
+    queryFn: () => cartService.getById(userId),
     enabled: !!userId,
     staleTime: 3 * 60 * 1000, // 3 minutes
-    cacheTime: 10 * 60 * 1000 // 10 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+    select: response => response.data
   })
 }
 
@@ -33,11 +27,7 @@ export const useAddToCart = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async payload => {
-      const response = await cartService.add(payload)
-
-      return response.data
-    },
+    mutationFn: payload => cartService.add(payload),
     onSuccess: () => {
       // Invalidate cart size and cart info queries
       queryClient.invalidateQueries({ queryKey: ['cartSize'] })
@@ -51,11 +41,7 @@ export const useUpdateCartQuantity = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async payload => {
-      const response = await cartService.updateCartQtyById(payload)
-
-      return response.data
-    },
+    mutationFn: payload => cartService.updateCartQtyById(payload),
     onSuccess: () => {
       // Invalidate cart size and cart info queries
       queryClient.invalidateQueries({ queryKey: ['cartSize'] })
@@ -69,11 +55,7 @@ export const useDeleteCartItem = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async id => {
-      const response = await cartService.deleteById(id)
-
-      return response.data
-    },
+    mutationFn: id => cartService.deleteById(id),
     onSuccess: () => {
       // Invalidate cart size and cart info queries
       queryClient.invalidateQueries({ queryKey: ['cartSize'] })

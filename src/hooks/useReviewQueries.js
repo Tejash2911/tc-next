@@ -4,15 +4,12 @@ import reviewService from '@/service/review-service'
 export const useReviewsByProductId = productId => {
   return useQuery({
     queryKey: ['reviews', productId],
-    queryFn: async () => {
-      const response = await reviewService.getAll(productId)
-
-      return response.data
-    },
+    queryFn: () => reviewService.getAll(productId),
     enabled: !!productId,
     retry: 1,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000 // 10 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+    select: response => response.data
   })
 }
 
@@ -20,11 +17,7 @@ export const useAddReview = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ productId, payload }) => {
-      const response = await reviewService.add({ id: productId, payload })
-
-      return response.data
-    },
+    mutationFn: ({ productId, payload }) => reviewService.add({ id: productId, payload }),
     onSuccess: (data, variables) => {
       // Invalidate and refetch reviews for this product
       queryClient.invalidateQueries({ queryKey: ['reviews', variables.productId] })
@@ -37,11 +30,7 @@ export const useUpvoteReview = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async reviewId => {
-      const response = await reviewService.upvote(reviewId)
-
-      return response.data
-    },
+    mutationFn: reviewId => reviewService.upvote(reviewId),
     onSuccess: () => {
       // Invalidate all reviews queries to reflect the upvote change
       queryClient.invalidateQueries({ queryKey: ['reviews'] })
@@ -54,11 +43,7 @@ export const useAbuseReview = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async reviewId => {
-      const response = await reviewService.abuse(reviewId)
-
-      return response.data
-    },
+    mutationFn: reviewId => reviewService.abuse(reviewId),
     onSuccess: () => {
       // Invalidate all reviews queries to reflect the abuse report
       queryClient.invalidateQueries({ queryKey: ['reviews'] })
